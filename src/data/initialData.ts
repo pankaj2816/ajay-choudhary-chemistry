@@ -156,7 +156,7 @@ export const initialDatabase: DatabaseSchema = {
       specialization: 'Coordination Chemistry, Periodic Trends & Crystal Field Theory',
       experience: '8+ Years mentoring JEE, NEET & Board toppers.',
       centers: 'Apex Science Academy (Model Town)',
-      image: '/images/teaching-team.jpg',
+      image: '/images/ajay-classroom.jpg',
       bio: 'Specialist in demystifying inorganic periodic trends, transition metals, crystal field energy splitting (Δo), and molecular orbital theory without rote memorization.',
       email: 'contact@ajaychemistry.com'
     }
