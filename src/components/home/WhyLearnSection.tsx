@@ -56,7 +56,56 @@ const PILLARS = [
   }
 ];
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function WhyLearnSection() {
+  const { t } = useLanguage();
+
+  const pillars = [
+    {
+      icon: Award,
+      title: t.whyLearn.pillar1Title,
+      description: t.whyLearn.pillar1Desc,
+      badge: 'Proven Pedagogy',
+      color: 'bg-cyan-500/10 text-cyan-600'
+    },
+    {
+      icon: Building2,
+      title: t.whyLearn.pillar2Title,
+      description: t.whyLearn.pillar2Desc,
+      badge: 'Multi-Center Reach',
+      color: 'bg-teal-500/10 text-teal-600'
+    },
+    {
+      icon: Lightbulb,
+      title: t.whyLearn.pillar3Title,
+      description: t.whyLearn.pillar3Desc,
+      badge: 'Logic Over Memory',
+      color: 'bg-amber-500/10 text-amber-600'
+    },
+    {
+      icon: Atom,
+      title: t.whyLearn.pillar4Title,
+      description: t.whyLearn.pillar4Desc,
+      badge: 'Visual Chemistry',
+      color: 'bg-indigo-500/10 text-indigo-600'
+    },
+    {
+      icon: TestTubes,
+      title: t.whyLearn.pillar5Title,
+      description: t.whyLearn.pillar5Desc,
+      badge: 'Hands-on Science',
+      color: 'bg-emerald-500/10 text-emerald-600'
+    },
+    {
+      icon: Sparkles,
+      title: t.whyLearn.pillar6Title,
+      description: t.whyLearn.pillar6Desc,
+      badge: '24/7 Digital Platform',
+      color: 'bg-rose-500/10 text-rose-600'
+    }
+  ];
+
   return (
     <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,19 +114,19 @@ export default function WhyLearnSection() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-100 text-cyan-800 font-bold text-xs">
             <Sparkles className="w-3.5 h-3.5" />
-            The Teaching Advantage
+            {t.whyLearn.badge}
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Why Learn Chemistry with Ajay Sir?
+            {t.whyLearn.title}
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            A methodology engineered to transform fear of Chemistry into academic confidence and top percentile scores.
+            {t.whyLearn.subtitle}
           </p>
         </div>
 
         {/* 6 Grid Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {PILLARS.map((pillar, idx) => {
+          {pillars.map((pillar, idx) => {
             const Icon = pillar.icon;
             return (
               <div
@@ -105,7 +154,7 @@ export default function WhyLearnSection() {
 
                 <div className="pt-4 mt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-teal-700">
                   <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                  <span>Student Success Guaranteed</span>
+                  <span>Concept-First Pedagogy</span>
                 </div>
               </div>
             );

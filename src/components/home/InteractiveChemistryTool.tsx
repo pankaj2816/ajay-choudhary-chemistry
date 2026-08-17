@@ -84,7 +84,10 @@ const TOPICS: ChemistryTopic[] = [
   }
 ];
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function InteractiveChemistryTool() {
+  const { t } = useLanguage();
   const [activeTopic, setActiveTopic] = useState<ChemistryTopic>(TOPICS[0]);
 
   return (
@@ -98,13 +101,13 @@ export default function InteractiveChemistryTool() {
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
             <Atom className="w-3.5 h-3.5" />
-            Interactive Concept Explorer
+            {t.interactive.badge}
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
-            Explore High-Yield Chemistry Concepts
+            {t.interactive.title}
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-            Click on key mechanism cards below to preview Ajay Sir&apos;s step-by-step conceptual breakdown.
+            {t.interactive.subtitle}
           </p>
         </div>
 

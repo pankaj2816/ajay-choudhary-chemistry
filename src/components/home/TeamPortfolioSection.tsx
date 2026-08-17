@@ -6,8 +6,10 @@ import Link from 'next/link';
 import { Camera, GraduationCap, Building2, Mail, Sparkles, CheckCircle2, Award, FlaskConical } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function TeamPortfolioSection() {
+  const { t } = useLanguage();
   const [portfolio, setPortfolio] = useState<TeamMember[]>(initialDatabase.teamMembers);
 
   useEffect(() => {
@@ -27,13 +29,13 @@ export default function TeamPortfolioSection() {
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 font-bold text-xs">
             <Camera className="w-3.5 h-3.5 text-cyan-600" />
-            Classroom & Lab Gallery
+            {t.portfolio.badge}
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Teaching Portfolio & Academic Journey
+            {t.portfolio.title}
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            A visual overview of Ajay Choudhary&apos;s interactive lectures, laboratory salt analysis demonstrations, and student doubt resolution sessions.
+            {t.portfolio.subtitle}
           </p>
         </div>
 
@@ -52,13 +54,13 @@ export default function TeamPortfolioSection() {
           <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-1.5 max-w-xl">
               <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-                Academic Experience & Lab Mentorship
+                {t.portfolio.bannerTag}
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-white">
-                Active Classroom Batches Across 3 Coaching Centers
+                {t.portfolio.bannerHeading}
               </h3>
               <p className="text-xs sm:text-sm text-slate-300">
-                Direct individual guidance for Class 11, Class 12, JEE Main & Advanced, and NEET aspirants.
+                {t.portfolio.bannerSub}
               </p>
             </div>
 
@@ -68,7 +70,7 @@ export default function TeamPortfolioSection() {
                 className="px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs sm:text-sm font-bold shadow-lg transition-colors inline-flex items-center gap-1.5"
               >
                 <GraduationCap className="w-4 h-4" />
-                <span>Read Full Biography</span>
+                <span>{t.portfolio.readBio}</span>
               </Link>
             </div>
           </div>

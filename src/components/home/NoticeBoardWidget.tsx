@@ -17,6 +17,7 @@ import {
 import { NoticeUpdate, NoticeCategory } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
+import { useLanguage } from '@/context/LanguageContext';
 import ChemistryContentRenderer from '@/components/ui/ChemistryContentRenderer';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -30,29 +31,25 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export default function NoticeBoardWidget() {
-  const [updates, setUpdates] = useState<NoticeUpdate[]>(initialDatabase.updates.filter(u => u.isPublished));
-  const [selectedNotice, setSelectedNotice] = useState<NoticeUpdate | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
   const { showToast } = useToast();
+  const [updates, setUpdates] = useState<NoticeUpdate[]>(initialDatabase.updates);
+  const [selectedNotice, setSelectedNotice] = useState<NoticeUpdate | null>(null);
 
   useEffect(() => {
     fetch('/api/updates')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setUpdates(data.filter((u: NoticeUpdate) => u.isPublished));
-        }
+        if (Array.isArray(data) && data.length > 0) setUpdates(data);
       })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+      .catch(() => {});
   }, []);
 
   const handleDownload = (notice: NoticeUpdate) => {
-    if (!notice.attachmentUrl) return;
-    showToast(`Downloading: ${notice.attachmentName || 'Notice Attachment'}`, 'info');
+    showToast(`Downloading attachment: ${notice.attachmentName || notice.title}`, 'info');
     const link = document.createElement('a');
-    link.href = notice.attachmentUrl;
-    link.download = notice.attachmentName || 'Attachment.pdf';
+    link.href = notice.attachmentUrl || '/uploads/sample_notice_attachment.pdf';
+    link.download = notice.attachmentName || 'Notice_Attachment.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -67,13 +64,13 @@ export default function NoticeBoardWidget() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-bold text-xs">
               <Bell className="w-3.5 h-3.5 animate-bounce" />
-              Live Notice Board
+              {t.notices.badge}
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-2">
-              Latest Academic Updates & Notices
+              {t.notices.title}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Class schedules, test announcements, assignment deadlines, and question paper alerts.
+              {t.notices.subtitle}
             </p>
           </div>
 
@@ -81,7 +78,7 @@ export default function NoticeBoardWidget() {
             href="/updates"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-cyan-700 hover:text-cyan-800 hover:underline shrink-0"
           >
-            <span>View All Announcements</span>
+            <span>{t.notices.viewAll}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

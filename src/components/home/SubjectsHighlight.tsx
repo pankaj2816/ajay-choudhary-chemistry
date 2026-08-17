@@ -70,7 +70,74 @@ const SUBJECTS_DATA = [
   }
 ];
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function SubjectsHighlight() {
+  const { t } = useLanguage();
+
+  const subjects = [
+    {
+      id: 'organic',
+      title: t.subjects.organicName,
+      tagline: 'Reaction Mechanisms & Synthesis',
+      badge: 'Specialized Expertise',
+      badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800',
+      description: t.subjects.organicDesc,
+      topics: [
+        'General Organic Chemistry (GOC)',
+        'Reaction Mechanisms & Curved Arrows',
+        'Named Reactions & Conversions',
+        'Hydrocarbons & Haloalkanes',
+        'Aldehydes, Ketones & Carboxylic Acids',
+        'Isomerism & Stereochemistry'
+      ],
+      materialsLink: '/study-materials?subject=Organic+Chemistry',
+      papersLink: '/question-papers?subject=Organic+Chemistry',
+      icon: Atom,
+      iconBg: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400'
+    },
+    {
+      id: 'inorganic',
+      title: t.subjects.inorganicName,
+      tagline: 'Periodic Trends & Coordination Complexes',
+      badge: 'Conceptual Mastery',
+      badgeColor: 'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/60 dark:text-teal-300 dark:border-teal-800',
+      description: t.subjects.inorganicDesc,
+      topics: [
+        'Periodic Classification & Atomic Trends',
+        'Chemical Bonding & MOT Diagrams',
+        'Coordination Compounds & CFT Splitting',
+        'p-Block & d-Block Chemistry',
+        'Metallurgy & Extraction Principles',
+        'Inorganic Reaction Trends'
+      ],
+      materialsLink: '/study-materials?subject=Inorganic+Chemistry',
+      papersLink: '/question-papers?subject=Inorganic+Chemistry',
+      icon: Sparkles,
+      iconBg: 'bg-teal-500/10 text-teal-600 dark:text-teal-400'
+    },
+    {
+      id: 'practical',
+      title: t.subjects.practicalName,
+      tagline: 'Qualitative Analysis & Lab Techniques',
+      badge: 'Hands-on & Viva Prep',
+      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800',
+      description: t.subjects.practicalDesc,
+      topics: [
+        'Qualitative Salt Analysis (Group 0 to VI)',
+        'Volumetric Titration & Calculations',
+        'Organic Functional Group Tests',
+        'Flame & Borax Bead Confirmations',
+        'Laboratory Safety & Apparatus Setup',
+        'Board Viva Voce Preparation'
+      ],
+      materialsLink: '/study-materials?subject=Practical+Chemistry',
+      papersLink: '/question-papers?subject=Practical+Chemistry',
+      icon: TestTubes,
+      iconBg: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'
+    }
+  ];
+
   return (
     <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,19 +146,19 @@ export default function SubjectsHighlight() {
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-100 text-cyan-800 font-bold text-xs">
             <Atom className="w-3.5 h-3.5" />
-            Core Specializations
+            {t.subjects.badge}
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Comprehensive Chemistry Expertise
+            {t.subjects.title}
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            Delivering deep conceptual clarity across the three foundational pillars of Senior Secondary and Competitive Chemistry.
+            {t.subjects.subtitle}
           </p>
         </div>
 
         {/* 3 Subject Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {SUBJECTS_DATA.map((subj) => {
+          {subjects.map((subj) => {
             const Icon = subj.icon;
             return (
               <div
@@ -172,7 +239,7 @@ export default function SubjectsHighlight() {
             href="/subjects"
             className="inline-flex items-center gap-2 text-sm font-bold text-cyan-700 hover:text-cyan-800 hover:underline"
           >
-            <span>Explore Complete Subject Syllabi & Chapter Breakdown</span>
+            <span>{t.subjects.exploreBtn}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

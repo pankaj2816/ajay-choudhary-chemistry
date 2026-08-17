@@ -8,7 +8,10 @@ import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function FeaturedResources() {
+  const { t } = useLanguage();
   const [materials, setMaterials] = useState<StudyMaterial[]>(initialDatabase.studyMaterials.filter(m => m.isFeatured));
   const [previewItem, setPreviewItem] = useState<StudyMaterial | null>(null);
   const { showToast } = useToast();
@@ -44,13 +47,13 @@ export default function FeaturedResources() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
               <Sparkles className="w-3.5 h-3.5" />
-              High-Yield Revision Vault
+              {t.materials.badge}
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight mt-2">
-              Featured Chemistry Study Materials
+              {t.materials.title}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Handwritten classroom notes, master reaction maps, formula handbooks, and practical manuals.
+              {t.materials.subtitle}
             </p>
           </div>
 
@@ -58,7 +61,7 @@ export default function FeaturedResources() {
             href="/study-materials"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-cyan-400 hover:text-cyan-300 hover:underline shrink-0"
           >
-            <span>View All Study Materials</span>
+            <span>{t.materials.viewVault}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

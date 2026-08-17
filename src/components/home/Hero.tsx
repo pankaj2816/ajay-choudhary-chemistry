@@ -18,7 +18,11 @@ import {
   TestTubes
 } from 'lucide-react';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function Hero() {
+  const { t } = useLanguage();
+
   return (
     <section className="relative overflow-hidden bg-slate-950 text-white chem-hero-gradient pt-8 sm:pt-14 pb-16 sm:pb-24 border-b border-slate-800">
       {/* Background Molecular Grid Accents */}
@@ -40,22 +44,22 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </span>
-              <span>8+ Years of Chemistry Teaching Excellence</span>
+              <span>{t.hero.badge}</span>
               <span className="text-slate-500">•</span>
-              <span className="text-slate-300">3 Coaching Centers</span>
+              <span className="text-slate-300">{t.hero.centersCount}</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight text-white leading-[1.12]">
-              Master Chemistry with <br className="hidden sm:inline" />
+              {t.hero.titleLine1} <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-300">
-                Ajay Choudhary
+                {t.hero.titleHighlight}
               </span>
             </h1>
 
             {/* Subheading */}
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-normal">
-              Specialized coaching in <strong className="text-cyan-300 font-semibold">Organic Reaction Mechanisms</strong>, <strong className="text-cyan-300 font-semibold">Conceptual Inorganic Chemistry</strong>, and <strong className="text-cyan-300 font-semibold">Practical Laboratory Knowledge</strong> for CBSE, ISC, JEE & NEET aspirants.
+              {t.hero.description}
             </p>
 
             {/* Specialization Highlights */}
@@ -63,24 +67,24 @@ export default function Hero() {
               <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2">
                 <Atom className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-white">Organic</h4>
-                  <p className="text-[10px] text-slate-400">Mechanisms & Roadmaps</p>
+                  <h4 className="text-xs font-bold text-white">{t.hero.organicTitle}</h4>
+                  <p className="text-[10px] text-slate-400">{t.hero.organicSub}</p>
                 </div>
               </div>
 
               <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2">
                 <Sparkles className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-white">Inorganic</h4>
-                  <p className="text-[10px] text-slate-400">Bonding & Trends</p>
+                  <h4 className="text-xs font-bold text-white">{t.hero.inorganicTitle}</h4>
+                  <p className="text-[10px] text-slate-400">{t.hero.inorganicSub}</p>
                 </div>
               </div>
 
               <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2">
                 <TestTubes className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-white">Practical</h4>
-                  <p className="text-[10px] text-slate-400">Salt Analysis & Labs</p>
+                  <h4 className="text-xs font-bold text-white">{t.hero.practicalTitle}</h4>
+                  <p className="text-[10px] text-slate-400">{t.hero.practicalSub}</p>
                 </div>
               </div>
             </div>
@@ -92,7 +96,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-cyan-600/25 transition-all transform hover:-translate-y-0.5"
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Explore Study Materials</span>
+                <span>{t.hero.ctaMaterials}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -101,7 +105,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm border border-slate-700 shadow-sm transition-all"
               >
                 <FileText className="w-4 h-4 text-cyan-400" />
-                <span>Notice Board & Tests</span>
+                <span>{t.hero.ctaNotices}</span>
               </Link>
 
               <Link
@@ -109,7 +113,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 text-slate-300 hover:text-cyan-300 font-medium text-sm border border-slate-800 transition-all"
               >
                 <PhoneCall className="w-4 h-4" />
-                <span>Contact Teacher</span>
+                <span>{t.hero.ctaContact}</span>
               </Link>
             </div>
 
@@ -117,15 +121,15 @@ export default function Hero() {
             <div className="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>5,000+ Students Mentored</span>
+                <span>{t.hero.statStudents}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>100% Concept-First Approach</span>
+                <span>{t.hero.statConcept}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Free Question Papers & Solutions</span>
+                <span>{t.hero.statPapers}</span>
               </div>
             </div>
 
@@ -139,7 +143,7 @@ export default function Hero() {
               <div className="absolute -inset-2 bg-gradient-to-tr from-cyan-500/30 to-indigo-500/30 rounded-3xl blur-xl"></div>
               
               <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/80 bg-slate-900 shadow-2xl">
-                <div className="relative aspect-[4/4.4] w-full">
+                <div className="relative aspect-[4/4.8] w-full bg-slate-950">
                   <Image
                     src="/images/ajay-choudhary.jpg"
                     alt="Ajay Choudhary Chemistry Teacher"
@@ -155,11 +159,11 @@ export default function Hero() {
                 <div className="p-4 bg-slate-950/90 backdrop-blur-md border-t border-slate-800 flex items-center justify-between">
                   <div>
                     <h3 className="text-white font-extrabold text-base">Ajay Choudhary</h3>
-                    <p className="text-xs text-cyan-400 font-medium">Head of Chemistry • 8+ Years</p>
+                    <p className="text-xs text-cyan-400 font-medium">{t.hero.teacherCardRole}</p>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] font-semibold text-slate-400 block">Teaching At</span>
-                    <span className="text-xs font-bold text-slate-200">3 Coaching Centers</span>
+                    <span className="text-[10px] font-semibold text-slate-400 block">{t.hero.teachingAt}</span>
+                    <span className="text-xs font-bold text-slate-200">{t.hero.teachingCenters}</span>
                   </div>
                 </div>
               </div>
@@ -170,8 +174,8 @@ export default function Hero() {
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">8+ Years</div>
-                  <div className="text-[10px] text-slate-400">Teaching Exp</div>
+                  <div className="text-xs font-bold text-white">{t.hero.experienceYears}</div>
+                  <div className="text-[10px] text-slate-400">{t.hero.teachingExp}</div>
                 </div>
               </div>
 
@@ -182,7 +186,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-white">Organic & Lab</div>
-                  <div className="text-[10px] text-slate-400">Specialist</div>
+                  <div className="text-[10px] text-slate-400">Master Faculty</div>
                 </div>
               </div>
 

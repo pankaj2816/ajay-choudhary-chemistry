@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import { ToastProvider } from "@/context/ToastContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -50,14 +51,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakarta.variable} font-sans`}>
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-cyan-500 selection:text-white">
-        <ToastProvider>
-          <AnnouncementBanner />
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </ToastProvider>
+        <LanguageProvider>
+          <ToastProvider>
+            <AnnouncementBanner />
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </ToastProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

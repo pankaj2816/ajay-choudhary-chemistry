@@ -18,7 +18,10 @@ import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function LatestPapersSolutions() {
+  const { t } = useLanguage();
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
@@ -63,13 +66,13 @@ export default function LatestPapersSolutions() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 font-bold text-xs">
               <FileText className="w-3.5 h-3.5 text-blue-600" />
-              Practice Library
+              {t.papersSolutions.badge}
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mt-2">
-              Recent Question Papers & Solutions
+              {t.papersSolutions.title}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Download chapter-wise unit tests and jump directly to verified step-by-step solutions.
+              {t.papersSolutions.subtitle}
             </p>
           </div>
 
@@ -78,13 +81,13 @@ export default function LatestPapersSolutions() {
               href="/question-papers"
               className="text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl transition-colors"
             >
-              All Question Papers
+              {t.papersSolutions.allPapersBtn}
             </Link>
             <Link
               href="/solutions"
               className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1"
             >
-              All Solutions <ArrowRight className="w-3.5 h-3.5" />
+              {t.papersSolutions.allSolutionsBtn} <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>

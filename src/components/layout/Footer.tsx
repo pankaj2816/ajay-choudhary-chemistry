@@ -15,7 +15,11 @@ import {
   GraduationCap
 } from 'lucide-react';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 text-sm relative overflow-hidden">
       {/* Subtle Background Glow */}
@@ -40,7 +44,7 @@ export default function Footer() {
             </div>
 
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
-              Empowering students to excel in CBSE, ISC, JEE, and NEET Chemistry through first-principles conceptual clarity, visual reaction mechanisms, and practical laboratory insight.
+              {t.footer.tagline}
             </p>
 
             <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-1.5 max-w-sm">
@@ -56,41 +60,41 @@ export default function Footer() {
 
           {/* Quick Navigation Links */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Student Portal</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.resourcesTitle}</h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/about" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> About Ajay Sir
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.about}
                 </Link>
               </li>
               <li>
                 <Link href="/subjects" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> Chemistry Subjects
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.subjects}
                 </Link>
               </li>
               <li>
                 <Link href="/updates" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> Notice Board & Tests
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.updates}
                 </Link>
               </li>
               <li>
                 <Link href="/study-materials" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> Study Notes & Sheets
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.studyMaterials}
                 </Link>
               </li>
               <li>
                 <Link href="/question-papers" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> Question Papers
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.questionPapers}
                 </Link>
               </li>
               <li>
                 <Link href="/solutions" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> Verified Solutions
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.solutions}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> Contact & Admissions
+                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.contact}
                 </Link>
               </li>
             </ul>
@@ -98,23 +102,23 @@ export default function Footer() {
 
           {/* Chemistry Domains */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Specializations</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.specializationsTitle}</h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/subjects#organic" className="hover:text-cyan-400 transition-colors block">
-                  <strong className="text-slate-300 block">Organic Chemistry</strong>
+                  <strong className="text-slate-300 block">{t.subjects.organicName}</strong>
                   <span className="text-[11px] text-slate-500">Mechanisms, Named Reactions & Conversions</span>
                 </Link>
               </li>
               <li>
                 <Link href="/subjects#inorganic" className="hover:text-cyan-400 transition-colors block">
-                  <strong className="text-slate-300 block">Inorganic Chemistry</strong>
+                  <strong className="text-slate-300 block">{t.subjects.inorganicName}</strong>
                   <span className="text-[11px] text-slate-500">Coordination, Bonding & Periodic Trends</span>
                 </Link>
               </li>
               <li>
                 <Link href="/subjects#practical" className="hover:text-cyan-400 transition-colors block">
-                  <strong className="text-slate-300 block">Practical Chemistry</strong>
+                  <strong className="text-slate-300 block">{t.subjects.practicalName}</strong>
                   <span className="text-[11px] text-slate-500">Qualitative Salt Analysis & Titrations</span>
                 </Link>
               </li>
@@ -123,7 +127,7 @@ export default function Footer() {
 
           {/* Coaching Centers Summary */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Teaching Centers</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.centersTitle}</h4>
             <ul className="space-y-2 text-xs">
               <li className="p-2 rounded-lg bg-slate-900/60 border border-slate-800">
                 <strong className="text-slate-200 block text-xs">Catalyst Career Institute</strong>
@@ -144,7 +148,7 @@ export default function Footer() {
 
         {/* Bottom Bar with Admin Login Link */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Ajay Choudhary Chemistry Platform. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {t.footer.rightsReserved}</p>
           <div className="flex items-center gap-6">
             <Link href="/contact" className="hover:text-slate-300 transition-colors">
               Student Helpdesk

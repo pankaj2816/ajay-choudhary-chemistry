@@ -38,12 +38,47 @@ const STATS = [
   }
 ];
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function StatsSection() {
+  const { t } = useLanguage();
+
+  const stats = [
+    {
+      icon: Award,
+      value: '8+',
+      label: t.stats.expTitle,
+      subtext: t.stats.expDesc,
+      bgLight: 'bg-cyan-500/10 text-cyan-400'
+    },
+    {
+      icon: Building2,
+      value: '3',
+      label: t.stats.centersTitle,
+      subtext: t.stats.centersDesc,
+      bgLight: 'bg-teal-500/10 text-teal-400'
+    },
+    {
+      icon: Atom,
+      value: '100%',
+      label: t.stats.masteryTitle,
+      subtext: t.stats.masteryDesc,
+      bgLight: 'bg-indigo-500/10 text-indigo-400'
+    },
+    {
+      icon: TestTubes,
+      value: '5,000+',
+      label: t.stats.studentsTitle,
+      subtext: t.stats.studentsDesc,
+      bgLight: 'bg-amber-500/10 text-amber-400'
+    }
+  ];
+
   return (
     <section className="py-12 bg-slate-900 border-b border-slate-800 text-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {STATS.map((stat, idx) => {
+          {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
               <div
@@ -59,7 +94,7 @@ export default function StatsSection() {
                 <div className="text-xs sm:text-sm font-bold text-slate-200 mt-1">
                   {stat.label}
                 </div>
-                <div className="text-[11px] text-slate-400 mt-0.5">
+                <div className="text-[11px] text-slate-400 mt-0.5 leading-snug">
                   {stat.subtext}
                 </div>
               </div>
