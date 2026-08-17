@@ -5,11 +5,13 @@ const repo = 'ajay-choudhary-chemistry';
 
 const nextConfig: NextConfig = {
   output: isGithubActions ? 'export' : undefined,
-  basePath: isGithubActions ? `/${repo}` : undefined,
-  assetPrefix: isGithubActions ? `/${repo}/` : undefined,
+  basePath: isGithubActions ? `/${repo}` : '',
   images: {
     unoptimized: true,
   },
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isGithubActions ? `/${repo}` : '',
+  }
 };
 
 export default nextConfig;

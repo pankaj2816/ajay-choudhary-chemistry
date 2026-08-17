@@ -7,6 +7,7 @@ import { Camera, GraduationCap, Building2, Mail, Sparkles, CheckCircle2, Award, 
 import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useLanguage } from '@/context/LanguageContext';
+import SafeImage from '@/components/ui/SafeImage';
 
 export default function TeamPortfolioSection() {
   const { t } = useLanguage();
@@ -85,7 +86,7 @@ export default function TeamPortfolioSection() {
             >
               <div>
                 <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
-                  <Image
+                  <SafeImage
                     src={item.image || '/images/ajay-choudhary.jpg'}
                     alt={item.role}
                     fill

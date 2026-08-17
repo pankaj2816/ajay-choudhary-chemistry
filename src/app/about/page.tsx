@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
+import SafeImage from '@/components/ui/SafeImage';
 
 const METHODOLOGY_STEPS = [
   {
@@ -96,7 +97,7 @@ export default function AboutPage() {
             {/* Portrait Column */}
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 aspect-[4/5] w-full max-w-md mx-auto">
-                <Image
+                <SafeImage
                   src="/images/ajay-choudhary.jpg"
                   alt="Ajay Choudhary Chemistry Teacher"
                   fill

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 import { useLanguage } from '@/context/LanguageContext';
+import SafeImage from '@/components/ui/SafeImage';
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -144,15 +145,13 @@ export default function Hero() {
               
               <div className="relative rounded-3xl overflow-hidden border-2 border-slate-700/80 bg-slate-900 shadow-2xl">
                 <div className="relative aspect-[4/4.8] w-full bg-slate-950">
-                  <Image
+                  <SafeImage
                     src="/images/ajay-choudhary.jpg"
                     alt="Ajay Choudhary Chemistry Teacher"
                     fill
                     className="object-cover object-top"
                     priority
                   />
-                  {/* Subtle Dark Gradient at bottom of image */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
                 </div>
 
                 {/* Floating Profile Info at bottom of portrait */}
