@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getStudyMaterials, createStudyMaterial, updateStudyMaterial, deleteStudyMaterial } from '@/lib/db';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const materials = await getStudyMaterials();
   return NextResponse.json(materials);

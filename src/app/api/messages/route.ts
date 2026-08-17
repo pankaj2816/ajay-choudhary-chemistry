@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getContactMessages, createContactMessage, updateContactMessage, deleteContactMessage } from '@/lib/db';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const isAdmin = await verifyAdminSession();
   if (!isAdmin) {

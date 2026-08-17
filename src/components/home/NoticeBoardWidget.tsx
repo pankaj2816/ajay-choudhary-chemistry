@@ -15,6 +15,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { NoticeUpdate, NoticeCategory } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -28,16 +29,16 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export default function NoticeBoardWidget() {
-  const [updates, setUpdates] = useState<NoticeUpdate[]>([]);
+  const [updates, setUpdates] = useState<NoticeUpdate[]>(initialDatabase.updates.filter(u => u.isPublished));
   const [selectedNotice, setSelectedNotice] = useState<NoticeUpdate | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
     fetch('/api/updates')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setUpdates(data.filter((u: NoticeUpdate) => u.isPublished));
         }
       })

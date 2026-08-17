@@ -127,38 +127,38 @@ export const initialDatabase: DatabaseSchema = {
     {
       id: 'team-1',
       name: 'Ajay Choudhary',
-      role: 'Lead Chemistry Educator & Academic Director',
+      role: 'Organic Chemistry & Reaction Mechanisms',
       designation: 'M.Sc. Chemistry, B.Ed (8+ Years Experience)',
-      specialization: 'Organic Reaction Mechanisms & Conceptual Inorganic Chemistry',
-      experience: '8+ Years teaching over 5000+ board & competitive aspirants across top coaching hubs.',
-      centers: 'Catalyst Career Institute, Apex Science Academy & Prerana Learning Hub',
+      specialization: 'Reaction Mechanisms, Stereochemistry & Synthesis Roadmaps',
+      experience: '8+ Years teaching over 5,000+ board & competitive aspirants.',
+      centers: 'Catalyst Career Institute (Sector 14)',
       image: '/images/ajay-choudhary.jpg',
-      bio: 'Ajay Sir is renowned for his systematic, step-by-step breakdown of difficult reaction mechanisms and crystal-clear visual explanation of molecular orbitals and stereochemistry.',
+      bio: 'Renowned for his systematic, step-by-step breakdown of difficult reaction mechanisms and crystal-clear visual explanation of molecular orbitals and curved-arrow electron flow.',
       email: 'ajay@ajaychemistry.com'
     },
     {
       id: 'team-2',
-      name: 'Dr. Neha Sharma',
-      role: 'Associate Faculty – Inorganic & Lab Specialist',
-      designation: 'Ph.D. in Chemical Sciences, CSIR-NET JRF',
-      specialization: 'Coordination Chemistry, Crystal Field Theory & Salt Analysis',
-      experience: '6+ Years academic research and coaching mentorship.',
-      centers: 'Apex Science Academy & Catalyst Career Institute',
-      image: '/images/teaching-team.jpg',
-      bio: 'Expert in demystifying inorganic periodic trends, transition metals, and conducting structured laboratory salt analysis workshops.',
-      email: 'neha@ajaychemistry.com'
+      name: 'Ajay Choudhary',
+      role: 'Practical Chemistry & Laboratory Specialist',
+      designation: 'Senior Chemistry Faculty & Lab Instructor',
+      specialization: 'Qualitative Salt Analysis, Titrations & Viva Voce Preparation',
+      experience: '8+ Years hands-on laboratory coaching and practical workshops.',
+      centers: 'Prerana Learning Hub (South Extension)',
+      image: '/images/chemistry-lab-hero.jpg',
+      bio: 'Leading structured laboratory salt analysis workshops, brown ring tests, redox titration estimations, and comprehensive practical viva training.',
+      email: 'contact@ajaychemistry.com'
     },
     {
       id: 'team-3',
-      name: 'Er. Rohit Verma',
-      role: 'Academic Mentor & Problem Solving Coach',
-      designation: 'B.Tech (Chemical Engineering, NIT)',
-      specialization: 'Physical Chemistry Calculations, DPP Analysis & Doubts',
-      experience: '4+ Years mentoring JEE & NEET aspirants.',
-      centers: 'Prerana Learning Hub',
-      image: '/images/chemistry-lab-hero.jpg',
-      bio: 'Specialist in rapid numerical solving strategies, thermodynamics, ionic equilibria, and personal student performance tracking.',
-      email: 'rohit@ajaychemistry.com'
+      name: 'Ajay Choudhary',
+      role: 'Inorganic Chemistry & Conceptual Bonding',
+      designation: 'Inorganic Chemistry Educator',
+      specialization: 'Coordination Chemistry, Periodic Trends & Crystal Field Theory',
+      experience: '8+ Years mentoring JEE, NEET & Board toppers.',
+      centers: 'Apex Science Academy (Model Town)',
+      image: '/images/teaching-team.jpg',
+      bio: 'Specialist in demystifying inorganic periodic trends, transition metals, crystal field energy splitting (Δo), and molecular orbital theory without rote memorization.',
+      email: 'contact@ajaychemistry.com'
     }
   ],
 
@@ -363,7 +363,7 @@ $$\\text{CH}_3-\\text{C}(\\text{CH}_3)=\\text{CH}-\\text{CH}_3 \\xrightarrow{1.\
       solutionPdfUrl: '/uploads/sol_inorganic_coordination_compounds.pdf',
       solutionPdfName: 'Solution_Coordination_Compounds_PT02.pdf',
       solutionPdfSize: '2.5 MB',
-      verifiedBy: 'Ajay Choudhary & Dr. Neha Sharma',
+      verifiedBy: 'Ajay Choudhary (Master Chemistry Educator)',
       stepByStepContent: `### Step-by-Step Solution Breakdown
 
 #### 1. IUPAC Nomenclature for $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}(\\text{NO}_2)]\\text{Cl}$:
@@ -428,7 +428,7 @@ $$\\text{CH}_3-\\text{C}(\\text{CH}_3)=\\text{CH}-\\text{CH}_3 \\xrightarrow{1.\
       solutionPdfUrl: '/uploads/sol_practical_salt_analysis.pdf',
       solutionPdfName: 'Solution_Salt_Analysis_Practical_Guide.pdf',
       solutionPdfSize: '1.7 MB',
-      verifiedBy: 'Ajay Choudhary & Dr. Neha Sharma',
+      verifiedBy: 'Ajay Choudhary (Master Chemistry Educator)',
       stepByStepContent: `### Systematic Cation & Anion Separation Tables
 
 #### 1. Brown Ring Test for Nitrate ($NO_3^-$):

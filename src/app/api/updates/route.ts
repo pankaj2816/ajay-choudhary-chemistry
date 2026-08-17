@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getUpdates, createUpdate, updateUpdate, deleteUpdate } from '@/lib/db';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const updates = await getUpdates();
   return NextResponse.json(updates);

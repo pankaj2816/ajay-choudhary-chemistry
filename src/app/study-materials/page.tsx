@@ -16,6 +16,7 @@ import {
   Bookmark
 } from 'lucide-react';
 import { StudyMaterial, SubjectType, ClassLevel, ResourceType } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
@@ -31,20 +32,20 @@ const RESOURCE_TYPES: (ResourceType | 'All Types')[] = [
 ];
 
 export default function StudyMaterialsPage() {
-  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
+  const [materials, setMaterials] = useState<StudyMaterial[]>(initialDatabase.studyMaterials);
   const [selectedSubject, setSelectedSubject] = useState<string>('All');
   const [selectedClass, setSelectedClass] = useState<string>('All');
   const [selectedType, setSelectedType] = useState<string>('All Types');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
     fetch('/api/study-materials')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) setMaterials(data);
+        if (Array.isArray(data) && data.length > 0) setMaterials(data);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));

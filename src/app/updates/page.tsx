@@ -15,6 +15,7 @@ import {
   Users
 } from 'lucide-react';
 import { NoticeUpdate, NoticeCategory, ClassLevel } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
 
 const CATEGORIES: (NoticeCategory | 'All Categories')[] = [
@@ -39,19 +40,19 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export default function UpdatesPage() {
-  const [updates, setUpdates] = useState<NoticeUpdate[]>([]);
+  const [updates, setUpdates] = useState<NoticeUpdate[]>(initialDatabase.updates.filter(u => u.isPublished));
   const [selectedCategory, setSelectedCategory] = useState<string>('All Categories');
   const [selectedClass, setSelectedClass] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNotice, setSelectedNotice] = useState<NoticeUpdate | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
     fetch('/api/updates')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setUpdates(data.filter((u: NoticeUpdate) => u.isPublished));
         }
       })

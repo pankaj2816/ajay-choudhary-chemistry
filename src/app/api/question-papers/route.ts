@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getQuestionPapers, createQuestionPaper, updateQuestionPaper, deleteQuestionPaper } from '@/lib/db';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const papers = await getQuestionPapers();
   return NextResponse.json(papers);

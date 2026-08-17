@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSettings, updateSettings } from '@/lib/db';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const settings = await getSettings();
   return NextResponse.json(settings);

@@ -169,10 +169,10 @@ export default function AdminTeamPage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2">
             <Users className="w-6 h-6 text-indigo-400" />
-            Manage Faculty & Team Portfolio
+            Manage Teaching Portfolio & Gallery
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Update faculty member photos, roles, specializations, and coaching center affiliations.
+            Manage classroom photos, laboratory session highlights, and specializations across your 3 coaching centers.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export default function AdminTeamPage() {
           className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/25 transition-all shrink-0"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Faculty Member</span>
+          <span>Add Portfolio Item</span>
         </button>
       </div>
 
@@ -293,12 +293,12 @@ export default function AdminTeamPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1">
-                    Faculty Full Name *
+                    Educator Name *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Dr. Neha Sharma"
+                    placeholder="e.g. Ajay Choudhary"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"

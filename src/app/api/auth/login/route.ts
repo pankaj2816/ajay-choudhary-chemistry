@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { validateAdminCredentials, generateToken, AUTH_COOKIE_NAME } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();

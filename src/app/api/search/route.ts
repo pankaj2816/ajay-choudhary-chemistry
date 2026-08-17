@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/db';
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const query = (searchParams.get('q') || '').toLowerCase().trim();
+export const dynamic = 'force-static';
+
+export async function GET(request?: Request) {
+  let query = '';
+  if (request) {
+    try {
+      const url = new URL(request.url, 'http://localhost');
+      query = (url.searchParams.get('q') || '').toLowerCase().trim();
+    } catch {
+      query = '';
+    }
+  }
 
   if (!query) {
     return NextResponse.json({

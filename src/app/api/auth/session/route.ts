@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { verifyAdminSession, ADMIN_EMAIL } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const isAuthenticated = await verifyAdminSession();
   if (!isAuthenticated) {

@@ -14,12 +14,13 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { QuestionPaper, SolutionItem } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
 export default function LatestPapersSolutions() {
-  const [papers, setPapers] = useState<QuestionPaper[]>([]);
-  const [solutions, setSolutions] = useState<SolutionItem[]>([]);
+  const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
+  const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
   const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
   const { showToast } = useToast();
@@ -29,8 +30,8 @@ export default function LatestPapersSolutions() {
       fetch('/api/question-papers').then(r => r.json()),
       fetch('/api/solutions').then(r => r.json())
     ]).then(([qpData, solData]) => {
-      if (Array.isArray(qpData)) setPapers(qpData);
-      if (Array.isArray(solData)) setSolutions(solData);
+      if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
+      if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
     }).catch(err => console.error(err));
   }, []);
 

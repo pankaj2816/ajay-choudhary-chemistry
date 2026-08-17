@@ -20,6 +20,7 @@ import {
   PhoneCall
 } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 
 const METHODOLOGY_STEPS = [
   {
@@ -55,13 +56,13 @@ const METHODOLOGY_STEPS = [
 ];
 
 export default function AboutPage() {
-  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>(initialDatabase.teamMembers);
 
   useEffect(() => {
     fetch('/api/team')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) setTeam(data);
+        if (Array.isArray(data) && data.length > 0) setTeam(data);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -249,20 +250,20 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Teaching Team & Academic Mentors Portfolio (User Requested Space) */}
-      <section id="team" className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+      {/* Teaching Portfolio & Classroom Gallery */}
+      <section id="portfolio" className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 font-bold text-xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 font-bold text-xs">
               <Users className="w-3.5 h-3.5" />
-              Faculty Portfolio
+              Teaching Gallery
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Academic Mentors & Teaching Team
+              Ajay Sir&apos;s Teaching Journey & Classroom Portfolio
             </h2>
             <p className="text-sm text-slate-600">
-              Collaborative educators and laboratory coaches dedicated to student excellence.
+              A glimpse into Ajay Choudhary&apos;s laboratory demonstrations, classroom lectures, and student mentorship across his three teaching centers.
             </p>
           </div>
 
@@ -271,7 +272,7 @@ export default function AboutPage() {
             <div className="relative h-72 sm:h-96 w-full">
               <Image
                 src="/images/teaching-team.jpg"
-                alt="Chemistry Faculty Team Portfolio"
+                alt="Ajay Choudhary Classroom and Laboratory Portfolio"
                 fill
                 className="object-cover object-center"
               />
@@ -279,15 +280,15 @@ export default function AboutPage() {
             </div>
             <div className="absolute bottom-6 left-6 right-6 text-white">
               <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-                Department of Chemistry Team
+                Classroom & Laboratory Moments
               </span>
               <h3 className="text-xl sm:text-2xl font-black mt-1">
-                Unified Academic Mentorship Across All Centers
+                8+ Years of Chemistry Teaching Excellence Across 3 Centers
               </h3>
             </div>
           </div>
 
-          {/* Team Members List */}
+          {/* Portfolio Highlights */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {team.map((member) => (
               <div

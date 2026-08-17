@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { BookOpen, Download, FileText, ArrowRight, Eye, Sparkles } from 'lucide-react';
 import { StudyMaterial } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
 export default function FeaturedResources() {
-  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
+  const [materials, setMaterials] = useState<StudyMaterial[]>(initialDatabase.studyMaterials.filter(m => m.isFeatured));
   const [previewItem, setPreviewItem] = useState<StudyMaterial | null>(null);
   const { showToast } = useToast();
 
@@ -16,7 +17,7 @@ export default function FeaturedResources() {
     fetch('/api/study-materials')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setMaterials(data.filter((m: StudyMaterial) => m.isFeatured));
         }
       })

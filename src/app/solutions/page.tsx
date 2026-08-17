@@ -18,18 +18,19 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { SolutionItem, QuestionPaper, SubjectType, ClassLevel } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
 export default function SolutionsPage() {
-  const [solutions, setSolutions] = useState<SolutionItem[]>([]);
-  const [papers, setPapers] = useState<QuestionPaper[]>([]);
+  const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
+  const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
   const [selectedSubject, setSelectedSubject] = useState<string>('All');
   const [selectedClass, setSelectedClass] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
   const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -37,8 +38,8 @@ export default function SolutionsPage() {
       fetch('/api/solutions').then(r => r.json()),
       fetch('/api/question-papers').then(r => r.json())
     ]).then(([solData, qpData]) => {
-      if (Array.isArray(solData)) setSolutions(solData);
-      if (Array.isArray(qpData)) setPapers(qpData);
+      if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
+      if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
     }).catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);

@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function POST(request: Request) {
   const isAdmin = await verifyAdminSession();
   if (!isAdmin) {

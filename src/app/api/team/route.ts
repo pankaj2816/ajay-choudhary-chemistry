@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getTeamMembers, createTeamMember, updateTeamMember, deleteTeamMember } from '@/lib/db';
 import { verifyAdminSession } from '@/lib/auth';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   const team = await getTeamMembers();
   return NextResponse.json(team);

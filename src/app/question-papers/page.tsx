@@ -19,19 +19,20 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { QuestionPaper, SolutionItem, SubjectType, ClassLevel, TestType } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 
 export default function QuestionPapersPage() {
-  const [papers, setPapers] = useState<QuestionPaper[]>([]);
-  const [solutions, setSolutions] = useState<SolutionItem[]>([]);
+  const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
+  const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [selectedSubject, setSelectedSubject] = useState<string>('All');
   const [selectedClass, setSelectedClass] = useState<string>('All');
   const [selectedTestType, setSelectedTestType] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
   const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -39,8 +40,8 @@ export default function QuestionPapersPage() {
       fetch('/api/question-papers').then(r => r.json()),
       fetch('/api/solutions').then(r => r.json())
     ]).then(([qpData, solData]) => {
-      if (Array.isArray(qpData)) setPapers(qpData);
-      if (Array.isArray(solData)) setSolutions(solData);
+      if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
+      if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
     }).catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);

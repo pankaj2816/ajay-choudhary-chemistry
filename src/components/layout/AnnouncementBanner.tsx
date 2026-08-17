@@ -4,15 +4,18 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Megaphone, X, ArrowRight } from 'lucide-react';
 import { SiteSettings } from '@/lib/types';
+import { initialDatabase } from '@/data/initialData';
 
 export default function AnnouncementBanner() {
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [settings, setSettings] = useState<SiteSettings | null>(initialDatabase.settings);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     fetch('/api/settings')
       .then((res) => res.json())
-      .then((data) => setSettings(data))
+      .then((data) => {
+        if (data && data.teacherName) setSettings(data);
+      })
       .catch(() => {});
   }, []);
 

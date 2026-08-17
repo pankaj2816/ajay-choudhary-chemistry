@@ -38,11 +38,18 @@ export function verifyToken(token: string): { email: string; role: string } | nu
 }
 
 export async function verifyAdminSession(): Promise<boolean> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
-  if (!token) return false;
-  const verified = verifyToken(token);
-  return !!verified;
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    return false;
+  }
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
+    if (!token) return false;
+    const verified = verifyToken(token);
+    return !!verified;
+  } catch {
+    return false;
+  }
 }
 
 export async function validateAdminCredentials(email: string, password: string): Promise<boolean> {
