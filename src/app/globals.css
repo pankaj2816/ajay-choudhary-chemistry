@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary-dark: #0a192f;
+    --color-primary-navy: #0f172a;
+    --color-primary-blue: #1e293b;
+    --color-cyan-glow: #06b6d4;
+    --color-teal-accent: #0ea5e9;
+    --color-emerald-accent: #10b981;
+    --color-amber-accent: #f59e0b;
+    --color-bg-light: #f8fafc;
+    --color-card-light: #ffffff;
+  }
+
+  body {
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* Chemistry Molecular Grid & Background Patterns */
+.chem-grid-pattern {
+  background-image: radial-gradient(rgba(14, 165, 233, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.chem-hero-gradient {
+  background: radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.15), transparent 45%),
+              radial-gradient(circle at 10% 70%, rgba(14, 165, 233, 0.12), transparent 40%),
+              linear-gradient(135deg, #0a192f 0%, #0f172a 60%, #1e293b 100%);
+}
+
+.chem-subtle-glow {
+  box-shadow: 0 0 50px -10px rgba(6, 182, 212, 0.25);
+}
+
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.glass-card-dark {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+/* Subtle animation keyframes */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Print utilities */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
