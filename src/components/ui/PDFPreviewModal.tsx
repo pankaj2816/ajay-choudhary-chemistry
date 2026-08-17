@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { X, Download, FileText, CheckCircle, ExternalLink, Calendar, BookOpen, Clock, Award, ZoomIn, ZoomOut, Printer } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import ChemistryContentRenderer from './ChemistryContentRenderer';
 
 interface PDFPreviewModalProps {
   isOpen: boolean;
@@ -213,9 +214,7 @@ export default function PDFPreviewModal({
             {/* Step-by-Step Solutions (if present) */}
             {stepByStepContent ? (
               <div className="space-y-6 text-slate-800 dark:text-slate-200 text-sm leading-relaxed">
-                <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap font-sans">
-                  {stepByStepContent}
-                </div>
+                <ChemistryContentRenderer content={stepByStepContent} />
 
                 {/* Answer Key Grid (if present) */}
                 {answerKey && answerKey.length > 0 && (

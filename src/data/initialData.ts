@@ -328,21 +328,23 @@ export const initialDatabase: DatabaseSchema = {
       solutionPdfName: 'Solution_Organic_Hydrocarbons_UT01.pdf',
       solutionPdfSize: '2.2 MB',
       verifiedBy: 'Ajay Choudhary (Master Chemistry Educator)',
-      stepByStepContent: `### Section A: Conceptual & Objective Solutions
+      stepByStepContent: `### Section A: Detailed Step-by-Step Solutions
 
 #### Question 1: Electrophilic Addition of HBr to Propene
-**Reaction:**
-$$\\text{CH}_3-\\text{CH}=\\text{CH}_2 + \\text{HBr} \\xrightarrow{} \\text{CH}_3-\\text{CH}(\\text{Br})-\\text{CH}_3 \\quad (\\text{Major})$$
+Reaction Equation:
+CH₃-CH=CH₂  +  HBr  ➔  CH₃-CH(Br)-CH₃  (Major Product: 2-Bromopropane)
 
-**Step-by-Step Mechanism:**
-1. **Protonation of Alkene:** Electrophile $\\text{H}^+$ attacks the double bond to form the more stable $2^\\circ$ carbocation $(\\text{CH}_3-\\text{CH}^+-\\text{CH}_3)$ rather than the less stable $1^\\circ$ carbocation.
-2. **Nucleophilic Attack:** Bromide ion $(\\text{Br}^-)$ attacks the planar carbocation from either top or bottom face yielding 2-bromopropane as the major product (Markovnikov's rule).
+Step-by-Step Reaction Mechanism:
+1. Protonation of Alkene: The electrophilic proton (H⁺) attacks the pi electron cloud of the double bond to generate the more stable 2° carbocation intermediate (CH₃-CH⁺-CH₃) rather than the less stable 1° carbocation (CH₃-CH₂-CH₂⁺).
+2. Nucleophilic Attack: The nucleophilic bromide ion (Br⁻) attacks the planar 2° carbocation intermediate to form 2-bromopropane as the major product (Markovnikov's Rule).
 
-#### Question 2: Ozonolysis of 2-Methylbut-2-ene
-**Reaction & Product Identification:**
-$$\\text{CH}_3-\\text{C}(\\text{CH}_3)=\\text{CH}-\\text{CH}_3 \\xrightarrow{1.\\; \\text{O}_3, \\; 2.\\; \\text{Zn}/\\text{H}_2\\text{O}} \\text{CH}_3-\\text{CO}-\\text{CH}_3 + \\text{CH}_3-\\text{CHO}$$
-- Products formed are **Acetone (Propan-2-one)** and **Acetaldehyde (Ethanal)**.
-- Presence of Zinc dust prevents further oxidation of aldehyde into carboxylic acid.`,
+#### Question 2: Reductive Ozonolysis of 2-Methylbut-2-ene
+Reaction Equation:
+(CH₃)₂C=CH-CH₃  +  O₃  ──[Zn / H₂O]──➔  CH₃-CO-CH₃ (Acetone)  +  CH₃-CHO (Ethanal)
+
+Key Conceptual Highlights:
+- The carbon-carbon double bond is cleaved oxidatively by Ozone (O₃) to form an ozonide intermediate.
+- Reduction with Zinc dust and water prevents further oxidation of acetaldehyde into acetic acid, cleanly isolating Acetone and Ethanal.`,
       answerKey: [
         { questionNo: 'Q1', answer: '2-Bromopropane (Option B)', explanation: 'Markovnikov addition via stable 2° carbocation intermediate.' },
         { questionNo: 'Q2', answer: 'Acetone + Ethanal (Option C)', explanation: 'Reductive ozonolysis cleavage of carbon-carbon double bond.' },
@@ -364,17 +366,27 @@ $$\\text{CH}_3-\\text{C}(\\text{CH}_3)=\\text{CH}-\\text{CH}_3 \\xrightarrow{1.\
       solutionPdfName: 'Solution_Coordination_Compounds_PT02.pdf',
       solutionPdfSize: '2.5 MB',
       verifiedBy: 'Ajay Choudhary (Master Chemistry Educator)',
-      stepByStepContent: `### Step-by-Step Solution Breakdown
+      stepByStepContent: `### Section A: Coordination Chemistry Solutions
 
-#### 1. IUPAC Nomenclature for $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}(\\text{NO}_2)]\\text{Cl}$:
-- Central metal atom: Cobalt
-- Ligands in alphabetical order: tetraammine, chlorido, nitrito-N
-- Oxidation State calculation: $x + 0 - 1 - 1 = +1 \\implies x = +3$
-- **Correct IUPAC Name:** **Tetraamminechloridonitrito-N-cobalt(III) chloride**
+#### Question 1: IUPAC Nomenclature for [Co(NH₃)₄Cl(NO₂)]Cl
+Step-by-Step Derivation:
+1. Identify the central metal atom: Cobalt.
+2. Order ligands alphabetically: tetraammine, chlorido, nitrito-N.
+3. Calculate oxidation state: x + 4(0) + (-1) + (-1) = +1  ➔  x = +3.
+4. Correct IUPAC Name: Tetraamminechloridonitrito-N-cobalt(III) chloride.
 
-#### 2. Magnetic Moment of $[\\text{Fe}(\\text{CN})_6]^{4-}$ vs $[\\text{Fe}(\\text{H}_2\\text{O})_6]^{2+}$:
-- For $[\\text{Fe}(\\text{CN})_6]^{4-}$: $\\text{Fe}^{2+} \\implies 3d^6$. $\\text{CN}^-$ is a strong field ligand, causes pairing $(\\Delta_o > P)$. Configuration: $t_{2g}^6 e_g^0$. Unpaired electrons $n = 0 \\implies \\mu = 0\\;\\text{BM}$ (Diamagnetic).
-- For $[\\text{Fe}(\\text{H}_2\\text{O})_6]^{2+}$: $\\text{H}_2\\text{O}$ is a weak field ligand $(\\Delta_o < P)$. Configuration: $t_{2g}^4 e_g^2$. Unpaired electrons $n = 4 \\implies \\mu = \\sqrt{4(4+2)} = \\sqrt{24} = 4.90\\;\\text{BM}$ (Paramagnetic).`,
+#### Question 2: Magnetic Moment Comparison: [Fe(CN)₆]⁴⁻ vs [Fe(H₂O)₆]²⁺
+Conceptual Breakdown:
+1. For [Fe(CN)₆]⁴⁻ (Low Spin Complex):
+   - Fe²⁺ ground state electronic configuration: 3d⁶.
+   - Cyanide (CN⁻) is a strong field ligand (Δo > Pairing Energy).
+   - Electron configuration: t₂g⁶ e_g⁰. Number of unpaired electrons n = 0.
+   - Magnetic Moment: μ = 0 BM (Diamagnetic).
+
+2. For [Fe(H₂O)₆]²⁺ (High Spin Complex):
+   - H₂O is a weak field ligand (Δo < Pairing Energy).
+   - Electron configuration: t₂g⁴ e_g². Number of unpaired electrons n = 4.
+   - Magnetic Moment: μ = √(4 × 6) = √24 ≈ 4.90 BM (Paramagnetic).`,
       answerKey: [
         { questionNo: 'Q1', answer: 'Tetraamminechloridonitrito-N-cobalt(III) chloride', explanation: 'Alphabetical ligand ordering with metal oxidation state.' },
         { questionNo: 'Q2', answer: 'Diamagnetic (0 BM) & Paramagnetic (4.9 BM)', explanation: 'CFT pairing energy vs ligand field strength.' },
@@ -395,20 +407,25 @@ $$\\text{CH}_3-\\text{C}(\\text{CH}_3)=\\text{CH}-\\text{CH}_3 \\xrightarrow{1.\
       solutionPdfName: 'Solution_Aldehydes_Ketones_BoardMock.pdf',
       solutionPdfSize: '3.0 MB',
       verifiedBy: 'Ajay Choudhary',
-      stepByStepContent: `### Board Marking Scheme & Distinguishing Chemical Tests
+      stepByStepContent: `### Board Marking Scheme & Chemical Tests
 
-#### Chemical Distinction between Propanal and Propanone:
-1. **Tollens Test (Silver Mirror Test):**
-   - Propanal reacts with ammoniacal silver nitrate $[\\text{Ag}(\\text{NH}_3)_2]^+$ to produce a shining silver mirror.
-   - Propanone does not respond to Tollens reagent.
-2. **Iodoform Test:**
-   - Propanone contains a $\\text{CH}_3\\text{CO}-$ group and gives a bright yellow precipitate of $\\text{CHI}_3$ with $\\text{I}_2/\\text{NaOH}$.
-   - Propanal does not give a positive iodoform test.
+#### Question 1: Chemical Distinction between Propanal and Propanone
+1. Tollens' Silver Mirror Test:
+   - Propanal reacts with ammoniacal silver nitrate [Ag(NH₃)₂]⁺ to precipitate shiny metallic silver mirror on the test tube wall.
+   - Propanone (a ketone) does NOT reduce Tollens' reagent.
 
-#### Aldol Condensation Mechanism of Ethanal:
-- Step 1: Hydroxide ion abstracts $\\alpha$-hydrogen forming resonance-stabilized enolate ion.
-- Step 2: Enolate nucleophile attacks carbonyl carbon of second ethanal molecule.
-- Step 3: Protonation yields 3-hydroxybutanal (aldol), which on heating loses water to yield But-2-enal (crotonaldehyde).`,
+2. Iodoform Test:
+   - Propanone contains a methyl ketone group (CH₃-CO-) and forms a bright yellow precipitate of Iodoform (CHI₃) when warmed with I₂ and NaOH.
+   - Propanal does NOT give a positive iodoform test.
+
+#### Question 2: Mechanism of Base-Catalyzed Aldol Condensation
+Reaction Equation:
+2 CH₃-CHO  ──[Dilute NaOH, Heat]──➔  CH₃-CH=CH-CHO (But-2-enal / Crotonaldehyde)  +  H₂O
+
+Step-by-Step Reaction Mechanism:
+1. Enolate Formation: Hydroxide ion (OH⁻) removes an acidic α-hydrogen from acetaldehyde to create a resonance-stabilized enolate nucleophile (:CH₂-CHO⁻).
+2. Nucleophilic Addition: The enolate ion attacks the electrophilic carbonyl carbon of the second acetaldehyde molecule.
+3. Protonation & Dehydration: Proton transfer yields 3-hydroxybutanal (Aldol), which upon gentle heating loses water (H₂O) to give the conjugated α,β-unsaturated aldehyde: But-2-enal.`,
       answerKey: [
         { questionNo: 'Q1', answer: 'Tollens Test & Iodoform Test', explanation: 'Aldehydes reduce Tollens reagent; methyl ketones form yellow iodoform ppt.' },
         { questionNo: 'Q2', answer: 'But-2-enal (Crotonaldehyde)', explanation: 'Self-aldol condensation followed by dehydration on warming.' },
@@ -424,22 +441,29 @@ $$\\text{CH}_3-\\text{C}(\\text{CH}_3)=\\text{CH}-\\text{CH}_3 \\xrightarrow{1.\
       chapter: 'Qualitative Salt Analysis (Cations & Anions)',
       className: 'Class 12',
       uploadDate: '2026-07-16',
-      description: 'Systematic flowchart from zero group ($NH_4^+$) to group VI ($Mg^{2+}$), along with confirmatory reactions for chromyl chloride and brown ring test.',
+      description: 'Systematic flowchart from zero group (NH4+) to group VI (Mg2+), along with confirmatory reactions for chromyl chloride and brown ring test.',
       solutionPdfUrl: '/uploads/sol_practical_salt_analysis.pdf',
       solutionPdfName: 'Solution_Salt_Analysis_Practical_Guide.pdf',
       solutionPdfSize: '1.7 MB',
       verifiedBy: 'Ajay Choudhary (Master Chemistry Educator)',
-      stepByStepContent: `### Systematic Cation & Anion Separation Tables
+      stepByStepContent: `### Practical Chemistry Laboratory Guide
 
-#### 1. Brown Ring Test for Nitrate ($NO_3^-$):
-- To aqueous salt solution, add freshly prepared $\\text{FeSO}_4$ solution.
-- Carefully trickle concentrated $\\text{H}_2\\text{SO}_4$ along the inner wall of the test tube.
-- A dark brown ring forms at the junction due to the nitroso complex: $[\\text{Fe}(\\text{H}_2\\text{O})_5(\\text{NO})]^{2+}$.
+#### Experiment 1: Confirmatory Brown Ring Test for Nitrate Ion (NO₃⁻)
+Procedure & Observation:
+1. Add freshly prepared ferrous sulphate solution (FeSO₄) to the aqueous salt extract.
+2. Incline the test tube and slowly trickle concentrated Sulfuric Acid (conc. H₂SO₄) down the inner wall.
+3. Observation: A distinct dark brown ring forms at the liquid junction.
 
-#### 2. Chromyl Chloride Test for Chloride ($Cl^-$):
-- Heat solid chloride salt with solid $\\text{K}_2\\text{Cr}_2\\text{O}_7$ and conc. $\\text{H}_2\\text{SO}_4$.
-- Reddish-brown vapors of $\\text{CrO}_2\\text{Cl}_2$ evolve, which turn $\\text{NaOH}$ yellow (forming $\\text{Na}_2\\text{CrO}_4$).
-- Addition of lead acetate to acidified yellow solution gives yellow precipitate of $\\text{PbCrO}_4$.`,
+Chemical Reaction:
+Fe²⁺  +  NO₃⁻  +  H⁺  ➔  Fe³⁺  +  NO  +  H₂O
+[Fe(H₂O)₆]²⁺  +  NO  ➔  [Fe(H₂O)₅(NO)]²⁺ (Pentaaquanitrosyliron(II) complex - Brown Ring)
+
+#### Experiment 2: Chromyl Chloride Test for Chloride Ion (Cl⁻)
+Procedure & Observation:
+1. Mix solid chloride salt with solid Potassium Dichromate (K₂Cr₂O₇) and add conc. H₂SO₄.
+2. Heat gently: Deep reddish-brown vapors of Chromyl Chloride (CrO₂Cl₂) evolve.
+3. Pass vapors through NaOH: Solution turns yellow due to Sodium Chromate (Na₂CrO₄).
+4. Acidify with acetic acid and add Lead Acetate: A bright yellow precipitate of Lead Chromate (PbCrO₄) confirms Chloride.`,
       answerKey: [
         { questionNo: 'Q1', answer: '[Fe(H2O)5(NO)]2+ complex', explanation: 'Nitrosyl ferrous sulphate brown ring formed at junction.' },
         { questionNo: 'Q2', answer: 'CrO2Cl2 (Chromyl Chloride)', explanation: 'Specific test for ionic chlorides; distinguishes from bromides and iodides.' },

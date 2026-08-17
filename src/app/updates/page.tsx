@@ -17,6 +17,7 @@ import {
 import { NoticeUpdate, NoticeCategory, ClassLevel } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
+import ChemistryContentRenderer from '@/components/ui/ChemistryContentRenderer';
 
 const CATEGORIES: (NoticeCategory | 'All Categories')[] = [
   'All Categories',
@@ -316,8 +317,8 @@ export default function UpdatesPage() {
                 </p>
               )}
 
-              <div className="text-sm text-slate-700 space-y-3 leading-relaxed whitespace-pre-wrap font-sans">
-                {selectedNotice.content || selectedNotice.description}
+              <div className="mt-4">
+                <ChemistryContentRenderer content={selectedNotice.content || selectedNotice.description} />
               </div>
 
               {/* Attachment Box */}

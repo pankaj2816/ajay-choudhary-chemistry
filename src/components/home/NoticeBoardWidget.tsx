@@ -17,6 +17,7 @@ import {
 import { NoticeUpdate, NoticeCategory } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
+import ChemistryContentRenderer from '@/components/ui/ChemistryContentRenderer';
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Important Notice': 'bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
@@ -190,8 +191,8 @@ export default function NoticeBoardWidget() {
                 </p>
               )}
 
-              <div className="text-sm text-slate-700 space-y-3 leading-relaxed whitespace-pre-wrap font-sans">
-                {selectedNotice.content || selectedNotice.description}
+              <div className="mt-4">
+                <ChemistryContentRenderer content={selectedNotice.content || selectedNotice.description} />
               </div>
 
               {/* Attachment Download Box */}
