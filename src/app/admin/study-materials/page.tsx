@@ -125,14 +125,18 @@ export default function AdminStudyMaterialsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Simulate instant local PDF upload if static
-    setFormData(prev => ({
-      ...prev,
-      fileName: file.name,
-      fileSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-      fileUrl: '/uploads/sample_chemistry_notes.pdf'
-    }));
-    showToast('File selected & verified!', 'success');
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setFormData(prev => ({
+        ...prev,
+        fileName: file.name,
+        fileSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+        fileUrl: dataUrl
+      }));
+      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

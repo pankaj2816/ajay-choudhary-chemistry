@@ -156,13 +156,18 @@ export default function AdminUpdatesPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setFormData(prev => ({
-      ...prev,
-      attachmentName: file.name,
-      attachmentSize: `${(file.size / 1024).toFixed(0)} KB`,
-      attachmentUrl: '/uploads/sample_chemistry_notes.pdf'
-    }));
-    showToast('Attachment verified!', 'success');
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setFormData(prev => ({
+        ...prev,
+        attachmentName: file.name,
+        attachmentSize: `${(file.size / 1024).toFixed(0)} KB`,
+        attachmentUrl: dataUrl
+      }));
+      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

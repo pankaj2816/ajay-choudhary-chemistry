@@ -151,13 +151,18 @@ export default function AdminSolutionsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setFormData(prev => ({
-      ...prev,
-      solutionPdfName: file.name,
-      solutionPdfSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-      solutionPdfUrl: '/uploads/sample_chemistry_notes.pdf'
-    }));
-    showToast('Solution PDF verified!', 'success');
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setFormData(prev => ({
+        ...prev,
+        solutionPdfName: file.name,
+        solutionPdfSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+        solutionPdfUrl: dataUrl
+      }));
+      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

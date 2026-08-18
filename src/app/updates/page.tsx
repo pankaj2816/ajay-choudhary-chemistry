@@ -87,12 +87,7 @@ function UpdatesContent() {
   const handleDownload = (notice: NoticeUpdate) => {
     if (!notice.attachmentUrl) return;
     showToast(`Downloading: ${notice.attachmentName || 'Notice Attachment'}`, 'info');
-    const link = document.createElement('a');
-    link.href = notice.attachmentUrl;
-    link.download = notice.attachmentName || 'Attachment.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    triggerDownload(notice.attachmentUrl, notice.attachmentName);
   };
 
   return (
