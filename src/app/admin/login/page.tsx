@@ -12,16 +12,15 @@ import {
   Loader2, 
   Eye, 
   EyeOff, 
-  AlertCircle,
-  KeyRound
+  AlertCircle
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const { showToast } = useToast();
-  const [email, setEmail] = useState('admin@ajaychemistry.com');
-  const [password, setPassword] = useState('ajay123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,23 +31,46 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      // Try API route first if available
       let success = false;
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success) success = true;
+
+      // 1. Check custom saved credentials in localStorage
+      if (typeof window !== 'undefined') {
+        const savedCreds = localStorage.getItem('ajay_custom_admin_creds');
+        if (savedCreds) {
+          try {
+            const parsed = JSON.parse(savedCreds);
+            if (
+              parsed.email && 
+              parsed.password && 
+              email.trim().toLowerCase() === parsed.email.trim().toLowerCase() && 
+              password === parsed.password
+            ) {
+              success = true;
+            }
+          } catch {
+            // fallback
+          }
         }
-      } catch {
-        // static fallback
       }
 
-      // Static fallback check
+      // 2. Fallback to API route if backend server exists
+      if (!success) {
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success) success = true;
+          }
+        } catch {
+          // static fallback
+        }
+      }
+
+      // 3. Fallback to default credentials
       if (!success) {
         if (email.trim().toLowerCase() === 'admin@ajaychemistry.com' && password === 'ajay123456') {
           success = true;
@@ -59,17 +81,16 @@ export default function AdminLoginPage() {
         if (typeof window !== 'undefined') {
           localStorage.setItem('ajay_admin_session', JSON.stringify({
             authenticated: true,
-            email: 'admin@ajaychemistry.com',
+            email: email.trim().toLowerCase(),
             name: 'Ajay Choudhary Sir',
             timestamp: Date.now()
           }));
           document.cookie = 'admin_session=authenticated; path=/; max-age=86400';
         }
         showToast('Login successful! Welcome Ajay Sir.', 'success');
-        router.push('/admin');
-        router.refresh();
+        router.replace('/admin');
       } else {
-        setError('Invalid email or password. Use demo credentials shown below.');
+        setError('Invalid admin email or password. Please check your credentials.');
         showToast('Authentication failed. Please check credentials.', 'error');
       }
     } catch (err) {
@@ -122,9 +143,10 @@ export default function AdminLoginPage() {
                 <input
                   type="email"
                   required
+                  placeholder="Enter admin email..."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
             </div>
@@ -138,9 +160,10 @@ export default function AdminLoginPage() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
+                  placeholder="Enter password..."
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <button
                   type="button"
@@ -149,17 +172,6 @@ export default function AdminLoginPage() {
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
-              </div>
-            </div>
-
-            {/* Quick Demo Credentials Box */}
-            <div className="p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/20 text-[11px] text-cyan-300 space-y-1">
-              <div className="font-bold flex items-center gap-1">
-                <KeyRound className="w-3.5 h-3.5" /> Default Admin Credentials:
-              </div>
-              <div className="font-mono text-slate-300 text-[11px]">
-                Email: <strong>admin@ajaychemistry.com</strong><br />
-                Password: <strong>ajay123456</strong>
               </div>
             </div>
 
@@ -183,7 +195,7 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          <div className="pt-4 border-t border-slate-800 text-center">
+          <div className="text-center pt-2">
             <Link
               href="/"
               className="text-xs text-slate-400 hover:text-cyan-400 transition-colors"
