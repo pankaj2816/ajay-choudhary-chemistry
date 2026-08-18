@@ -17,7 +17,8 @@ import {
   ShieldCheck,
   CheckCircle,
   Mail,
-  PhoneCall
+  PhoneCall,
+  FlaskConical
 } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
@@ -268,24 +269,38 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Group Photo Showcase */}
-          <div className="relative rounded-3xl overflow-hidden border border-slate-300 shadow-xl mb-12 bg-slate-900">
-            <div className="relative h-72 sm:h-96 w-full">
-              <Image
-                src="/images/teaching-team.jpg"
-                alt="Ajay Choudhary Classroom and Laboratory Portfolio"
-                fill
-                className="object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            </div>
-            <div className="absolute bottom-6 left-6 right-6 text-white">
-              <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-                Classroom & Laboratory Moments
-              </span>
-              <h3 className="text-xl sm:text-2xl font-black mt-1">
-                8+ Years of Chemistry Teaching Excellence Across 3 Centers
-              </h3>
+          {/* Smart Multi-Center Academic Teaching Hub Dashboard */}
+          <div className="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl mb-12 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-6 sm:p-10">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                  Teaching Excellence & Infrastructure
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-white">
+                  8+ Years of Chemistry Mentorship Across 3 Premier Centers
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                  Ajay Sir conducts specialized daily classes, weekly mock test evaluations, and structured doubt removal clinics across Sector 14, Model Town, and South Extension.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+                  <span className="text-xs font-bold text-cyan-400 block">Catalyst Career Institute</span>
+                  <span className="text-[11px] text-slate-300 font-medium">Sector 14 Center</span>
+                  <p className="text-[11px] text-slate-400">Class 12 Board Mastery & Organic Mechanism Drills</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+                  <span className="text-xs font-bold text-teal-400 block">Apex Science Academy</span>
+                  <span className="text-[11px] text-slate-300 font-medium">Model Town Center</span>
+                  <p className="text-[11px] text-slate-400">Class 11 Foundation & Inorganic Bonding Theories</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+                  <span className="text-xs font-bold text-indigo-400 block">Prerana Learning Hub</span>
+                  <span className="text-[11px] text-slate-300 font-medium">South Extension Center</span>
+                  <p className="text-[11px] text-slate-400">NEET Chemistry & Comprehensive Laboratory Practical Drills</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -348,15 +363,28 @@ export default function AboutPage() {
                       </div>
                     </div>
                   ) : (
-                    // 3. Practical Chemistry Genuine Lab Photo
-                    <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
-                      <SafeImage
-                        src="/images/ajay-lab-practical.jpg"
-                        alt={member.name}
-                        fill
-                        className="object-cover object-center"
-                      />
-                      <div className="absolute bottom-3 left-3 bg-slate-900/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg">
+                    // 3. Practical Chemistry Smart Header
+                    <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
+                          <FlaskConical className="w-3 h-3 text-indigo-400" />
+                          Volumetric & Salt Analysis
+                        </span>
+                        <span className="text-[11px] font-mono text-indigo-400/80 font-bold">Redox • Gr 0-VI</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-700/80 shadow-inner space-y-1">
+                        <div className="text-[11px] font-mono font-bold text-indigo-300 flex items-center justify-between">
+                          <span>5Fe²⁺ + MnO₄⁻ + 8H⁺</span>
+                          <span className="text-slate-400 text-[10px]">⟶</span>
+                          <span className="text-rose-400 text-[10px] font-sans">Pink Endpoint</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">Brown Ring</span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Mohr's Salt</span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Viva Voce Prep</span>
+                        </div>
+                      </div>
+                      <div className="text-xs font-bold bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-slate-700 w-fit">
                         {member.role}
                       </div>
                     </div>

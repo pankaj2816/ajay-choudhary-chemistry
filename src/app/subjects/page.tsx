@@ -182,44 +182,84 @@ export default function SubjectsPage() {
                 {subj.description}
               </p>
 
-              {/* Specialized Laboratory Demonstration Photo Showcase for Practical Chemistry */}
+              {/* Specialized Laboratory Interactive Workbench Dashboard for Practical Chemistry */}
               {subj.id === 'practical' && (
-                <div className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-950 text-white shadow-xl relative group">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-                    <div className="lg:col-span-6 relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden bg-slate-900">
-                      <SafeImage
-                        src="/images/ajay-lab-practical.jpg"
-                        alt="Ajay Choudhary Chemistry Laboratory Practical Demonstration"
-                        fill
-                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent lg:hidden"></div>
+                <div className="rounded-2xl overflow-hidden border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl relative p-6 sm:p-8 space-y-6">
+                  {/* Ambient Glows */}
+                  <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                  <div className="absolute bottom-0 left-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                  <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+                    <div className="space-y-1">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-950 border border-indigo-500/30 text-indigo-300 font-bold text-xs">
+                        <FlaskConical className="w-3.5 h-3.5" />
+                        Practical Chemistry & Laboratory Workbench
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-white">
+                        Volumetric Titrations & Systematic Qualitative Salt Analysis
+                      </h3>
                     </div>
 
-                    <div className="lg:col-span-6 p-6 sm:p-8 space-y-4">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
-                        <FlaskConical className="w-3.5 h-3.5" />
-                        Hands-on Laboratory Mentorship
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-cyan-300">
+                        30/30 Board Marks Goal
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Dual Interactive Workbench Grids */}
+                  <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {/* Left: Volumetric Redox Titration Station */}
+                    <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">Volumetric Titration Station</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">Redox Quantitative</span>
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                        Volumetric Titration & Qualitative Salt Analysis Live Workshops
-                      </h3>
+                      <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5 text-xs font-mono">
+                        <div className="flex items-center justify-between text-slate-300">
+                          <span className="text-slate-400 font-sans">Analyte:</span>
+                          <span className="text-emerald-400">Mohr&apos;s Salt / Oxalic Acid</span>
+                        </div>
+                        <div className="flex items-center justify-between text-slate-300">
+                          <span className="text-slate-400 font-sans">Titrant:</span>
+                          <span className="text-indigo-400">0.02 M KMnO₄ (Self Indicator)</span>
+                        </div>
+                        <div className="text-[11px] text-rose-300 border-t border-slate-800 pt-1.5 font-mono">
+                          2KMnO₄ + 8H₂SO₄ + 10FeSO₄ ⟶ K₂SO₄ + 2MnSO₄ + 5Fe₂(SO₄)₃ + 8H₂O
+                        </div>
+                      </div>
 
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        Under Ajay Sir&apos;s personal guidance, students gain hands-on proficiency with burettes, pipettes, standard solution preparations, group separation schemes (Group 0 to VI), and complete board viva-voce examination drills.
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Concordant reading drills, meniscus alignment error prevention, and molarity/strength calculation templates for full board exam practical marks.
                       </p>
+                    </div>
 
-                      <div className="grid grid-cols-2 gap-3 pt-2">
-                        <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
-                          <span className="text-xs font-bold text-cyan-400 block">100% Practical Marks</span>
-                          <span className="text-[11px] text-slate-400">Step-by-step viva & record book prep</span>
+                    {/* Right: Systematic Cation Separation Matrix */}
+                    <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-teal-400">Qualitative Salt Analysis</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-teal-950 text-teal-300 border border-teal-800">Group 0 to VI</span>
+                      </div>
+
+                      <div className="space-y-1.5 text-xs">
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800">
+                          <span className="font-bold text-slate-200">Zero Group (NH₄⁺):</span>
+                          <span className="text-amber-400 font-mono text-[11px]">Nessler&apos;s Reagent ⟶ Brown ppt</span>
                         </div>
-                        <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
-                          <span className="text-xs font-bold text-teal-400 block">Safety & Precision</span>
-                          <span className="text-[11px] text-slate-400">Standard apparatus & reagent handling</span>
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800">
+                          <span className="font-bold text-slate-200">Group I (Pb²⁺):</span>
+                          <span className="text-slate-300 font-mono text-[11px]">Dil. HCl ⟶ White PbCl₂ ppt</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800">
+                          <span className="font-bold text-slate-200">Group III (Fe³⁺, Al³⁺):</span>
+                          <span className="text-cyan-300 font-mono text-[11px]">NH₄Cl + NH₄OH ⟶ Fe(OH)₃ / Al(OH)₃</span>
                         </div>
                       </div>
+
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Complete confirmatory test algorithms, flame test identification, and comprehensive viva-voce question banks.
+                      </p>
                     </div>
                   </div>
                 </div>

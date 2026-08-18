@@ -40,39 +40,66 @@ export default function TeamPortfolioSection() {
           </p>
         </div>
 
-        {/* Big Portfolio Photo Banner */}
-        <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl mb-14 bg-slate-900 group">
-          <div className="relative h-64 sm:h-80 md:h-96 w-full">
-            <SafeImage
-              src="/images/teaching-team.jpg"
-              alt="Ajay Choudhary Chemistry Laboratory Practical Demonstration"
-              fill
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-          </div>
+        {/* Smart Multi-Center Academic Teaching Hub Dashboard */}
+        <div className="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl mb-14 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-6 sm:p-10">
+          {/* Ambient Glows */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-1.5 max-w-xl">
-              <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-                {t.portfolio.bannerTag}
-              </span>
-              <h3 className="text-xl sm:text-2xl font-black text-white">
-                {t.portfolio.bannerHeading}
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300">
-                {t.portfolio.bannerSub}
-              </p>
+          <div className="relative z-10 space-y-8">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="space-y-2 max-w-2xl">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
+                  <Building2 className="w-3.5 h-3.5" />
+                  {t.portfolio.bannerTag}
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                  {t.portfolio.bannerHeading}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  {t.portfolio.bannerSub}
+                </p>
+              </div>
+
+              <div className="shrink-0">
+                <Link
+                  href="/about"
+                  className="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold shadow-lg transition-all inline-flex items-center gap-2"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  <span>{t.portfolio.readBio}</span>
+                </Link>
+              </div>
             </div>
 
-            <div className="shrink-0">
-              <Link
-                href="/about"
-                className="px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs sm:text-sm font-bold shadow-lg transition-colors inline-flex items-center gap-1.5"
-              >
-                <GraduationCap className="w-4 h-4" />
-                <span>{t.portfolio.readBio}</span>
-              </Link>
+            {/* 3 Coaching Hub Badges Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1.5 hover:border-cyan-500/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-cyan-400">Catalyst Career Institute</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">Sector 14</span>
+                </div>
+                <p className="text-xs text-slate-300 font-medium">Class 12 & JEE/NEET Target Chemistry</p>
+                <p className="text-[11px] text-slate-400">Intensive reaction mechanisms, DPPs & master question series.</p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1.5 hover:border-teal-500/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-teal-400">Apex Science Academy</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-teal-950 text-teal-300 border border-teal-800">Model Town</span>
+                </div>
+                <p className="text-xs text-slate-300 font-medium">Class 11 Foundation & Inorganic Concepts</p>
+                <p className="text-[11px] text-slate-400">Crystal Field Theory, bonding orbitals & thermodynamics foundation.</p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1.5 hover:border-indigo-500/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-indigo-400">Prerana Learning Hub</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">South Ext</span>
+                </div>
+                <p className="text-xs text-slate-300 font-medium">NEET Chemistry & Practical Lab Workshops</p>
+                <p className="text-[11px] text-slate-400">Qualitative salt analysis, volumetric titrations & viva mastery.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -157,17 +184,34 @@ export default function TeamPortfolioSection() {
                     </div>
                   </div>
                 ) : (
-                  // 3. Practical Chemistry: Genuine Laboratory Photo
-                  <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
-                    <SafeImage
-                      src="/images/ajay-lab-practical.jpg"
-                      alt={item.role}
-                      fill
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-                    
-                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                  // 3. Practical Chemistry: Smart Laboratory & Titration Visualizer Header
+                  <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
+                    {/* Ambient Glow */}
+                    <div className="absolute top-0 left-0 w-36 h-36 bg-indigo-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+                    <div className="flex items-center justify-between z-10">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
+                        <FlaskConical className="w-3 h-3 text-indigo-400" />
+                        Volumetric & Salt Analysis
+                      </span>
+                      <span className="text-[11px] font-mono text-indigo-400/80 font-bold">Redox • Gr 0-VI</span>
+                    </div>
+
+                    {/* Styled Titration / Salt Analysis Card */}
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-700/80 shadow-inner space-y-1.5 z-10">
+                      <div className="text-[11px] font-mono font-bold text-indigo-300 flex items-center justify-between">
+                        <span>5Fe²⁺ + MnO₄⁻ + 8H⁺</span>
+                        <span className="text-slate-400 text-[10px]">⟶</span>
+                        <span className="text-rose-400 font-sans text-[10px]">Pink Endpoint</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">Brown Ring [Fe(H₂O)₅(NO)]²⁺</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Mohr's Salt</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Viva Voce Prep</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-white z-10 pt-1">
                       <span className="text-xs font-bold bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-slate-700">
                         {item.role}
                       </span>
