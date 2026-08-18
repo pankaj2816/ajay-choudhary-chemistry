@@ -43,9 +43,9 @@ export default function TeamPortfolioSection() {
         {/* Big Portfolio Photo Banner */}
         <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl mb-14 bg-slate-900 group">
           <div className="relative h-64 sm:h-80 md:h-96 w-full">
-            <Image
+            <SafeImage
               src="/images/teaching-team.jpg"
-              alt="Ajay Choudhary Chemistry Laboratory and Classroom Sessions"
+              alt="Ajay Choudhary Chemistry Laboratory Practical Demonstration"
               fill
               className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
             />

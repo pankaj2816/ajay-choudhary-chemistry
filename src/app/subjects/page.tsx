@@ -12,8 +12,10 @@ import {
   CheckCircle2, 
   ArrowRight,
   Download,
-  Layers
+  Layers,
+  FlaskConical
 } from 'lucide-react';
+import SafeImage from '@/components/ui/SafeImage';
 
 const SUBJECT_DETAILS = [
   {
@@ -179,6 +181,49 @@ export default function SubjectsPage() {
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                 {subj.description}
               </p>
+
+              {/* Specialized Laboratory Demonstration Photo Showcase for Practical Chemistry */}
+              {subj.id === 'practical' && (
+                <div className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-950 text-white shadow-xl relative group">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+                    <div className="lg:col-span-6 relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden bg-slate-900">
+                      <SafeImage
+                        src="/images/ajay-lab-practical.jpg"
+                        alt="Ajay Choudhary Chemistry Laboratory Practical Demonstration"
+                        fill
+                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent lg:hidden"></div>
+                    </div>
+
+                    <div className="lg:col-span-6 p-6 sm:p-8 space-y-4">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
+                        <FlaskConical className="w-3.5 h-3.5" />
+                        Hands-on Laboratory Mentorship
+                      </div>
+
+                      <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                        Volumetric Titration & Qualitative Salt Analysis Live Workshops
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Under Ajay Sir&apos;s personal guidance, students gain hands-on proficiency with burettes, pipettes, standard solution preparations, group separation schemes (Group 0 to VI), and complete board viva-voce examination drills.
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-3 pt-2">
+                        <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                          <span className="text-xs font-bold text-cyan-400 block">100% Practical Marks</span>
+                          <span className="text-[11px] text-slate-400">Step-by-step viva & record book prep</span>
+                        </div>
+                        <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                          <span className="text-xs font-bold text-teal-400 block">Safety & Precision</span>
+                          <span className="text-[11px] text-slate-400">Standard apparatus & reagent handling</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Core Syllabus Modules Grid */}
               <div className="space-y-4">
