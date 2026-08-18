@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Camera, GraduationCap, Building2, Mail, Sparkles, CheckCircle2, Award, FlaskConical } from 'lucide-react';
+import { Camera, GraduationCap, Building2, Mail, Sparkles, CheckCircle2, Award, FlaskConical, Atom } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useLanguage } from '@/context/LanguageContext';
@@ -85,21 +85,95 @@ export default function TeamPortfolioSection() {
               className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5"
             >
               <div>
-                <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
-                  <SafeImage
-                    src={item.image || '/images/ajay-choudhary.jpg'}
-                    alt={item.role}
-                    fill
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-                  
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
-                    <span className="text-xs font-bold bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-slate-700">
-                      {item.role}
-                    </span>
+                {/* Smart Domain Visual Header */}
+                {item.id === 'team-1' ? (
+                  // 1. Organic Chemistry Smart Visualizer Header
+                  <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
+                    {/* Ambient Glow */}
+                    <div className="absolute top-0 right-0 w-36 h-36 bg-cyan-500/15 rounded-full blur-2xl pointer-events-none"></div>
+                    
+                    <div className="flex items-center justify-between z-10">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 flex items-center gap-1">
+                        <Atom className="w-3 h-3 text-cyan-400" />
+                        Mechanism Roadmap
+                      </span>
+                      <span className="text-[11px] font-mono text-cyan-400/80 font-bold">GOC • Named Reactions</span>
+                    </div>
+
+                    {/* Styled Reaction Card */}
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-700/80 shadow-inner space-y-1.5 z-10">
+                      <div className="text-[11px] font-mono font-bold text-cyan-300 flex items-center justify-between">
+                        <span>R-CH₂-OH</span>
+                        <span className="text-slate-400 text-[10px]">⟶ [O] ⟶</span>
+                        <span>R-CHO</span>
+                        <span className="text-slate-400 text-[10px]">⟶ [O] ⟶</span>
+                        <span className="text-emerald-400">R-COOH</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">Curved Arrows</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Carbocation Stability</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">SN1 / SN2</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-white z-10 pt-1">
+                      <span className="text-xs font-bold bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-slate-700">
+                        {item.role}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ) : item.id === 'team-3' ? (
+                  // 2. Inorganic Chemistry Smart Visualizer Header
+                  <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
+                    {/* Ambient Glow */}
+                    <div className="absolute bottom-0 right-0 w-36 h-36 bg-teal-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+                    <div className="flex items-center justify-between z-10">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-teal-500/20 text-teal-300 border border-teal-500/30 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-teal-400" />
+                        CFT & Periodic Models
+                      </span>
+                      <span className="text-[11px] font-mono text-teal-400/80 font-bold">MOT • d & f Block</span>
+                    </div>
+
+                    {/* Styled Coordination / CFT Card */}
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-700/80 shadow-inner space-y-1.5 z-10">
+                      <div className="text-[11px] font-mono font-bold text-teal-300 flex items-center justify-between">
+                        <span>[Fe(CN)₆]³⁻</span>
+                        <span className="text-xs text-amber-400 font-sans">Δₒ Splitting</span>
+                        <span className="text-teal-400">t₂g⁵ eg⁰</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-950 text-teal-300 border border-teal-800">Low Spin Pairing</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Lanthanoid Contraction</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Coordination Isomerism</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-white z-10 pt-1">
+                      <span className="text-xs font-bold bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-slate-700">
+                        {item.role}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  // 3. Practical Chemistry: Genuine Laboratory Photo
+                  <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
+                    <SafeImage
+                      src="/images/ajay-lab-practical.jpg"
+                      alt={item.role}
+                      fill
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                    
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                      <span className="text-xs font-bold bg-slate-900/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-slate-700">
+                        {item.role}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 <div className="p-6 space-y-3">
                   <div>
