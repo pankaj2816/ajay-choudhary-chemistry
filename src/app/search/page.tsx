@@ -18,9 +18,29 @@ import { NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/
 import { searchClientDatabase } from '@/lib/searchUtils';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 
+function HighlightMatch({ text, query }: { text: string; query: string }) {
+  if (!query.trim() || !text) return <span>{text}</span>;
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+
+  return (
+    <span>
+      {parts.map((part, i) =>
+        part.toLowerCase() === query.toLowerCase() ? (
+          <mark key={i} className="bg-cyan-200 text-cyan-950 font-bold px-0.5 rounded">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+}
+
 function SearchContent() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get('q') || '';
+  const initialQuery = searchParams.get('q') || searchParams.get('search') || '';
   const [query, setQuery] = useState(initialQuery);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<{
@@ -162,9 +182,16 @@ function SearchContent() {
                     <span className="text-xs text-slate-500">{item.className}</span>
                   </div>
                   <h4 className="text-sm font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">
-                    {item.title}
+                    <HighlightMatch text={item.title} query={query} />
                   </h4>
-                  <p className="text-xs text-slate-500 line-clamp-2">{item.description}</p>
+                  <div className="text-xs text-slate-500 flex items-center gap-2">
+                    <span>{item.subject}</span>
+                    <span>•</span>
+                    <span><HighlightMatch text={item.chapter} query={query} /></span>
+                  </div>
+                  <p className="text-xs text-slate-500 line-clamp-2">
+                    <HighlightMatch text={item.description} query={query} />
+                  </p>
                 </div>
               ))}
             </div>
@@ -190,9 +217,11 @@ function SearchContent() {
                     <span className="text-xs text-slate-500">{paper.totalMarks} Marks</span>
                   </div>
                   <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                    {paper.title}
+                    <HighlightMatch text={paper.title} query={query} />
                   </h4>
-                  <p className="text-xs text-slate-500 line-clamp-2">{paper.chapter}</p>
+                  <p className="text-xs text-slate-500 line-clamp-2">
+                    <HighlightMatch text={paper.chapter} query={query} />
+                  </p>
                 </div>
               ))}
             </div>
@@ -218,9 +247,11 @@ function SearchContent() {
                     <span className="text-xs text-slate-500">{sol.subject}</span>
                   </div>
                   <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                    {sol.title}
+                    <HighlightMatch text={sol.title} query={query} />
                   </h4>
-                  <p className="text-xs text-slate-500 line-clamp-2">{sol.questionPaperTitle}</p>
+                  <p className="text-xs text-slate-500 line-clamp-2">
+                    <HighlightMatch text={sol.questionPaperTitle} query={query} />
+                  </p>
                 </div>
               ))}
             </div>
@@ -236,19 +267,20 @@ function SearchContent() {
               {results.updates.map((update) => (
                 <Link
                   key={update.id}
-                  href="/updates"
+                  href={`/updates?search=${encodeURIComponent(query)}`}
                   className="block bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all space-y-2 group"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
+                      <HighlightMatch text={update.title} query={query} />
+                    </h4>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold shrink-0">
                       {update.category}
                     </span>
-                    <span className="text-xs text-slate-500">{update.date}</span>
                   </div>
-                  <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
-                    {update.title}
-                  </h4>
-                  <p className="text-xs text-slate-500 line-clamp-2">{update.description}</p>
+                  <p className="text-xs text-slate-500 line-clamp-2">
+                    <HighlightMatch text={update.description} query={query} />
+                  </p>
                 </Link>
               ))}
             </div>

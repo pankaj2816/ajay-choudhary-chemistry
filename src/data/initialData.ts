@@ -218,6 +218,20 @@ export const initialDatabase: DatabaseSchema = {
       attachmentUrl: '/uploads/sample_dpp_hydrocarbons.pdf',
       attachmentSize: '1.2 MB',
       targetClass: 'Class 11'
+    },
+    {
+      id: 'notif-5',
+      title: 'Aromatic Chemistry & Benzene Reaction Mechanism Workshop Scheduled',
+      category: 'Class Update',
+      description: 'Special weekend classroom masterclass covering Benzene resonance energy, electrophilic aromatic substitution, and directing effects of substituents.',
+      content: `### Benzene & Aromatic Chemistry Special Workshop\n\nStudents of Class 11 and Class 12 are invited to attend the comprehensive 3-hour masterclass on **Benzene (C₆H₆)**, Arenium ion sigma-complex stabilization, Friedel-Crafts Alkylation/Acylation, and Nitration/Sulphonation pathways. Complete notes and DPPs have been published in the Study Materials section.`,
+      date: '2026-08-17',
+      isPinned: true,
+      isPublished: true,
+      attachmentName: 'Benzene_Aromatic_Chemistry_Guide_2026.pdf',
+      attachmentUrl: '/uploads/organic_master_reaction_map.pdf',
+      attachmentSize: '2.8 MB',
+      targetClass: 'All Classes'
     }
   ],
 
@@ -310,6 +324,24 @@ export const initialDatabase: DatabaseSchema = {
       fileName: 'QP_JEE_Adv_Chemical_Bonding_DPP.pdf',
       fileSize: '1.9 MB',
       hasSolution: false
+    },
+    {
+      id: 'qp-106',
+      title: 'Class 11 & 12 Organic Chemistry: Benzene & Aromatic Hydrocarbons Unit Test (UT-04)',
+      subject: 'Organic Chemistry',
+      className: 'Class 11',
+      chapter: 'Benzene & Aromatic Hydrocarbons',
+      testType: 'Unit Test',
+      year: '2026',
+      uploadDate: '2026-08-16',
+      totalMarks: 50,
+      duration: '90 Minutes',
+      description: 'Comprehensive test covering Benzene structure, resonance stabilization energy, electrophilic aromatic substitution mechanisms (Nitration, Sulphonation, Halogenation, Friedel-Crafts), and directive influence of ortho/para/meta groups.',
+      fileUrl: '/uploads/qp_organic_hydrocarbons_ut01.pdf',
+      fileName: 'QP_Benzene_Aromatic_Hydrocarbons_UT04.pdf',
+      fileSize: '1.7 MB',
+      hasSolution: true,
+      solutionId: 'sol-106'
     }
   ],
 
@@ -469,6 +501,39 @@ Procedure & Observation:
         { questionNo: 'Q2', answer: 'CrO2Cl2 (Chromyl Chloride)', explanation: 'Specific test for ionic chlorides; distinguishes from bromides and iodides.' },
         { questionNo: 'Q3', answer: 'Nessler’s Reagent (K2[HgI4]) gives brown ppt', explanation: 'Formation of iodide of Millon’s base for NH4+ cation detection.' }
       ]
+    },
+    {
+      id: 'sol-106',
+      title: 'Verified Solutions & Mechanism Key: Benzene & Aromatic Hydrocarbons Unit Test (UT-04)',
+      questionPaperId: 'qp-106',
+      questionPaperTitle: 'Class 11 & 12 Organic Chemistry: Benzene & Aromatic Hydrocarbons Unit Test (UT-04)',
+      subject: 'Organic Chemistry',
+      chapter: 'Benzene & Aromatic Hydrocarbons',
+      className: 'Class 11',
+      uploadDate: '2026-08-17',
+      description: 'Detailed curved-arrow reaction mechanisms for Benzene nitration (NO2+ generation), Arenium ion sigma-complex resonance structures, Friedel-Crafts carbocation rearrangements, and official marking scheme.',
+      solutionPdfUrl: '/uploads/sol_organic_hydrocarbons_ut01.pdf',
+      solutionPdfName: 'Solution_Benzene_Aromatic_UT04.pdf',
+      solutionPdfSize: '2.4 MB',
+      verifiedBy: 'Ajay Choudhary Sir',
+      stepByStepContent: `### Section A: Step-by-Step Mechanisms for Benzene Reactions
+
+#### Question 1: Nitration of Benzene Mechanism
+Reaction: C₆H₆ + HNO₃ [conc. H₂SO₄, 330 K] ⟶ C₆H₅NO₂ (Nitrobenzene) + H₂O
+
+1. Electrophile Generation (NO₂⁺):
+HNO₃ + 2 H₂SO₄ ⇌ NO₂⁺ (Nitronium ion) + H₃O⁺ + 2 HSO₄⁻
+
+2. Formation of Arenium Ion (Sigma-Complex):
+The aromatic π-electron cloud of Benzene attacks the electrophilic NO₂⁺ ion, breaking aromaticity to form a resonance-stabilized arenium carbocation intermediate.
+
+3. Loss of Proton & Restoration of Aromaticity:
+The base HSO₄⁻ abstracts the sp³ carbon's proton, returning the electron pair into the ring to restore aromatic resonance stabilization.`,
+      answerKey: [
+        { questionNo: 'Q1', answer: 'Nitrobenzene (C₆H₅NO₂)', explanation: 'Electrophilic aromatic substitution via nitronium ion (NO₂⁺) generation.' },
+        { questionNo: 'Q2', answer: 'Toluene (C₆H₅CH₃)', explanation: 'Friedel-Crafts alkylation of benzene with CH₃Cl in presence of anhydrous AlCl₃ catalyst.' },
+        { questionNo: 'Q3', answer: 'Ortho- & Para- directing', explanation: 'Halogens exhibit -I inductive effect but +M resonance effect directing substitution to ortho and para positions.' }
+      ]
     }
   ],
 
@@ -576,6 +641,51 @@ Procedure & Observation:
       fileSize: '1.5 MB',
       uploadDate: '2026-06-28',
       downloadsCount: 1890,
+      isFeatured: false
+    },
+    {
+      id: 'mat-208',
+      title: 'Benzene & Aromatic Hydrocarbons: Electrophilic Substitution & Reaction Roadmap',
+      subject: 'Organic Chemistry',
+      className: 'Class 11',
+      chapter: 'Benzene & Aromatic Hydrocarbons',
+      resourceType: 'Reaction Sheet',
+      description: 'Complete high-yield electrophilic aromatic substitution reaction map for Benzene (Nitration, Sulphonation, Halogenation, Friedel-Crafts Alkylation & Acylation), activating & deactivating ortho/para/meta directing groups, and Hückel (4n+2 π) aromaticity rules.',
+      fileUrl: '/uploads/organic_master_reaction_map.pdf',
+      fileName: 'Benzene_Aromatic_Reaction_Roadmap_2026.pdf',
+      fileSize: '3.8 MB',
+      uploadDate: '2026-08-17',
+      downloadsCount: 1850,
+      isFeatured: true
+    },
+    {
+      id: 'mat-209',
+      title: 'Benzaldehyde & Benzoic Acid: Synthesis, Reactions & Multi-Step Conversions',
+      subject: 'Organic Chemistry',
+      className: 'Class 12',
+      chapter: 'Aldehydes, Ketones & Carboxylic Acids',
+      resourceType: 'Chapter Notes',
+      description: 'Comprehensive handwritten guide on Benzaldehyde (Etard reaction, Gatterman-Koch, Cannizzaro, Benzoin condensation), Benzoic acid derivative conversions, and aromatic ring nucleophilic/electrophilic transformations for Board & JEE exams.',
+      fileUrl: '/uploads/goc_complete_notes_class11.pdf',
+      fileName: 'Benzaldehyde_Benzoic_Acid_Conversions.pdf',
+      fileSize: '4.5 MB',
+      uploadDate: '2026-08-16',
+      downloadsCount: 1490,
+      isFeatured: true
+    },
+    {
+      id: 'mat-210',
+      title: 'Haloarenes & Substituted Benzene Chemistry: SNAr & Benzyne Mechanisms',
+      subject: 'Organic Chemistry',
+      className: 'Class 12',
+      chapter: 'Haloalkanes & Haloarenes',
+      resourceType: 'Important Questions',
+      description: 'High-yield practice questions and mechanisms on Chlorobenzene reactivity, Dow process for Phenol, Benzyne intermediate elimination-addition, and Wurtz-Fittig cross-coupling reactions.',
+      fileUrl: '/uploads/chemical_bonding_practice_worksheet.pdf',
+      fileName: 'Haloarenes_Benzene_SNAr_Worksheet.pdf',
+      fileSize: '2.1 MB',
+      uploadDate: '2026-08-14',
+      downloadsCount: 920,
       isFeatured: false
     }
   ],

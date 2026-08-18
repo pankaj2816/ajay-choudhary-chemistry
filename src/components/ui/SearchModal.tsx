@@ -4,18 +4,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Search, X, FileText, BookOpen, CheckCircle, Bell, ArrowRight, Loader2, Sparkles } from 'lucide-react';
 import { NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
-import { searchClientDatabase } from '@/lib/searchUtils';
-
-interface SearchResults {
-  updates: NoticeUpdate[];
-  questionPapers: QuestionPaper[];
-  solutions: SolutionItem[];
-  studyMaterials: StudyMaterial[];
-}
+import { searchClientDatabase, SearchResults } from '@/lib/searchUtils';
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+function HighlightMatch({ text, query }: { text: string; query: string }) {
+  if (!query.trim() || !text) return <span>{text}</span>;
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+
+  return (
+    <span>
+      {parts.map((part, i) =>
+        part.toLowerCase() === query.toLowerCase() ? (
+          <mark key={i} className="bg-cyan-200 dark:bg-cyan-900/80 text-cyan-950 dark:text-cyan-200 font-bold px-0.5 rounded">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
 }
 
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
@@ -60,10 +73,23 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       } finally {
         setLoading(false);
       }
-    }, 150);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [query]);
+
+  // Handle Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -79,7 +105,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search topics, chapters, question papers, solutions, notes... (e.g. Coordination Compounds, Hydrocarbons)"
+            placeholder="Search topics, chapters, question papers, solutions, notes... (e.g. Benzene, Coordination Compounds, GOC)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 bg-transparent text-slate-900 dark:text-white placeholder-slate-400 text-sm sm:text-base focus:outline-none"
@@ -108,7 +134,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               <Sparkles className="w-8 h-8 text-cyan-500/50 mx-auto mb-2" />
               <p className="text-sm font-medium">Search across all Chemistry resources</p>
               <div className="flex flex-wrap justify-center gap-2 mt-3 max-w-md mx-auto">
-                {['Coordination Compounds', 'Hydrocarbons', 'Reaction Mechanism', 'Salt Analysis', 'Chemical Bonding', 'Aldehydes'].map((tag) => (
+                {['Benzene', 'Coordination Compounds', 'Hydrocarbons', 'Reaction Mechanism', 'Salt Analysis', 'Aldol', 'Nernst'].map((tag) => (
                   <button
                     key={tag}
                     onClick={() => setQuery(tag)}
@@ -124,7 +150,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {query && !loading && totalCount === 0 && (
             <div className="py-12 text-center text-slate-500">
               <p className="text-sm font-medium">No results found for &ldquo;{query}&rdquo;</p>
-              <p className="text-xs mt-1 text-slate-400">Try searching for chapter names like &ldquo;GOC&rdquo;, &ldquo;p-Block&rdquo;, or &ldquo;Titration&rdquo;.</p>
+              <p className="text-xs mt-1 text-slate-400">Try searching for &ldquo;Benzene&rdquo;, &ldquo;GOC&rdquo;, &ldquo;Coordination&rdquo;, or &ldquo;Titration&rdquo;.</p>
             </div>
           )}
 
@@ -140,16 +166,16 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 </Link>
               </div>
               <div className="space-y-2">
-                {results.studyMaterials.slice(0, 3).map((item) => (
+                {results.studyMaterials.slice(0, 4).map((item) => (
                   <Link
                     key={item.id}
-                    href={`/study-materials`}
+                    href={`/study-materials?search=${encodeURIComponent(query)}`}
                     onClick={onClose}
                     className="block p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-cyan-50/70 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-colors group"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
-                        {item.title}
+                        <HighlightMatch text={item.title} query={query} />
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 font-medium shrink-0">
                         {item.resourceType}
@@ -158,8 +184,13 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
                       <span>{item.subject}</span>
                       <span>•</span>
-                      <span>{item.chapter}</span>
+                      <span><HighlightMatch text={item.chapter} query={query} /></span>
                     </div>
+                    {item.description && (
+                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-1">
+                        <HighlightMatch text={item.description} query={query} />
+                      </p>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -178,16 +209,16 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 </Link>
               </div>
               <div className="space-y-2">
-                {results.questionPapers.slice(0, 3).map((item) => (
+                {results.questionPapers.slice(0, 4).map((item) => (
                   <Link
                     key={item.id}
-                    href={`/question-papers`}
+                    href={`/question-papers?search=${encodeURIComponent(query)}`}
                     onClick={onClose}
                     className="block p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-50/70 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-colors group"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                        {item.title}
+                        <HighlightMatch text={item.title} query={query} />
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 font-medium shrink-0">
                         {item.testType}
@@ -196,13 +227,18 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
                       <span>{item.className}</span>
                       <span>•</span>
-                      <span>{item.chapter}</span>
+                      <span><HighlightMatch text={item.chapter} query={query} /></span>
                       {item.hasSolution && (
                         <span className="ml-auto text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 text-[11px]">
                           <CheckCircle className="w-3 h-3" /> Solution Available
                         </span>
                       )}
                     </div>
+                    {item.description && (
+                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-1">
+                        <HighlightMatch text={item.description} query={query} />
+                      </p>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -221,19 +257,24 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 </Link>
               </div>
               <div className="space-y-2">
-                {results.solutions.slice(0, 3).map((item) => (
+                {results.solutions.slice(0, 4).map((item) => (
                   <Link
                     key={item.id}
-                    href={`/solutions`}
+                    href={`/solutions?search=${encodeURIComponent(query)}`}
                     onClick={onClose}
                     className="block p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-emerald-50/70 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-colors group"
                   >
                     <div className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                      {item.title}
+                      <HighlightMatch text={item.title} query={query} />
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                       Paper: {item.questionPaperTitle}
                     </div>
+                    {item.description && (
+                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-1">
+                        <HighlightMatch text={item.description} query={query} />
+                      </p>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -247,7 +288,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
                   <Bell className="w-3.5 h-3.5" /> Notices & Announcements ({results.updates.length})
                 </span>
-                <Link href={`/updates`} onClick={onClose} className="text-xs text-slate-500 hover:text-amber-600 flex items-center gap-0.5">
+                <Link href={`/updates?search=${encodeURIComponent(query)}`} onClick={onClose} className="text-xs text-slate-500 hover:text-amber-600 flex items-center gap-0.5">
                   View all <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
@@ -255,16 +296,21 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 {results.updates.slice(0, 3).map((item) => (
                   <Link
                     key={item.id}
-                    href={`/updates`}
+                    href={`/updates?search=${encodeURIComponent(query)}`}
                     onClick={onClose}
                     className="block p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-amber-50/70 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-colors group"
                   >
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400">
-                      {item.title}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400">
+                        <HighlightMatch text={item.title} query={query} />
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-medium shrink-0">
+                        {item.category}
+                      </span>
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      {item.category} • {item.date}
-                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                      <HighlightMatch text={item.description} query={query} />
+                    </p>
                   </Link>
                 ))}
               </div>
@@ -272,8 +318,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           )}
         </div>
 
-        {/* Footer info */}
-        <div className="p-3 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        {/* Footer */}
+        <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
           <span>Search Chemistry Repository</span>
           <span>Click on result to open</span>
         </div>

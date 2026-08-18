@@ -13,7 +13,7 @@ import {
 } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 
-const STORAGE_KEY = 'ajay_chemistry_db_v2';
+const STORAGE_KEY = 'ajay_chemistry_db_v3';
 
 /**
  * Retrieves the active database from localStorage or initialDatabase
@@ -29,14 +29,40 @@ export function getLocalDatabase(): DatabaseSchema {
       return initialDatabase;
     }
     const parsed = JSON.parse(raw);
+
+    // Merge default seeded items so newly added curriculum items appear automatically
+    const existingMatIds = new Set((parsed.studyMaterials || []).map((m: StudyMaterial) => m.id));
+    const mergedMaterials = [
+      ...(parsed.studyMaterials || []),
+      ...initialDatabase.studyMaterials.filter(m => !existingMatIds.has(m.id))
+    ];
+
+    const existingQpIds = new Set((parsed.questionPapers || []).map((q: QuestionPaper) => q.id));
+    const mergedQPs = [
+      ...(parsed.questionPapers || []),
+      ...initialDatabase.questionPapers.filter(q => !existingQpIds.has(q.id))
+    ];
+
+    const existingSolIds = new Set((parsed.solutions || []).map((s: SolutionItem) => s.id));
+    const mergedSols = [
+      ...(parsed.solutions || []),
+      ...initialDatabase.solutions.filter(s => !existingSolIds.has(s.id))
+    ];
+
+    const existingUpdateIds = new Set((parsed.updates || []).map((u: NoticeUpdate) => u.id));
+    const mergedUpdates = [
+      ...(parsed.updates || []),
+      ...initialDatabase.updates.filter(u => !existingUpdateIds.has(u.id))
+    ];
+
     return {
       settings: parsed.settings || initialDatabase.settings,
       taxonomies: parsed.taxonomies || initialDatabase.taxonomies,
       teamMembers: parsed.teamMembers || initialDatabase.teamMembers,
-      updates: parsed.updates || initialDatabase.updates,
-      questionPapers: parsed.questionPapers || initialDatabase.questionPapers,
-      solutions: parsed.solutions || initialDatabase.solutions,
-      studyMaterials: parsed.studyMaterials || initialDatabase.studyMaterials,
+      updates: mergedUpdates,
+      questionPapers: mergedQPs,
+      solutions: mergedSols,
+      studyMaterials: mergedMaterials,
       contactMessages: parsed.contactMessages || initialDatabase.contactMessages || [],
     };
   } catch (err) {
