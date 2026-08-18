@@ -12,7 +12,9 @@ import {
   Loader2, 
   Upload, 
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Search,
+  Filter
 } from 'lucide-react';
 import { StudyMaterial, SubjectType, ClassLevel, ResourceType } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -50,6 +52,8 @@ export default function AdminStudyMaterialsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [adminSearch, setAdminSearch] = useState('');
+  const [adminSubjFilter, setAdminSubjFilter] = useState('All');
 
   const [formData, setFormData] = useState<Omit<StudyMaterial, 'id' | 'downloadsCount'>>({
     title: '',
@@ -198,6 +202,34 @@ export default function AdminStudyMaterialsPage() {
         </button>
       </div>
 
+      {/* Search & Filter Controls */}
+      <div className="flex flex-col sm:flex-row items-center gap-3">
+        <div className="relative flex-1 w-full">
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Filter by title, chapter, or topic..."
+            value={adminSearch}
+            onChange={(e) => setAdminSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+          />
+          {adminSearch && (
+            <button onClick={() => setAdminSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        <select
+          value={adminSubjFilter}
+          onChange={(e) => setAdminSubjFilter(e.target.value)}
+          className="px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 focus:outline-none focus:border-purple-500 w-full sm:w-auto"
+        >
+          <option value="All">All Subjects</option>
+          {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
+
       {/* Table */}
       <div className="bg-slate-950 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
@@ -214,7 +246,15 @@ export default function AdminStudyMaterialsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
-              {materials.map((item) => (
+              {materials
+                .filter(m => {
+                  const matchSubj = adminSubjFilter === 'All' || m.subject === adminSubjFilter;
+                  const matchSearch = !adminSearch || 
+                    m.title.toLowerCase().includes(adminSearch.toLowerCase()) ||
+                    m.chapter.toLowerCase().includes(adminSearch.toLowerCase());
+                  return matchSubj && matchSearch;
+                })
+                .map((item) => (
                 <tr key={item.id} className="hover:bg-slate-900/40 transition-colors">
                   <td className="p-4">
                     <button

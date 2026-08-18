@@ -14,7 +14,9 @@ import {
   Upload, 
   AlertCircle,
   Eye,
-  CheckCircle
+  CheckCircle,
+  Search,
+  Filter
 } from 'lucide-react';
 import { QuestionPaper, SubjectType, ClassLevel, TestType } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -51,6 +53,8 @@ export default function AdminQuestionPapersPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [adminSearch, setAdminSearch] = useState('');
+  const [adminSubjFilter, setAdminSubjFilter] = useState('All');
 
   const [formData, setFormData] = useState<Omit<QuestionPaper, 'id'>>({
     title: '',
@@ -198,6 +202,34 @@ export default function AdminQuestionPapersPage() {
         </button>
       </div>
 
+      {/* Search & Filter Controls */}
+      <div className="flex flex-col sm:flex-row items-center gap-3">
+        <div className="relative flex-1 w-full">
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Filter by paper title, chapter, or test type..."
+            value={adminSearch}
+            onChange={(e) => setAdminSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+          />
+          {adminSearch && (
+            <button onClick={() => setAdminSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        <select
+          value={adminSubjFilter}
+          onChange={(e) => setAdminSubjFilter(e.target.value)}
+          className="px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 focus:outline-none focus:border-blue-500 w-full sm:w-auto"
+        >
+          <option value="All">All Subjects</option>
+          {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
+
       {/* Papers Table */}
       <div className="bg-slate-950 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
@@ -214,7 +246,16 @@ export default function AdminQuestionPapersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
-              {papers.map((item) => (
+              {papers
+                .filter(p => {
+                  const matchSubj = adminSubjFilter === 'All' || p.subject === adminSubjFilter;
+                  const matchSearch = !adminSearch || 
+                    p.title.toLowerCase().includes(adminSearch.toLowerCase()) ||
+                    p.chapter.toLowerCase().includes(adminSearch.toLowerCase()) ||
+                    p.testType.toLowerCase().includes(adminSearch.toLowerCase());
+                  return matchSubj && matchSearch;
+                })
+                .map((item) => (
                 <tr key={item.id} className="hover:bg-slate-900/40 transition-colors">
                   <td className="p-4">
                     <div className="font-bold text-white max-w-sm line-clamp-1">{item.title}</div>

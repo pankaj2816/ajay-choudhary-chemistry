@@ -81,6 +81,21 @@ const TOPICS: ChemistryTopic[] = [
     ],
     keyTakeaway: 'Test tube must not be shaken; always use freshly prepared FeSO₄ to prevent oxidation into Fe³⁺.',
     examRelevance: 'Essential viva-voce question and practical examination mandatory experiment.'
+  },
+  {
+    id: 'nernst',
+    title: 'Nernst Equation & Electrochemical Cells',
+    category: 'Physical Chemistry',
+    summary: 'Calculates the non-standard electromotive force (E_cell) of galvanic cells under varying ionic concentrations and temperatures.',
+    reaction: 'E_cell = E°_cell − (0.0591 / n) × log₁₀([Anode Oxidation Products] / [Cathode Reduction Reactants]) at 298 K',
+    mechanismSteps: [
+      'Step 1: Write individual oxidation half-cell (anode) and reduction half-cell (cathode) reactions.',
+      'Step 2: Determine standard cell potential: E°_cell = E°_cathode − E°_anode.',
+      'Step 3: Find the number of transferred electrons (n) to balance charge in net redox equation.',
+      'Step 4: Substitute reaction quotient (Q) into Nernst logarithmic term to calculate instantaneous voltage.'
+    ],
+    keyTakeaway: 'At equilibrium, E_cell = 0 and Q = K_c, enabling direct calculation of the equilibrium constant from E°_cell.',
+    examRelevance: 'Standard 5-mark numerical problem in Class 12 Boards and high-frequency question in JEE Main / NEET.'
   }
 ];
 
