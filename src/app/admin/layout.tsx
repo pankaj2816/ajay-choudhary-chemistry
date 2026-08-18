@@ -21,6 +21,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { getMessages } from '@/lib/dataService';
 
 const ADMIN_NAV_ITEMS = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },
@@ -48,8 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   // Fetch unread count for badge
   useEffect(() => {
-    fetch('/api/messages')
-      .then(res => res.json())
+    getMessages()
       .then(data => {
         if (Array.isArray(data)) {
           const unread = data.filter((m: { isRead: boolean }) => !m.isRead).length;
@@ -61,7 +61,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('ajay_admin_session');
+        document.cookie = 'admin_session=; path=/; max-age=0';
+      }
+      await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
       showToast('Logged out successfully', 'info');
       router.push('/admin/login');
       router.refresh();
@@ -71,21 +75,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-slate-900 flex flex-col lg:flex-row text-slate-100">
       
-      {/* Mobile Top Header */}
-      <div className="lg:hidden bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between z-30">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-cyan-600 flex items-center justify-center">
-            <FlaskConical className="w-4 h-4 text-white" />
+      {/* Mobile Top Header for Admin */}
+      <div className="lg:hidden bg-slate-950 border-b border-slate-800 p-4 flex items-center justify-between sticky top-0 z-50">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center p-0.5">
+            <FlaskConical className="w-4 h-4 text-cyan-300" />
           </div>
           <span className="font-bold text-white text-sm">Ajay Sir CMS</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <button
+          <Link 
+            href="/" 
+            className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-cyan-400 flex items-center gap-1"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">View Site</span>
+          </Link>
+          <button 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg bg-slate-900 text-slate-300 hover:text-white"
+            className="p-2 rounded-lg bg-slate-800 text-slate-300"
+            aria-label="Toggle admin sidebar"
           >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -107,7 +119,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
             </div>
             <div>
-              <h2 className="font-extrabold text-white text-sm tracking-tight">Ajay Choudhary</h2>
+              <h2 className="font-extrabold text-white text-sm tracking-tight">Ajay Choudhary Sir</h2>
               <span className="text-[10px] text-cyan-400 font-semibold uppercase tracking-wider block">
                 Admin Control Center
               </span>

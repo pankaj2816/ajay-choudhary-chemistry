@@ -32,26 +32,50 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+      // Try API route first if available
+      let success = false;
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success) success = true;
+        }
+      } catch {
+        // static fallback
+      }
 
-      const data = await res.json();
+      // Static fallback check
+      if (!success) {
+        if (email.trim().toLowerCase() === 'admin@ajaychemistry.com' && password === 'ajay123456') {
+          success = true;
+        }
+      }
 
-      if (res.ok && data.success) {
+      if (success) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('ajay_admin_session', JSON.stringify({
+            authenticated: true,
+            email: 'admin@ajaychemistry.com',
+            name: 'Ajay Choudhary Sir',
+            timestamp: Date.now()
+          }));
+          document.cookie = 'admin_session=authenticated; path=/; max-age=86400';
+        }
         showToast('Login successful! Welcome Ajay Sir.', 'success');
         router.push('/admin');
         router.refresh();
       } else {
-        setError(data.error || 'Invalid email or password');
+        setError('Invalid email or password. Use demo credentials shown below.');
         showToast('Authentication failed. Please check credentials.', 'error');
       }
     } catch (err) {
       console.error(err);
       setError('An unexpected error occurred. Please try again.');
-      showToast('Network error during login.', 'error');
+      showToast('Login error.', 'error');
     } finally {
       setLoading(false);
     }

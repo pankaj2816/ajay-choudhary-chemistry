@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
+import { searchClientDatabase } from '@/lib/searchUtils';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 
 function SearchContent() {
@@ -45,19 +46,18 @@ function SearchContent() {
       return;
     }
 
-    const timer = setTimeout(async () => {
-      setLoading(true);
+    setLoading(true);
+    const timer = setTimeout(() => {
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-        const data = await res.json();
-        setResults(data.results || { updates: [], questionPapers: [], solutions: [], studyMaterials: [] });
-        setTotalCount(data.totalMatches || 0);
+        const { results: searchRes, totalMatches } = searchClientDatabase(query);
+        setResults(searchRes);
+        setTotalCount(totalMatches);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
-    }, 250);
+    }, 150);
 
     return () => clearTimeout(timer);
   }, [query]);

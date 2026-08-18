@@ -81,7 +81,7 @@ export default function AboutPage() {
               Faculty Profile
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              About Ajay Choudhary
+              About Ajay Choudhary Sir
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
               Senior Chemistry Educator with 8+ years of dedicated experience mentoring board toppers and competitive exam rankers across three premier coaching institutions.
@@ -100,14 +100,14 @@ export default function AboutPage() {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 aspect-[4/5] w-full max-w-md mx-auto">
                 <SafeImage
                   src="/images/ajay-choudhary.jpg"
-                  alt="Ajay Choudhary Chemistry Teacher"
+                  alt="Ajay Choudhary Sir Chemistry Teacher"
                   fill
                   className="object-cover object-top"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-                  <h3 className="text-xl font-black">Ajay Choudhary</h3>
+                  <h3 className="text-xl font-black">Ajay Choudhary Sir</h3>
                   <p className="text-xs text-cyan-400 font-semibold">M.Sc. Chemistry, B.Ed (8+ Years Exp)</p>
                   <p className="text-[11px] text-slate-300">Catalyst • Apex • Prerana Learning Centers</p>
                 </div>
@@ -126,7 +126,7 @@ export default function AboutPage() {
               </div>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                Ajay Choudhary began his teaching career with a single goal: to dismantle the widespread myth that Chemistry requires endless mechanical memorization. Over the past <strong>8+ years</strong>, he has guided more than <strong>5,000 students</strong> across Class 11, Class 12, CBSE/ISC Boards, JEE Main, and NEET.
+                Ajay Choudhary Sir began his teaching career with a single goal: to dismantle the widespread myth that Chemistry requires endless mechanical memorization. Over the past <strong>8+ years</strong>, he has guided more than <strong>5,000 students</strong> across Class 11, Class 12, CBSE/ISC Boards, JEE Main, and NEET.
               </p>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -265,7 +265,7 @@ export default function AboutPage() {
               Ajay Sir&apos;s Teaching Journey & Classroom Portfolio
             </h2>
             <p className="text-sm text-slate-600">
-              A glimpse into Ajay Choudhary&apos;s laboratory demonstrations, classroom lectures, and student mentorship across his three teaching centers.
+              A glimpse into Ajay Choudhary Sir&apos;s laboratory demonstrations, classroom lectures, and student mentorship across his three teaching centers.
             </p>
           </div>
 

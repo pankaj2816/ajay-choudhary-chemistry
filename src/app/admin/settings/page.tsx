@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { SiteSettings, CoachingCenter } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
+import { getSettings, saveSettings } from '@/lib/dataService';
 
 export default function AdminSettingsPage() {
   const { showToast } = useToast();
@@ -26,8 +27,7 @@ export default function AdminSettingsPage() {
 
   const fetchSettings = async () => {
     try {
-      const res = await fetch('/api/settings');
-      const data = await res.json();
+      const data = await getSettings();
       setSettings(data);
     } catch (err) {
       console.error(err);
@@ -47,17 +47,8 @@ export default function AdminSettingsPage() {
 
     setSaving(true);
     try {
-      const res = await fetch('/api/settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(settings)
-      });
-
-      if (res.ok) {
-        showToast('Settings saved successfully!', 'success');
-      } else {
-        showToast('Error saving settings', 'error');
-      }
+      await saveSettings(settings);
+      showToast('Settings saved successfully!', 'success');
     } catch (err) {
       console.error(err);
       showToast('Failed to save settings', 'error');

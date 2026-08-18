@@ -157,7 +157,7 @@ export default function Hero() {
                 {/* Floating Profile Info at bottom of portrait */}
                 <div className="p-4 bg-slate-950/90 backdrop-blur-md border-t border-slate-800 flex items-center justify-between">
                   <div>
-                    <h3 className="text-white font-extrabold text-base">Ajay Choudhary</h3>
+                    <h3 className="text-white font-extrabold text-base">Ajay Choudhary Sir</h3>
                     <p className="text-xs text-cyan-400 font-medium">{t.hero.teacherCardRole}</p>
                   </div>
                   <div className="text-right">

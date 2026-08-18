@@ -22,6 +22,8 @@ import { QuestionPaper, SolutionItem, SubjectType, ClassLevel, TestType } from '
 import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
+import { getQuestionPapers, getSolutions } from '@/lib/dataService';
+import { triggerDownload } from '@/lib/downloadUtils';
 
 export default function QuestionPapersPage() {
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
@@ -37,8 +39,8 @@ export default function QuestionPapersPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/question-papers').then(r => r.json()),
-      fetch('/api/solutions').then(r => r.json())
+      getQuestionPapers(),
+      getSolutions()
     ]).then(([qpData, solData]) => {
       if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
       if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
@@ -63,12 +65,7 @@ export default function QuestionPapersPage() {
   const handleDownload = (paper: QuestionPaper, e: React.MouseEvent) => {
     e.stopPropagation();
     showToast(`Downloading: ${paper.title}`, 'info');
-    const link = document.createElement('a');
-    link.href = paper.fileUrl;
-    link.download = paper.fileName || `${paper.title}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    triggerDownload(paper.fileUrl, paper.fileName || `${paper.title.replace(/\s+/g, '_')}.pdf`);
   };
 
   const openSolution = (solutionId?: string) => {
@@ -94,7 +91,7 @@ export default function QuestionPapersPage() {
               Chemistry Question Papers Library
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Browse, preview, and download chapter unit tests, term exams, and board mock papers created by Ajay Choudhary with one-click access to verified solutions.
+              Browse, preview, and download chapter unit tests, term exams, and board mock papers created by Ajay Choudhary Sir with one-click access to verified solutions.
             </p>
           </div>
         </div>

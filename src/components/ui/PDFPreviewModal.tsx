@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { X, Download, FileText, CheckCircle, ExternalLink, Calendar, BookOpen, Clock, Award, ZoomIn, ZoomOut, Printer } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import ChemistryContentRenderer from './ChemistryContentRenderer';
+import { triggerDownload, getAssetUrl } from '@/lib/downloadUtils';
 
 interface PDFPreviewModalProps {
   isOpen: boolean;
@@ -58,12 +59,7 @@ export default function PDFPreviewModal({
 
   const handleDownload = () => {
     showToast(`Downloading: ${fileName || title}`, 'info');
-    const link = document.createElement('a');
-    link.href = fileUrl;
-    link.download = fileName || `${title.replace(/\s+/g, '_')}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    triggerDownload(fileUrl, fileName || `${title.replace(/\s+/g, '_')}.pdf`);
   };
 
   const handlePrint = () => {

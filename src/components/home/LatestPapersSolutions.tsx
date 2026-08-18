@@ -20,6 +20,9 @@ import { useToast } from '@/context/ToastContext';
 
 import { useLanguage } from '@/context/LanguageContext';
 
+import { getQuestionPapers, getSolutions } from '@/lib/dataService';
+import { triggerDownload } from '@/lib/downloadUtils';
+
 export default function LatestPapersSolutions() {
   const { t } = useLanguage();
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
@@ -30,8 +33,8 @@ export default function LatestPapersSolutions() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/question-papers').then(r => r.json()),
-      fetch('/api/solutions').then(r => r.json())
+      getQuestionPapers(),
+      getSolutions()
     ]).then(([qpData, solData]) => {
       if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
       if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
@@ -41,12 +44,7 @@ export default function LatestPapersSolutions() {
   const handleDownloadPaper = (paper: QuestionPaper, e: React.MouseEvent) => {
     e.stopPropagation();
     showToast(`Downloading: ${paper.title}`, 'info');
-    const link = document.createElement('a');
-    link.href = paper.fileUrl;
-    link.download = paper.fileName || `${paper.title}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    triggerDownload(paper.fileUrl, paper.fileName || `${paper.title.replace(/\s+/g, '_')}.pdf`);
   };
 
   const openLinkedSolution = (solutionId?: string) => {

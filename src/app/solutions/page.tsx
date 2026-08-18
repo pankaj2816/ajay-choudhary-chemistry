@@ -21,6 +21,8 @@ import { SolutionItem, QuestionPaper, SubjectType, ClassLevel } from '@/lib/type
 import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
+import { getSolutions, getQuestionPapers } from '@/lib/dataService';
+import { triggerDownload } from '@/lib/downloadUtils';
 
 export default function SolutionsPage() {
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
@@ -35,8 +37,8 @@ export default function SolutionsPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/solutions').then(r => r.json()),
-      fetch('/api/question-papers').then(r => r.json())
+      getSolutions(),
+      getQuestionPapers()
     ]).then(([solData, qpData]) => {
       if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
       if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
@@ -61,12 +63,7 @@ export default function SolutionsPage() {
   const handleDownloadSolution = (sol: SolutionItem, e: React.MouseEvent) => {
     e.stopPropagation();
     showToast(`Downloading solution: ${sol.title}`, 'info');
-    const link = document.createElement('a');
-    link.href = sol.solutionPdfUrl || '/uploads/sample_solution.pdf';
-    link.download = sol.solutionPdfName || `${sol.title}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    triggerDownload(sol.solutionPdfUrl || '/uploads/sample_chemistry_notes.pdf', sol.solutionPdfName || `${sol.title.replace(/\s+/g, '_')}.pdf`);
   };
 
   const openRelatedPaper = (qpId: string) => {
@@ -91,7 +88,7 @@ export default function SolutionsPage() {
               Chemistry Solutions Library
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Step-by-step chemical mechanisms, crystal field splitting calculations, qualitative analysis flowcharts, and official marking schemes verified by Ajay Choudhary.
+              Step-by-step chemical mechanisms, crystal field splitting calculations, qualitative analysis flowcharts, and official marking schemes verified by Ajay Choudhary Sir.
             </p>
           </div>
         </div>

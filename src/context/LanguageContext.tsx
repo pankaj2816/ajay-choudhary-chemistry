@@ -202,7 +202,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       badge: '8+ Years of Chemistry Teaching Excellence',
       centersCount: '3 Coaching Centers',
       titleLine1: 'Master Chemistry with',
-      titleHighlight: 'Ajay Choudhary',
+      titleHighlight: 'Ajay Choudhary Sir',
       description: 'Specialized coaching in Organic Reaction Mechanisms, Conceptual Inorganic Chemistry, and Practical Laboratory Knowledge for CBSE, ISC, JEE & NEET aspirants.',
       organicTitle: 'Organic',
       organicSub: 'Mechanisms & Roadmaps',
@@ -257,7 +257,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
     materials: {
       badge: 'Download Free Learning Materials',
       title: 'Featured Study Vault & Handwritten Notes',
-      subtitle: 'High-yield master reaction maps, formula cheat-sheets, and comprehensive chapter notes prepared by Ajay Choudhary.',
+      subtitle: 'High-yield master reaction maps, formula cheat-sheets, and comprehensive chapter notes prepared by Ajay Choudhary Sir.',
       viewVault: 'Explore All Materials Vault',
       previewBtn: 'Preview PDF',
       downloadBtn: 'Download Notes',
@@ -295,7 +295,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
     portfolio: {
       badge: 'Classroom & Lab Gallery',
       title: 'Teaching Journey & Academic Portfolio',
-      subtitle: 'A visual overview of Ajay Choudhary’s interactive classroom lectures, laboratory salt analysis demonstrations, and student mentorship sessions.',
+      subtitle: 'A visual overview of Ajay Choudhary Sir’s interactive classroom lectures, laboratory salt analysis demonstrations, and student mentorship sessions.',
       bannerTag: 'Academic Experience & Lab Mentorship',
       bannerHeading: 'Active Classroom Batches Across 3 Coaching Centers',
       bannerSub: 'Direct individual guidance for Class 11, Class 12, JEE Main & Advanced, and NEET aspirants.',
@@ -319,7 +319,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       callBtn: 'Call Teacher Directly'
     },
     contact: {
-      title: 'Get in Touch with Ajay Choudhary',
+      title: 'Get in Touch with Ajay Choudhary Sir',
       subtitle: 'Have a question regarding batch timings, admissions, or test series? Send an inquiry or reach out directly.',
       nameLabel: 'Your Full Name *',
       emailLabel: 'Email Address *',

@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { saveMessage } from '@/lib/dataService';
 
 const FAQS = [
   {
@@ -50,36 +51,35 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      showToast('Please fill out all required fields', 'error');
+    if (!formData.name || !formData.phone || !formData.message) {
+      showToast('Please fill out all required fields (Name, Phone, Message)', 'error');
       return;
     }
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+      await saveMessage({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        studentClass: formData.studentClass,
+        subject: formData.subject,
+        message: formData.message
       });
 
-      if (res.ok) {
-        setSubmitted(true);
-        showToast('Your message has been received! Ajay Sir will contact you shortly.', 'success');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          studentClass: 'Class 12',
-          subject: 'Batch Admission & Course Inquiry',
-          message: ''
-        });
-      } else {
-        showToast('Failed to send message. Please try again.', 'error');
-      }
+      setSubmitted(true);
+      showToast('Your message has been received! Ajay Sir will contact you shortly.', 'success');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        studentClass: 'Class 12',
+        subject: 'Batch Admission & Course Inquiry',
+        message: ''
+      });
     } catch (err) {
       console.error(err);
-      showToast('An error occurred. Please try again.', 'error');
+      showToast('Failed to send message. Please try again.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -97,7 +97,7 @@ export default function ContactPage() {
               Student Helpdesk & Admissions
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              Contact Ajay Choudhary
+              Contact Ajay Choudhary Sir
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
               Get in touch for batch admissions, academic counseling, test series registration, or doubt clarification across our three coaching locations.

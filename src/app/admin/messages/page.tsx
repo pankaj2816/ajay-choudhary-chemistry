@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { ContactMessage } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
+import { getMessages, markMessageRead, deleteMessage as deleteMessageData } from '@/lib/dataService';
 
 export default function AdminMessagesPage() {
   const { showToast } = useToast();
@@ -27,8 +28,7 @@ export default function AdminMessagesPage() {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch('/api/messages');
-      const data = await res.json();
+      const data = await getMessages();
       if (Array.isArray(data)) setMessages(data);
     } catch (err) {
       console.error(err);
@@ -44,11 +44,7 @@ export default function AdminMessagesPage() {
 
   const markAsRead = async (msg: ContactMessage) => {
     try {
-      await fetch('/api/messages', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: msg.id, isRead: true })
-      });
+      await markMessageRead(msg.id);
       fetchMessages();
     } catch (err) {
       console.error(err);
@@ -57,15 +53,11 @@ export default function AdminMessagesPage() {
 
   const markAsReplied = async (msg: ContactMessage) => {
     try {
-      await fetch('/api/messages', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: msg.id, replyStatus: 'Replied', isRead: true })
-      });
-      showToast('Inquiry marked as Replied', 'success');
+      await markMessageRead(msg.id);
+      showToast('Inquiry marked as Read', 'success');
       fetchMessages();
       if (selectedMessage?.id === msg.id) {
-        setSelectedMessage(prev => prev ? { ...prev, replyStatus: 'Replied', isRead: true } : null);
+        setSelectedMessage(prev => prev ? { ...prev, isRead: true } : null);
       }
     } catch (err) {
       console.error(err);
@@ -74,13 +66,11 @@ export default function AdminMessagesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`/api/messages?id=${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        showToast('Message deleted', 'info');
-        setDeleteConfirmId(null);
-        if (selectedMessage?.id === id) setSelectedMessage(null);
-        fetchMessages();
-      }
+      await deleteMessageData(id);
+      showToast('Message deleted', 'info');
+      setDeleteConfirmId(null);
+      if (selectedMessage?.id === id) setSelectedMessage(null);
+      fetchMessages();
     } catch (err) {
       console.error(err);
       showToast('Failed to delete message', 'error');

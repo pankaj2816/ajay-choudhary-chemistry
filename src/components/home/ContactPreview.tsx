@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Send, Phone, Mail, MapPin, CheckCircle2, Loader2, Sparkles, Building2 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { saveMessage } from '@/lib/dataService';
 
 export default function ContactPreview() {
+  const { t } = useLanguage();
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
@@ -20,33 +23,32 @@ export default function ContactPreview() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      showToast('Please fill out all required fields', 'error');
+    if (!formData.name || !formData.phone || !formData.message) {
+      showToast('Please fill out all required fields (Name, Phone, Message)', 'error');
       return;
     }
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+      await saveMessage({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        studentClass: formData.studentClass,
+        subject: formData.subject,
+        message: formData.message
       });
 
-      if (res.ok) {
-        setSubmitted(true);
-        showToast('Your message has been sent successfully to Ajay Sir!', 'success');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          studentClass: 'Class 12',
-          subject: 'Batch Admission & Course Inquiry',
-          message: ''
-        });
-      } else {
-        showToast('Failed to send message. Please try again.', 'error');
-      }
+      setSubmitted(true);
+      showToast('Your message has been sent successfully to Ajay Sir!', 'success');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        studentClass: 'Class 12',
+        subject: 'Batch Admission & Course Inquiry',
+        message: ''
+      });
     } catch (err) {
       console.error(err);
       showToast('An error occurred. Please try again.', 'error');
@@ -72,7 +74,7 @@ export default function ContactPreview() {
                 Have a Doubt or Admission Question?
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                Connect directly with Ajay Choudhary for batch schedules, test series details, or academic guidance across all 3 coaching centers.
+                Connect directly with Ajay Choudhary Sir for batch schedules, test series details, or academic guidance across all 3 coaching centers.
               </p>
             </div>
 

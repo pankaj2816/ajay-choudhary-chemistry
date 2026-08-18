@@ -14,10 +14,11 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ajay Choudhary | Chemistry Teacher | Organic & Inorganic Specialist",
-  description: "Official teaching platform of Ajay Choudhary, an experienced Chemistry educator with 8+ years of expertise across 3 coaching centers. Access study materials, question papers, verified solutions, and notice board updates.",
+  title: "Ajay Choudhary Sir | Chemistry Teacher | Organic & Inorganic Specialist",
+  description: "Official teaching platform of Ajay Choudhary Sir, an experienced Chemistry educator with 8+ years of expertise across 3 coaching centers. Access study materials, question papers, verified solutions, and notice board updates.",
   keywords: [
-    "Ajay Choudhary Chemistry",
+    "Ajay Choudhary Sir Chemistry",
+    "Ajay Sir Chemistry",
     "Chemistry Teacher",
     "Organic Chemistry",
     "Inorganic Chemistry",
@@ -28,14 +29,14 @@ export const metadata: Metadata = {
     "NEET Chemistry Question Papers",
     "Qualitative Salt Analysis"
   ],
-  authors: [{ name: "Ajay Choudhary" }],
-  creator: "Ajay Choudhary",
+  authors: [{ name: "Ajay Choudhary Sir" }],
+  creator: "Ajay Choudhary Sir",
   openGraph: {
-    title: "Ajay Choudhary | Senior Chemistry Educator",
-    description: "Master Chemistry with 8+ Years Experienced Educator Ajay Choudhary. Free Question Papers, Verified Solutions & Notes.",
+    title: "Ajay Choudhary Sir | Senior Chemistry Educator",
+    description: "Master Chemistry with 8+ Years Experienced Educator Ajay Choudhary Sir. Free Question Papers, Verified Solutions & Notes.",
     type: "website",
     locale: "en_US",
-    siteName: "Ajay Choudhary Chemistry Platform"
+    siteName: "Ajay Choudhary Sir Chemistry Platform"
   },
   robots: {
     index: true,

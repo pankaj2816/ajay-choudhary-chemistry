@@ -38,7 +38,7 @@ export default function Footer() {
                 </div>
               </div>
               <div>
-                <h3 className="font-extrabold text-white text-lg tracking-tight">Ajay Choudhary</h3>
+                <h3 className="font-extrabold text-white text-lg tracking-tight">Ajay Choudhary Sir</h3>
                 <p className="text-xs text-cyan-400 font-medium">Senior Chemistry Educator (8+ Years Exp)</p>
               </div>
             </div>

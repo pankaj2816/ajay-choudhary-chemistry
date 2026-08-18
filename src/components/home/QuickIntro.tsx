@@ -25,7 +25,7 @@ export default function QuickIntro() {
 
               <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
                 <div>
-                  <div className="font-extrabold text-white text-sm">Ajay Choudhary</div>
+                  <div className="font-extrabold text-white text-sm">Ajay Choudhary Sir</div>
                   <div className="text-xs text-slate-400">Head Chemistry Educator</div>
                 </div>
                 <span className="text-xs px-2.5 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 font-semibold">
@@ -47,7 +47,7 @@ export default function QuickIntro() {
             </h2>
 
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Ajay Choudhary is an experienced Chemistry educator with over 8 years of teaching experience. Currently teaching students across <strong>three premier coaching centers</strong>, he specializes in <strong>Organic Chemistry, Inorganic Chemistry, and practical laboratory-based Chemistry</strong>.
+              Ajay Choudhary Sir is an experienced Chemistry educator with over 8 years of teaching experience. Currently teaching students across <strong>three premier coaching centers</strong>, he specializes in <strong>Organic Chemistry, Inorganic Chemistry, and practical laboratory-based Chemistry</strong>.
             </p>
 
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">

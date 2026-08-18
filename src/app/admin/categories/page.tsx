@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { TaxonomyData } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
+import { getTaxonomies, saveTaxonomies as saveTaxonomiesData } from '@/lib/dataService';
 
 export default function AdminCategoriesPage() {
   const { showToast } = useToast();
@@ -26,8 +27,7 @@ export default function AdminCategoriesPage() {
 
   const fetchTaxonomies = async () => {
     try {
-      const res = await fetch('/api/categories');
-      const data = await res.json();
+      const data = await getTaxonomies();
       setTaxonomies(data);
     } catch (err) {
       console.error(err);
@@ -43,15 +43,9 @@ export default function AdminCategoriesPage() {
 
   const saveTaxonomies = async (updated: TaxonomyData) => {
     try {
-      const res = await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated)
-      });
-      if (res.ok) {
-        setTaxonomies(updated);
-        showToast('Categories updated successfully', 'success');
-      }
+      await saveTaxonomiesData(updated);
+      setTaxonomies(updated);
+      showToast('Categories updated successfully', 'success');
     } catch (err) {
       console.error(err);
       showToast('Error updating categories', 'error');
@@ -68,7 +62,7 @@ export default function AdminCategoriesPage() {
       return;
     }
 
-    const updated = {
+    const updated: TaxonomyData = {
       ...taxonomies,
       chapters: {
         ...taxonomies.chapters,
@@ -81,11 +75,11 @@ export default function AdminCategoriesPage() {
 
   const handleDeleteChapter = (subject: keyof TaxonomyData['chapters'], chapterToDelete: string) => {
     if (!taxonomies) return;
-    const updated = {
+    const updated: TaxonomyData = {
       ...taxonomies,
       chapters: {
         ...taxonomies.chapters,
-        [subject]: taxonomies.chapters[subject].filter(ch => ch !== chapterToDelete)
+        [subject]: (taxonomies.chapters[subject] || []).filter((ch: string) => ch !== chapterToDelete)
       }
     };
     saveTaxonomies(updated);
@@ -99,7 +93,7 @@ export default function AdminCategoriesPage() {
       return;
     }
 
-    const updated = {
+    const updated: TaxonomyData = {
       ...taxonomies,
       classes: [...taxonomies.classes, newClassName.trim()]
     };
@@ -109,9 +103,9 @@ export default function AdminCategoriesPage() {
 
   const handleDeleteClass = (className: string) => {
     if (!taxonomies) return;
-    const updated = {
+    const updated: TaxonomyData = {
       ...taxonomies,
-      classes: taxonomies.classes.filter(c => c !== className)
+      classes: taxonomies.classes.filter((c: string) => c !== className)
     };
     saveTaxonomies(updated);
   };
@@ -189,7 +183,7 @@ export default function AdminCategoriesPage() {
               </h3>
 
               <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
-                {taxonomies.chapters[subj]?.map((chapter, idx) => (
+                {(taxonomies.chapters[subj] || []).map((chapter: string, idx: number) => (
                   <div
                     key={idx}
                     className="p-2 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-between text-xs text-slate-300 group"
@@ -239,7 +233,7 @@ export default function AdminCategoriesPage() {
           </form>
 
           <div className="space-y-2">
-            {taxonomies.classes.map((cls, idx) => (
+            {taxonomies.classes.map((cls: string, idx: number) => (
               <div
                 key={idx}
                 className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs text-slate-300"
@@ -268,7 +262,7 @@ export default function AdminCategoriesPage() {
             Pre-configured standard study material formats supported across the system:
           </p>
           <div className="flex flex-wrap gap-2">
-            {taxonomies.resourceTypes.map((rt, idx) => (
+            {taxonomies.resourceTypes.map((rt: string, idx: number) => (
               <span
                 key={idx}
                 className="text-xs px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 font-semibold"

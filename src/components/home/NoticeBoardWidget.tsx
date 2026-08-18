@@ -30,6 +30,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   'General Announcement': 'bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
 };
 
+import { getUpdates } from '@/lib/dataService';
+
 export default function NoticeBoardWidget() {
   const { t } = useLanguage();
   const { showToast } = useToast();
@@ -37,8 +39,7 @@ export default function NoticeBoardWidget() {
   const [selectedNotice, setSelectedNotice] = useState<NoticeUpdate | null>(null);
 
   useEffect(() => {
-    fetch('/api/updates')
-      .then((res) => res.json())
+    getUpdates()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setUpdates(data);
       })

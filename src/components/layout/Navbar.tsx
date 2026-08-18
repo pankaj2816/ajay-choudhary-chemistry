@@ -86,7 +86,7 @@ export default function Navbar() {
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-white text-sm sm:text-base lg:text-lg tracking-tight group-hover:text-cyan-400 transition-colors">
-                  Ajay Choudhary
+                  Ajay Choudhary Sir
                 </span>
                 <span className="text-[9px] sm:text-[10px] uppercase font-bold px-1.5 py-0.2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded">
                   8+ Yrs
@@ -142,16 +142,6 @@ export default function Navbar() {
               </kbd>
             </button>
 
-            {/* Admin Portal Link */}
-            <Link
-              href="/admin"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 text-xs font-semibold border border-slate-700/80 transition-colors"
-              title="Admin Portal"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{t.nav.admin}</span>
-            </Link>
-
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -191,15 +181,6 @@ export default function Navbar() {
 
             <div className="pt-2 flex items-center justify-between gap-2">
               <LanguageSwitcher />
-
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 px-3 rounded-xl bg-cyan-950 text-cyan-300 text-xs font-semibold flex items-center gap-1.5 border border-cyan-500/30 ml-auto"
-              >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>{t.nav.admin}</span>
-              </Link>
             </div>
           </div>
         )}

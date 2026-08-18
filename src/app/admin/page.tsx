@@ -18,6 +18,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { DatabaseSchema } from '@/lib/types';
+import { getUpdates, getQuestionPapers, getSolutions, getStudyMaterials, getMessages, getTeam } from '@/lib/dataService';
 
 export default function AdminDashboardOverview() {
   const [stats, setStats] = useState({
@@ -35,12 +36,12 @@ export default function AdminDashboardOverview() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/updates').then(r => r.json()),
-      fetch('/api/question-papers').then(r => r.json()),
-      fetch('/api/solutions').then(r => r.json()),
-      fetch('/api/study-materials').then(r => r.json()),
-      fetch('/api/messages').then(r => r.json()),
-      fetch('/api/team').then(r => r.json())
+      getUpdates(),
+      getQuestionPapers(),
+      getSolutions(),
+      getStudyMaterials(),
+      getMessages(),
+      getTeam()
     ]).then(([updates, qps, sols, mats, msgs, team]) => {
       const updatesArr = Array.isArray(updates) ? updates : [];
       const qpsArr = Array.isArray(qps) ? qps : [];

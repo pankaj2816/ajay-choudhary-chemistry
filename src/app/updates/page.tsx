@@ -18,6 +18,7 @@ import { NoticeUpdate, NoticeCategory, ClassLevel } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
 import ChemistryContentRenderer from '@/components/ui/ChemistryContentRenderer';
+import { getUpdates } from '@/lib/dataService';
 
 const CATEGORIES: (NoticeCategory | 'All Categories')[] = [
   'All Categories',
@@ -50,8 +51,7 @@ export default function UpdatesPage() {
   const { showToast } = useToast();
 
   useEffect(() => {
-    fetch('/api/updates')
-      .then((res) => res.json())
+    getUpdates()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
           setUpdates(data.filter((u: NoticeUpdate) => u.isPublished));
@@ -97,7 +97,7 @@ export default function UpdatesPage() {
               Latest Updates & Notice Board
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Official announcements, test schedules, assignment deadlines, and question paper alerts posted directly by Ajay Choudhary.
+              Official announcements, test schedules, assignment deadlines, and question paper alerts posted directly by Ajay Choudhary Sir.
             </p>
           </div>
         </div>

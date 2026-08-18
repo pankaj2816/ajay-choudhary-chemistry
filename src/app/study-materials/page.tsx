@@ -19,6 +19,8 @@ import { StudyMaterial, SubjectType, ClassLevel, ResourceType } from '@/lib/type
 import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
+import { getStudyMaterials } from '@/lib/dataService';
+import { triggerDownload } from '@/lib/downloadUtils';
 
 const RESOURCE_TYPES: (ResourceType | 'All Types')[] = [
   'All Types',
@@ -42,8 +44,7 @@ export default function StudyMaterialsPage() {
   const { showToast } = useToast();
 
   useEffect(() => {
-    fetch('/api/study-materials')
-      .then((res) => res.json())
+    getStudyMaterials()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setMaterials(data);
       })
@@ -68,12 +69,7 @@ export default function StudyMaterialsPage() {
   const handleDownload = (item: StudyMaterial, e: React.MouseEvent) => {
     e.stopPropagation();
     showToast(`Downloading: ${item.title}`, 'info');
-    const link = document.createElement('a');
-    link.href = item.fileUrl;
-    link.download = item.fileName || `${item.title}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    triggerDownload(item.fileUrl, item.fileName || `${item.title.replace(/\s+/g, '_')}.pdf`);
   };
 
   return (
