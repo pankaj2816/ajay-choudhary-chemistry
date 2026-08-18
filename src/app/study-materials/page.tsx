@@ -23,6 +23,8 @@ import { useToast } from '@/context/ToastContext';
 import { getStudyMaterials } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 const RESOURCE_TYPES: (ResourceType | 'All Types')[] = [
   'All Types',
   'Chapter Notes',
@@ -35,6 +37,7 @@ const RESOURCE_TYPES: (ResourceType | 'All Types')[] = [
 ];
 
 function StudyMaterialsContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
   const initialSubject = searchParams.get('subject') || 'All';
@@ -95,13 +98,13 @@ function StudyMaterialsContent() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
               <BookOpen className="w-3.5 h-3.5" />
-              Academic Learning Repository
+              {t.materials.badge}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              Chemistry Study Materials & Notes
+              {t.materials.title}
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Curated handwritten notes, master reaction maps, formula cheat-sheets, high-yield practice worksheets, and salt analysis manuals for CBSE, ISC, JEE & NEET.
+              {t.materials.subtitle}
             </p>
           </div>
         </div>

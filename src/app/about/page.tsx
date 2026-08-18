@@ -1,65 +1,25 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { 
   Award, 
   Building2, 
   Atom, 
   Sparkles, 
-  TestTubes, 
   CheckCircle2, 
-  BookOpen, 
   GraduationCap, 
   Users, 
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle,
-  Mail,
-  PhoneCall,
   FlaskConical
 } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import SafeImage from '@/components/ui/SafeImage';
-
-const METHODOLOGY_STEPS = [
-  {
-    step: '01',
-    title: 'Build Strong Fundamentals',
-    description: 'Deconstruct core chemical principles, atomic structure, and electronic configurations before tackling complex problems.'
-  },
-  {
-    step: '02',
-    title: 'Deep Conceptual Visualization',
-    description: 'Master reaction pathways through curved-arrow notation, steric factors, and molecular orbital models instead of rote memorization.'
-  },
-  {
-    step: '03',
-    title: 'Connect Theory with Practical Experiments',
-    description: 'Reinforce chemical equations by correlating them with qualitative salt analysis colors, precipitates, and titrimetric endpoints.'
-  },
-  {
-    step: '04',
-    title: 'Targeted Multi-Tier Practice',
-    description: 'Progressive problem solving from NCERT & Board exemplar questions to high-yield JEE Main, Advanced, and NEET DPPs.'
-  },
-  {
-    step: '05',
-    title: 'Detailed Mistake Analysis & Remediation',
-    description: 'Regular unit test reviews, pinpointing conceptual traps, calculation errors, and common examiner tricks.'
-  },
-  {
-    step: '06',
-    title: 'Systematic Examination Temperament',
-    description: 'Time management drills, structured presentation methods for 3-mark & 5-mark board answers, and speed tactics for MCQs.'
-  }
-];
-
+import { useLanguage } from '@/context/LanguageContext';
 import { getTeam } from '@/lib/dataService';
 
 export default function AboutPage() {
+  const { t } = useLanguage();
   const [team, setTeam] = useState<TeamMember[]>(initialDatabase.teamMembers);
 
   useEffect(() => {
@@ -70,6 +30,39 @@ export default function AboutPage() {
       .catch((err) => console.error(err));
   }, []);
 
+  const methodologySteps = [
+    {
+      step: '01',
+      title: t.about.step1Title,
+      description: t.about.step1Desc
+    },
+    {
+      step: '02',
+      title: t.about.step2Title,
+      description: t.about.step2Desc
+    },
+    {
+      step: '03',
+      title: t.about.step3Title,
+      description: t.about.step3Desc
+    },
+    {
+      step: '04',
+      title: t.about.step4Title,
+      description: t.about.step4Desc
+    },
+    {
+      step: '05',
+      title: t.about.step5Title,
+      description: t.about.step5Desc
+    },
+    {
+      step: '06',
+      title: t.about.step6Title,
+      description: t.about.step6Desc
+    }
+  ];
+
   return (
     <div className="bg-slate-50 min-h-screen">
       
@@ -79,13 +72,13 @@ export default function AboutPage() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
               <GraduationCap className="w-3.5 h-3.5" />
-              Faculty Profile
+              {t.about.heroBadge}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              About Ajay Choudhary Sir
+              {t.about.heroTitle}
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Senior Chemistry Educator with 8+ years of dedicated experience mentoring board toppers and competitive exam rankers across three premier coaching institutions.
+              {t.about.heroDesc}
             </p>
           </div>
         </div>
@@ -119,34 +112,34 @@ export default function AboutPage() {
             <div className="lg:col-span-7 space-y-6">
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-cyan-700">
-                  Pedagogical Journey
+                  {t.about.journeyBadge}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  Demystifying Chemistry Through Logic, Clarity & Laboratory Insights
+                  {t.about.journeyTitle}
                 </h2>
               </div>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                Ajay Choudhary Sir began his teaching career with a single goal: to dismantle the widespread myth that Chemistry requires endless mechanical memorization. Over the past <strong>8+ years</strong>, he has guided more than <strong>5,000 students</strong> across Class 11, Class 12, CBSE/ISC Boards, JEE Main, and NEET.
+                {t.about.journeyP1}
               </p>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                Currently engaged as Senior Chemistry Faculty across <strong>three renowned coaching centers</strong>, Ajay Sir specializes in creating intuitive mental maps for <strong>Organic Reaction Mechanisms</strong>, explaining quantum principles behind <strong>Inorganic Periodic Trends</strong>, and conducting comprehensive <strong>Practical Chemistry & Qualitative Salt Analysis workshops</strong>.
+                {t.about.journeyP2}
               </p>
 
               {/* Stat Highlights */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <div className="text-2xl font-black text-slate-900">8+</div>
-                  <div className="text-xs font-bold text-slate-600">Years Experience</div>
+                  <div className="text-2xl font-black text-slate-900">{t.about.statExp}</div>
+                  <div className="text-xs font-bold text-slate-600">{t.about.statExpLabel}</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <div className="text-2xl font-black text-cyan-700">3</div>
-                  <div className="text-xs font-bold text-slate-600">Coaching Centers</div>
+                  <div className="text-2xl font-black text-cyan-700">{t.about.statCenters}</div>
+                  <div className="text-xs font-bold text-slate-600">{t.about.statCentersLabel}</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 col-span-2 sm:col-span-1">
-                  <div className="text-2xl font-black text-teal-700">5,000+</div>
-                  <div className="text-xs font-bold text-slate-600">Students Mentored</div>
+                  <div className="text-2xl font-black text-teal-700">{t.about.statStudents}</div>
+                  <div className="text-xs font-bold text-slate-600">{t.about.statStudentsLabel}</div>
                 </div>
               </div>
 
@@ -163,18 +156,18 @@ export default function AboutPage() {
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
               <Sparkles className="w-3.5 h-3.5" />
-              Teaching Philosophy
+              {t.about.philosophyBadge}
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white">
-              &ldquo;Chemistry becomes effortless when concepts are understood, not just memorized.&rdquo;
+              {t.about.philosophyQuote}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
-              The 6-step systematic methodology implemented across all batch lectures and doubt clinics.
+              {t.about.philosophySub}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {METHODOLOGY_STEPS.map((item) => (
+            {methodologySteps.map((item) => (
               <div
                 key={item.step}
                 className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 hover:border-cyan-500/40 transition-all duration-300 space-y-3"
@@ -202,13 +195,13 @@ export default function AboutPage() {
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 font-bold text-xs">
               <Building2 className="w-3.5 h-3.5" />
-              Teaching Locations
+              {t.about.centersBadge}
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Active Coaching Center Batches
+              {t.about.centersTitle}
             </h2>
             <p className="text-sm text-slate-600">
-              Ajay Sir conducts offline lectures, laboratory workshops, and weekly test series at these three established coaching institutes.
+              {t.about.centersSub}
             </p>
           </div>
 
@@ -217,11 +210,11 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold">
                 01
               </div>
-              <h3 className="text-lg font-bold text-slate-900">Catalyst Career Institute</h3>
+              <h3 className="text-lg font-bold text-slate-900">{t.about.center1Name}</h3>
               <p className="text-xs text-slate-600">Plot 42, Knowledge Park, Sector 14</p>
               <div className="pt-2 border-t border-slate-200 space-y-1.5 text-xs text-slate-700">
-                <div><strong>Target Batches:</strong> Class 12 Board + JEE Main/Adv</div>
-                <div><strong>Schedule:</strong> Mon, Wed, Fri (4:00 PM – 7:30 PM)</div>
+                <div><strong>Batch:</strong> {t.about.center1Batch}</div>
+                <div><strong>Schedule:</strong> {t.about.center1Schedule}</div>
               </div>
             </div>
 
@@ -229,11 +222,11 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold">
                 02
               </div>
-              <h3 className="text-lg font-bold text-slate-900">Apex Science Academy</h3>
+              <h3 className="text-lg font-bold text-slate-900">{t.about.center2Name}</h3>
               <p className="text-xs text-slate-600">B-Block Main Market, Model Town</p>
               <div className="pt-2 border-t border-slate-200 space-y-1.5 text-xs text-slate-700">
-                <div><strong>Target Batches:</strong> Class 11 Foundation & GOC</div>
-                <div><strong>Schedule:</strong> Tue, Thu, Sat (3:30 PM – 7:00 PM)</div>
+                <div><strong>Batch:</strong> {t.about.center2Batch}</div>
+                <div><strong>Schedule:</strong> {t.about.center2Schedule}</div>
               </div>
             </div>
 
@@ -241,11 +234,11 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
                 03
               </div>
-              <h3 className="text-lg font-bold text-slate-900">Prerana Learning Hub</h3>
+              <h3 className="text-lg font-bold text-slate-900">{t.about.center3Name}</h3>
               <p className="text-xs text-slate-600">3rd Floor, Scholar Towers, South Extension</p>
               <div className="pt-2 border-t border-slate-200 space-y-1.5 text-xs text-slate-700">
-                <div><strong>Target Batches:</strong> NEET Chemistry & Lab Sessions</div>
-                <div><strong>Schedule:</strong> Sunday Intensive (8:30 AM – 2:00 PM)</div>
+                <div><strong>Batch:</strong> {t.about.center3Batch}</div>
+                <div><strong>Schedule:</strong> {t.about.center3Schedule}</div>
               </div>
             </div>
           </div>
@@ -260,52 +253,52 @@ export default function AboutPage() {
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 font-bold text-xs">
               <Users className="w-3.5 h-3.5" />
-              Teaching Gallery
+              {t.portfolio.badge}
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Ajay Sir&apos;s Teaching Journey & Classroom Portfolio
+              {t.portfolio.title}
             </h2>
             <p className="text-sm text-slate-600">
-              A glimpse into Ajay Choudhary Sir&apos;s laboratory demonstrations, classroom lectures, and student mentorship across his three teaching centers.
+              {t.portfolio.subtitle}
             </p>
           </div>
 
-          {/* Smart Multi-Center Academic Teaching Hub Dashboard */}
+          {/* Multi-Center Academic Teaching Hub */}
           <div className="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl mb-12 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white p-6 sm:p-10">
             <div className="space-y-6">
               <div className="space-y-2">
                 <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-                  Teaching Excellence & Infrastructure
+                  {t.portfolio.bannerTag}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black text-white">
-                  8+ Years of Chemistry Mentorship Across 3 Premier Centers
+                  {t.portfolio.bannerHeading}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-                  Ajay Sir conducts specialized daily classes, weekly mock test evaluations, and structured doubt removal clinics across Sector 14, Model Town, and South Extension.
+                  {t.portfolio.bannerSub}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                 <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <span className="text-xs font-bold text-cyan-400 block">Catalyst Career Institute</span>
+                  <span className="text-xs font-bold text-cyan-400 block">{t.about.center1Name}</span>
                   <span className="text-[11px] text-slate-300 font-medium">Sector 14 Center</span>
-                  <p className="text-[11px] text-slate-400">Class 12 Board Mastery & Organic Mechanism Drills</p>
+                  <p className="text-[11px] text-slate-400">{t.about.center1Batch}</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <span className="text-xs font-bold text-teal-400 block">Apex Science Academy</span>
+                  <span className="text-xs font-bold text-teal-400 block">{t.about.center2Name}</span>
                   <span className="text-[11px] text-slate-300 font-medium">Model Town Center</span>
-                  <p className="text-[11px] text-slate-400">Class 11 Foundation & Inorganic Bonding Theories</p>
+                  <p className="text-[11px] text-slate-400">{t.about.center2Batch}</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <span className="text-xs font-bold text-indigo-400 block">Prerana Learning Hub</span>
+                  <span className="text-xs font-bold text-indigo-400 block">{t.about.center3Name}</span>
                   <span className="text-[11px] text-slate-300 font-medium">South Extension Center</span>
-                  <p className="text-[11px] text-slate-400">NEET Chemistry & Comprehensive Laboratory Practical Drills</p>
+                  <p className="text-[11px] text-slate-400">{t.about.center3Batch}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Portfolio Highlights */}
+          {/* Portfolio Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {team.map((member) => (
               <div
@@ -314,7 +307,6 @@ export default function AboutPage() {
               >
                 <div>
                   {member.id === 'team-1' ? (
-                    // 1. Organic Chemistry Smart Header
                     <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 flex items-center gap-1">
@@ -339,7 +331,6 @@ export default function AboutPage() {
                       </div>
                     </div>
                   ) : member.id === 'team-3' ? (
-                    // 2. Inorganic Chemistry Smart Header
                     <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-teal-500/20 text-teal-300 border border-teal-500/30 flex items-center gap-1">
@@ -364,7 +355,6 @@ export default function AboutPage() {
                       </div>
                     </div>
                   ) : (
-                    // 3. Practical Chemistry Smart Header
                     <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-5 flex flex-col justify-between overflow-hidden border-b border-slate-800 text-white">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
@@ -381,7 +371,7 @@ export default function AboutPage() {
                         </div>
                         <div className="flex flex-wrap gap-1 pt-1">
                           <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">Brown Ring</span>
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Mohr's Salt</span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Mohr&apos;s Salt</span>
                           <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Viva Voce Prep</span>
                         </div>
                       </div>
@@ -412,7 +402,7 @@ export default function AboutPage() {
                   <span className="font-semibold">{member.experience}</span>
                   {member.email && (
                     <a href={`mailto:${member.email}`} className="text-cyan-700 font-bold hover:underline">
-                      Contact
+                      Email
                     </a>
                   )}
                 </div>
@@ -424,24 +414,24 @@ export default function AboutPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-12 bg-slate-900 text-white text-center">
+      <section className="py-16 bg-slate-900 text-white text-center">
         <div className="max-w-4xl mx-auto px-4 space-y-4">
-          <h3 className="text-2xl font-black text-white">Join Ajay Sir&apos;s Next Batch</h3>
+          <h3 className="text-2xl sm:text-3xl font-black text-white">{t.about.ctaTitle}</h3>
           <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto">
-            Book a counseling session, attend a demo lecture, or download recent question papers.
+            {t.about.ctaSub}
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <Link
               href="/contact"
               className="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs sm:text-sm font-bold shadow transition-colors"
             >
-              Get in Touch
+              {t.about.ctaContactBtn}
             </Link>
             <Link
               href="/study-materials"
               className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-bold transition-colors"
             >
-              Explore Study Materials
+              {t.about.ctaNotesBtn}
             </Link>
           </div>
         </div>

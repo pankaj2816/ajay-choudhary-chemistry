@@ -25,8 +25,10 @@ import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 import { getQuestionPapers, getSolutions } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
+import { useLanguage } from '@/context/LanguageContext';
 
 function QuestionPapersContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
   const initialSubject = searchParams.get('subject') || 'All';
@@ -112,13 +114,13 @@ function QuestionPapersContent() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950 border border-blue-500/30 text-blue-300 font-bold text-xs">
               <FileText className="w-3.5 h-3.5" />
-              Examination Library
+              {t.papersSolutions.badge}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              Chemistry Question Papers Library
+              {t.papersSolutions.title}
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Browse, preview, and download chapter unit tests, term exams, and board mock papers created by Ajay Choudhary Sir with one-click access to verified solutions.
+              {t.papersSolutions.subtitle}
             </p>
           </div>
         </div>

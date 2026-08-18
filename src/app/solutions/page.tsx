@@ -24,8 +24,10 @@ import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 import { getSolutions, getQuestionPapers } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
+import { useLanguage } from '@/context/LanguageContext';
 
 function SolutionsContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
   const initialSubject = searchParams.get('subject') || 'All';
@@ -94,13 +96,13 @@ function SolutionsContent() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-300 font-bold text-xs">
               <CheckCircle className="w-3.5 h-3.5" />
-              Verified Answer Keys & Mechanisms
+              {t.papersSolutions.solutionReady}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              Chemistry Solutions Library
+              {t.papersSolutions.allSolutionsBtn}
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Step-by-step chemical mechanisms, crystal field splitting calculations, qualitative analysis flowcharts, and official marking schemes verified by Ajay Choudhary Sir.
+              {t.papersSolutions.officialKey}
             </p>
           </div>
         </div>

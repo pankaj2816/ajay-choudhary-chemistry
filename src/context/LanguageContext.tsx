@@ -169,6 +169,79 @@ export interface Translations {
     schedulesTitle: string;
     faqTitle: string;
   };
+  // About Page
+  about: {
+    heroBadge: string;
+    heroTitle: string;
+    heroDesc: string;
+    journeyBadge: string;
+    journeyTitle: string;
+    journeyP1: string;
+    journeyP2: string;
+    statExp: string;
+    statExpLabel: string;
+    statCenters: string;
+    statCentersLabel: string;
+    statStudents: string;
+    statStudentsLabel: string;
+    philosophyBadge: string;
+    philosophyQuote: string;
+    philosophySub: string;
+    step1Title: string;
+    step1Desc: string;
+    step2Title: string;
+    step2Desc: string;
+    step3Title: string;
+    step3Desc: string;
+    step4Title: string;
+    step4Desc: string;
+    step5Title: string;
+    step5Desc: string;
+    step6Title: string;
+    step6Desc: string;
+    centersBadge: string;
+    centersTitle: string;
+    centersSub: string;
+    center1Name: string;
+    center1Batch: string;
+    center1Schedule: string;
+    center2Name: string;
+    center2Batch: string;
+    center2Schedule: string;
+    center3Name: string;
+    center3Batch: string;
+    center3Schedule: string;
+    credentialsBadge: string;
+    credentialsTitle: string;
+    credentialsSub: string;
+    qual1Title: string;
+    qual1Desc: string;
+    qual2Title: string;
+    qual2Desc: string;
+    qual3Title: string;
+    qual3Desc: string;
+    qual4Title: string;
+    qual4Desc: string;
+    ctaTitle: string;
+    ctaSub: string;
+    ctaContactBtn: string;
+    ctaNotesBtn: string;
+  };
+  // Inner Pages Common
+  pages: {
+    allClasses: string;
+    allSubjects: string;
+    allCategories: string;
+    allTypes: string;
+    searchPlaceholder: string;
+    downloadBtn: string;
+    previewBtn: string;
+    viewSolutionBtn: string;
+    viewPaperBtn: string;
+    closeBtn: string;
+    noResults: string;
+    noResultsSub: string;
+  };
   // Footer
   footer: {
     tagline: string;
@@ -179,13 +252,13 @@ export interface Translations {
   };
 }
 
-const TRANSLATIONS: Record<Language, Translations> = {
+export const TRANSLATIONS: Record<Language, Translations> = {
   en: {
     nav: {
       home: 'Home',
       about: 'About',
       subjects: 'Subjects',
-      updates: 'Updates',
+      updates: 'Notice Board',
       studyMaterials: 'Study Materials',
       questionPapers: 'Question Papers',
       solutions: 'Solutions',
@@ -194,128 +267,128 @@ const TRANSLATIONS: Record<Language, Translations> = {
       admin: 'Admin'
     },
     banner: {
-      announcement: 'Announcement',
+      announcement: 'Important Announcement',
       text: '📢 Admissions Open for Class 11 & 12 Chemistry Master Batch & JEE/NEET Revision. Check Notice Board!',
       viewNotice: 'View Notice'
     },
     hero: {
       badge: '8+ Years of Chemistry Teaching Excellence',
-      centersCount: '3 Coaching Centers',
+      centersCount: '3 Premier Coaching Centers',
       titleLine1: 'Master Chemistry with',
       titleHighlight: 'Ajay Choudhary Sir',
-      description: 'Specialized coaching in Organic Reaction Mechanisms, Conceptual Inorganic Chemistry, and Practical Laboratory Knowledge for CBSE, ISC, JEE & NEET aspirants.',
-      organicTitle: 'Organic',
-      organicSub: 'Mechanisms & Roadmaps',
-      inorganicTitle: 'Inorganic',
-      inorganicSub: 'Bonding & Trends',
-      practicalTitle: 'Practical',
-      practicalSub: 'Salt Analysis & Labs',
-      ctaMaterials: 'Explore Study Materials',
-      ctaNotices: 'Notice Board & Tests',
-      ctaContact: 'Contact Teacher',
+      description: 'Demystifying Organic Reaction Mechanisms, Conceptual Inorganic Chemistry, and Practical Laboratory Techniques from first principles for CBSE, Boards, JEE Main, and NEET aspirants.',
+      organicTitle: 'Organic Chemistry',
+      organicSub: 'Reaction Mechanisms & Roadmaps',
+      inorganicTitle: 'Inorganic Chemistry',
+      inorganicSub: 'Periodic Trends & CFT Bonding',
+      practicalTitle: 'Practical Chemistry',
+      practicalSub: 'Qualitative Salt Analysis & Viva Prep',
+      ctaMaterials: 'Access Study Materials',
+      ctaNotices: 'Notice Board & Updates',
+      ctaContact: 'Email Ajay Sir',
       statStudents: '5,000+ Students Mentored',
-      statConcept: '100% Concept-First Approach',
+      statConcept: '100% Concept-Driven Learning',
       statPapers: 'Free Question Papers & Solutions',
-      teacherCardRole: 'Head of Chemistry • 8+ Years',
+      teacherCardRole: 'Senior Chemistry Faculty • 8+ Years Exp',
       teachingAt: 'Teaching At',
       teachingCenters: '3 Coaching Centers',
-      teachingExp: 'Teaching Exp',
+      teachingExp: 'Experience',
       experienceYears: '8+ Years'
     },
     stats: {
       expTitle: '8+ Years',
-      expDesc: 'Teaching Experience in Board & Competitive Chemistry',
+      expDesc: 'Of dedicated classroom and board exam chemistry mentoring',
       centersTitle: '3 Coaching Centers',
-      centersDesc: 'Teaching across top academic institutes and batches',
+      centersDesc: 'Active classroom batches across premier institutes',
       masteryTitle: '100% Conceptual',
-      masteryDesc: 'Mechanism-first clarity without rote memorization',
+      masteryDesc: 'Mechanisms & orbital logic over rote memorization',
       studentsTitle: '5,000+ Students',
-      studentsDesc: 'Mentored for Board 95%+ marks & JEE/NEET ranks'
+      studentsDesc: 'Mentored to 95%+ in Boards & top JEE/NEET percentiles'
     },
     subjects: {
-      badge: 'Specialized Core Chemistry',
-      title: 'Expertise Across 3 Major Pillars of Chemistry',
-      subtitle: 'Comprehensive conceptual framework designed to help students master reactions, understand periodic trends, and excel in laboratory examinations.',
+      badge: 'Core Chemistry Curriculum',
+      title: 'Mastery Across Three Foundational Pillars',
+      subtitle: 'A structured, first-principles pedagogy designed to help students visualize reactions, master periodic trends, and ace practical examinations with total confidence.',
       organicName: 'Organic Chemistry',
-      organicDesc: 'Curved-arrow reaction mechanisms, inductive/resonance effects, stereochemistry, named reactions, and multi-step synthesis roadmaps.',
+      organicDesc: 'Curved-arrow mechanisms, resonance stabilization, stereochemistry, named reactions, and multi-step synthesis roadmaps.',
       inorganicName: 'Inorganic Chemistry',
-      inorganicDesc: 'Crystal Field Theory, coordination complexes, periodic properties, chemical bonding, and molecular orbital diagrams.',
+      inorganicDesc: 'Crystal Field Theory (CFT), coordination compounds, periodic trends, chemical bonding, and molecular orbital diagrams.',
       practicalName: 'Practical Chemistry',
-      practicalDesc: 'Qualitative salt analysis, cation/anion detection flowcharts, titrimetric calculations, and board viva voce mastery.',
-      exploreBtn: 'View Syllabus & Notes'
+      practicalDesc: 'Qualitative salt analysis, cation/anion identification flowcharts, titrimetric calculations, and board viva voce mastery.',
+      exploreBtn: 'Explore Topics & Notes'
     },
     notices: {
-      badge: 'Real-time Board Announcements',
-      title: 'Latest Notices, Exam Dates & Class Updates',
-      subtitle: 'Stay up-to-date with test schedules, homework assignments, doubt session timings, and holiday announcements across all 3 centers.',
-      viewAll: 'View All Notices & Archive',
+      badge: 'Official Announcements',
+      title: 'Latest Notices, Exam Dates & Batch Updates',
+      subtitle: 'Stay updated with test schedules, assignment deadlines, holiday notices, and special weekend masterclasses across all 3 coaching centers.',
+      viewAll: 'View All Notices',
       downloadBtn: 'Download Attachment',
-      pinned: 'Pinned Alert',
+      pinned: 'Pinned Announcement',
       allBatches: 'All Batches',
       clickToRead: 'Click to read full announcement'
     },
     materials: {
-      badge: 'Download Free Learning Materials',
-      title: 'Featured Study Vault & Handwritten Notes',
-      subtitle: 'High-yield master reaction maps, formula cheat-sheets, and comprehensive chapter notes prepared by Ajay Choudhary Sir.',
-      viewVault: 'Explore All Materials Vault',
+      badge: 'Free Academic Vault',
+      title: 'Featured Chapter Notes & Formula Sheets',
+      subtitle: 'Download curated PDF notes, reaction roadmaps, and revision cheat-sheets authored directly by Ajay Choudhary Sir.',
+      viewVault: 'View Full Study Vault',
       previewBtn: 'Preview PDF',
-      downloadBtn: 'Download Notes',
+      downloadBtn: 'Download PDF',
       downloadsText: 'downloads'
     },
     papersSolutions: {
-      badge: 'Dual Learning Hub',
+      badge: 'Practice & Validate',
       title: 'Latest Question Papers & Verified Solutions',
-      subtitle: 'Practice with previous year papers, periodic unit tests, and board mock exams with direct access to official step-by-step solutions.',
+      subtitle: 'Practice with previous year papers, unit tests, and board mock exams with detailed step-by-step verified solution keys.',
       viewSolution: 'View Solution',
-      viewPaper: 'View Question Paper',
+      viewPaper: 'View Paper',
       downloadPdf: 'Download PDF',
-      allPapersBtn: 'Browse All Question Papers',
-      allSolutionsBtn: 'Browse All Verified Solutions',
-      solutionReady: 'Solution Ready',
-      officialKey: 'Official Answer Key & Hints'
+      allPapersBtn: 'Browse All Papers',
+      allSolutionsBtn: 'Browse All Solutions',
+      solutionReady: 'Solution Available',
+      officialKey: 'Verified Solution & Marking Key'
     },
     whyLearn: {
       badge: 'Teaching Methodology',
       title: 'Why Learn Chemistry with Ajay Sir?',
-      subtitle: 'A proven 6-step conceptual pedagogy that transforms complex chemistry equations into intuitive, logical understanding.',
-      pillar1Title: 'First-Principles Understanding',
-      pillar1Desc: 'We deconstruct atomic structures and orbital overlaps before writing reaction equations.',
+      subtitle: 'A 6-step systematic methodology that turns complex chemical reactions into intuitive, logical understanding.',
+      pillar1Title: 'First-Principles Foundation',
+      pillar1Desc: 'Deconstruct atomic structures, hybridization, and electronic configurations before tackling complex problems.',
       pillar2Title: 'Visual Reaction Mechanisms',
-      pillar2Desc: 'Master electron shifts with curved-arrow notations instead of memorizing products.',
-      pillar3Title: 'Laboratory Correlation',
-      pillar3Desc: 'Connect classroom theory with real salt precipitates, colors, and titrations.',
-      pillar4Title: 'Multi-Tier Practice DPPs',
-      pillar4Desc: 'Graduated problem sets from NCERT fundamentals to JEE Advanced level questions.',
-      pillar5Title: 'Personal Doubt Resolution',
-      pillar5Desc: 'Dedicated doubt-clearing sessions and mistake analysis after every chapter test.',
-      pillar6Title: 'Exam Presentation Strategy',
-      pillar6Desc: 'Step-by-step answer formatting techniques to score maximum marks in Board exams.'
+      pillar2Desc: 'Master electron movements with curved-arrow notation instead of memorizing hundreds of disconnected equations.',
+      pillar3Title: 'Lab Practical Integration',
+      pillar3Desc: 'Correlate textbook equations with real laboratory precipitate colors, flame tests, and titration endpoints.',
+      pillar4Title: 'Graduated Multi-Tier Practice',
+      pillar4Desc: 'Progressive problem solving from NCERT & Board exemplars to high-yield JEE Main and NEET DPPs.',
+      pillar5Title: 'Mistake Analysis & Doubts',
+      pillar5Desc: 'Regular unit test reviews, identifying conceptual traps, calculation errors, and examiner tricks.',
+      pillar6Title: 'Board Exam Presentation Tactics',
+      pillar6Desc: 'Structured methods for 3-mark & 5-mark answers with balanced equations, ensuring zero marks lost.'
     },
     portfolio: {
-      badge: 'Classroom & Lab Gallery',
-      title: 'Teaching Journey & Academic Portfolio',
-      subtitle: 'A visual overview of Ajay Choudhary Sir’s interactive classroom lectures, laboratory salt analysis demonstrations, and student mentorship sessions.',
-      bannerTag: 'Academic Experience & Lab Mentorship',
-      bannerHeading: 'Active Classroom Batches Across 3 Coaching Centers',
-      bannerSub: 'Direct individual guidance for Class 11, Class 12, JEE Main & Advanced, and NEET aspirants.',
-      readBio: 'Read Full Biography'
+      badge: 'Classroom & Laboratory',
+      title: 'Academic Experience & Teaching Portfolio',
+      subtitle: 'Explore Ajay Sir’s classroom lectures, practical lab demonstrations, and student mentorship sessions.',
+      bannerTag: 'Dedicated Academic Mentorship',
+      bannerHeading: 'Active Batches Across 3 Coaching Centers',
+      bannerSub: 'Guiding Class 11, Class 12, JEE Main, and NEET aspirants to conceptual mastery.',
+      readBio: 'Read Full Faculty Bio'
     },
     interactive: {
       badge: 'Interactive Learning Tool',
       title: 'Interactive Concept Explorer & Reaction Visualizer',
-      subtitle: 'Click on any topic to explore step-by-step mechanisms, reaction conditions, and high-yield examination tips.',
+      subtitle: 'Select any key topic below to explore the chemical equation, step-by-step mechanism, and exam scoring insights.',
       selectTopic: 'Select Chemistry Topic:',
       reactionBoxTitle: 'Chemical Equation & Reaction Pathway',
       mechanismTitle: 'Step-by-Step Reaction Mechanism:',
-      takeawayTitle: 'Key Conceptual Rule:',
+      takeawayTitle: 'Key Concept Rule:',
       examRelevance: 'Exam Scoring Weightage:'
     },
     cta: {
-      badge: 'Admissions & Mentorship',
-      title: 'Ready to Score 95%+ in Chemistry & Crack JEE / NEET?',
-      description: 'Join Ajay Sir’s classroom batches at Catalyst Career Institute, Apex Science Academy, or Prerana Learning Hub. Limited seats per batch for personalized attention.',
-      joinBtn: 'Enroll / Send Inquiry',
+      badge: 'Admissions & Guidance',
+      title: 'Ready to Score 95%+ in Chemistry & Crack JEE/NEET?',
+      description: 'Join Ajay Choudhary Sir’s classroom batches at Catalyst Career Institute, Apex Science Academy, or Prerana Learning Hub. Limited seats for individual attention.',
+      joinBtn: 'Send Admission Inquiry',
       emailBtn: 'Contact via Email'
     },
     contact: {
@@ -323,14 +396,85 @@ const TRANSLATIONS: Record<Language, Translations> = {
       subtitle: 'Have a question regarding batch timings, admissions, or test series? Send an inquiry or reach out directly.',
       nameLabel: 'Your Full Name *',
       emailLabel: 'Email Address *',
-      phoneLabel: 'Phone Number (WhatsApp) *',
-      classLabel: 'Student Class / Target Exam *',
+      phoneLabel: 'Phone Number (Optional)',
+      classLabel: 'Student Class / Academic Level',
       messageLabel: 'Your Message or Question *',
       sendBtn: 'Submit Inquiry Message',
       sending: 'Submitting...',
       centersTitle: 'Teaching Coaching Centers & Locations',
       schedulesTitle: 'Weekly Class Schedule',
       faqTitle: 'Frequently Asked Questions'
+    },
+    about: {
+      heroBadge: 'Faculty Profile',
+      heroTitle: 'About Ajay Choudhary Sir',
+      heroDesc: 'Senior Chemistry Educator with 8+ years of dedicated experience mentoring board toppers and competitive exam rankers across three premier coaching institutions.',
+      journeyBadge: 'Pedagogical Journey',
+      journeyTitle: 'Demystifying Chemistry Through Logic, Clarity & Laboratory Insights',
+      journeyP1: 'Ajay Choudhary Sir began his teaching career with a single goal: to dismantle the widespread myth that Chemistry requires endless mechanical memorization. Over the past 8+ years, he has guided more than 5,000 students across Class 11, Class 12, CBSE/ISC Boards, JEE Main, and NEET.',
+      journeyP2: 'Currently engaged as Senior Chemistry Faculty across three renowned coaching centers, Ajay Sir specializes in creating intuitive mental maps for Organic Reaction Mechanisms, explaining quantum principles behind Inorganic Periodic Trends, and conducting comprehensive Practical Chemistry & Qualitative Salt Analysis workshops.',
+      statExp: '8+',
+      statExpLabel: 'Years Experience',
+      statCenters: '3',
+      statCentersLabel: 'Coaching Centers',
+      statStudents: '5,000+',
+      statStudentsLabel: 'Students Mentored',
+      philosophyBadge: 'Teaching Philosophy',
+      philosophyQuote: '“Chemistry becomes effortless when concepts are understood, not just memorized.”',
+      philosophySub: 'The 6-step systematic methodology implemented across all batch lectures and doubt clinics.',
+      step1Title: '1. Build Strong Fundamentals',
+      step1Desc: 'Deconstruct core chemical principles, atomic structure, and electronic configurations before tackling complex problems.',
+      step2Title: '2. Deep Conceptual Visualization',
+      step2Desc: 'Master reaction pathways through curved-arrow notation and molecular orbital models instead of rote memorization.',
+      step3Title: '3. Connect Theory with Practical Experiments',
+      step3Desc: 'Reinforce chemical equations by correlating them with qualitative salt analysis colors, precipitates, and titrimetric endpoints.',
+      step4Title: '4. Targeted Multi-Tier Practice',
+      step4Desc: 'Progressive problem solving from NCERT & Board exemplar questions to high-yield JEE Main, Advanced, and NEET DPPs.',
+      step5Title: '5. Detailed Mistake Analysis',
+      step5Desc: 'Regular unit test reviews, pinpointing conceptual traps, calculation errors, and common examiner tricks.',
+      step6Title: '6. Systematic Examination Temperament',
+      step6Desc: 'Time management drills, structured presentation methods for 3-mark & 5-mark board answers, and speed tactics for MCQs.',
+      centersBadge: 'Teaching Locations',
+      centersTitle: 'Active Coaching Center Batches',
+      centersSub: 'Ajay Sir conducts offline lectures, laboratory workshops, and weekly test series at these three established coaching institutes.',
+      center1Name: 'Catalyst Career Institute',
+      center1Batch: 'Class 12 Boards & JEE Target Batch',
+      center1Schedule: 'Mon, Wed, Fri • 4:30 PM – 7:30 PM (Sector 14 Center)',
+      center2Name: 'Apex Science Academy',
+      center2Batch: 'Class 11 Foundation & GOC Special',
+      center2Schedule: 'Tue, Thu, Sat • 4:30 PM – 7:30 PM (Model Town Center)',
+      center3Name: 'Prerana Learning Hub',
+      center3Batch: 'NEET Intensive & Lab Workshops',
+      center3Schedule: 'Sunday Special • 9:00 AM – 2:00 PM (South Ext Center)',
+      credentialsBadge: 'Verified Qualifications',
+      credentialsTitle: 'Academic Credentials & Honors',
+      credentialsSub: 'Formal qualifications and pedagogical training backing Ajay Sir’s teaching excellence.',
+      qual1Title: 'Master of Science (M.Sc.) in Chemistry',
+      qual1Desc: 'Specialization in Organic Synthesis, Reaction Kinetics & Spectroscopy with First Division Honors.',
+      qual2Title: 'Bachelor of Education (B.Ed)',
+      qual2Desc: 'Certified in Modern Science Pedagogy, Diagnostic Assessment & Remedial Teaching Methodologies.',
+      qual3Title: '8+ Years Senior Chemistry Faculty',
+      qual3Desc: 'Mentored over 5,000 students with numerous 95%+ Board scorers and top 1% JEE/NEET ranks.',
+      qual4Title: 'Practical Chemistry Specialist',
+      qual4Desc: 'Conducted 100+ hands-on Salt Analysis and Volumetric Titration laboratory workshops.',
+      ctaTitle: 'Learn Chemistry with Total Conceptual Clarity',
+      ctaSub: 'Connect with Ajay Sir for batch admissions, study materials, or academic guidance.',
+      ctaContactBtn: 'Send Inquiry Message',
+      ctaNotesBtn: 'Explore Study Materials'
+    },
+    pages: {
+      allClasses: 'All Classes',
+      allSubjects: 'All Subjects',
+      allCategories: 'All Categories',
+      allTypes: 'All Types',
+      searchPlaceholder: 'Search by topic, chapter, or keyword...',
+      downloadBtn: 'Download PDF',
+      previewBtn: 'Preview PDF',
+      viewSolutionBtn: 'View Solution',
+      viewPaperBtn: 'View Paper',
+      closeBtn: 'Close',
+      noResults: 'No materials found matching your search criteria.',
+      noResultsSub: 'Try adjusting your search keywords or removing selected filters.'
     },
     footer: {
       tagline: 'Empowering students to master Organic, Inorganic, and Practical Chemistry with 8+ years of academic excellence across 3 coaching centers.',
@@ -356,142 +500,213 @@ const TRANSLATIONS: Record<Language, Translations> = {
     },
     banner: {
       announcement: 'महत्वपूर्ण सूचना',
-      text: '📢 कक्षा 11 एवं 12 रसायन विज्ञान मास्टर बैच और JEE/NEET रिवीज़न के लिए प्रवेश प्रारंभ। नोटिस बोर्ड देखें!',
+      text: '📢 कक्षा 11 एवं 12 रसायन विज्ञान मास्टर बैच और JEE/NEET रिवीज़न के लिए नए प्रवेश प्रारंभ। नोटिस बोर्ड देखें!',
       viewNotice: 'नोटिस देखें'
     },
     hero: {
-      badge: 'रसायन विज्ञान शिक्षण में 8+ वर्षों का उत्कृष्ट अनुभव',
+      badge: 'रसायन विज्ञान शिक्षण में 8+ वर्षों का अनुभव',
       centersCount: '3 प्रमुख कोचिंग संस्थान',
-      titleLine1: 'रसायन विज्ञान में महारत हासिल करें',
+      titleLine1: 'केमिस्ट्री को आसान बनाएं',
       titleHighlight: 'अजय चौधरी सर के साथ',
-      description: 'कार्बनिक अभिक्रिया क्रियाविधि (Organic Mechanisms), अकार्बनिक रसायन एवं प्रयोगशाला प्रायोगिक ज्ञान में सीबीएसई, बोर्ड्स, JEE और NEET के छात्रों के लिए विशेष शिक्षण।',
-      organicTitle: 'कार्बनिक रसायन',
-      organicSub: 'मैकेनिज्म एवं रोडमैप',
-      inorganicTitle: 'अकार्बनिक रसायन',
-      inorganicSub: 'बॉन्डिंग एवं आवर्त प्रवृत्तियां',
-      practicalTitle: 'प्रायोगिक रसायन',
-      practicalSub: 'लवण विश्लेषण (Salt Analysis)',
-      ctaMaterials: 'अध्ययन सामग्री देखें',
-      ctaNotices: 'नोटिस बोर्ड एवं टेस्ट',
-      ctaContact: 'शिक्षक से संपर्क करें',
-      statStudents: '5,000+ विद्यार्थियों का मार्गदर्शन',
-      statConcept: '100% स्पष्ट अवधारणा आधारित पढ़ाई',
-      statPapers: 'निःशुल्क प्रश्न पत्र एवं सटीक समाधान',
-      teacherCardRole: 'रसायन विज्ञान विभागाध्यक्ष • 8+ वर्ष अनुभव',
-      teachingAt: 'अध्यापन केंद्र',
-      teachingCenters: '3 कोचिंग सेंटर्स',
-      teachingExp: 'शिक्षण अनुभव',
+      description: 'ऑर्गेनिक रिएक्शन मैकेनिज्म, इनऑर्गेनिक केमिस्ट्री और लैब प्रैक्टिकल को आसान लॉजिक के साथ समझें। कक्षा 11वीं, 12वीं, बोर्ड्स, JEE और NEET के लिए सरल मार्गदर्शन।',
+      organicTitle: 'ऑर्गेनिक केमिस्ट्री',
+      organicSub: 'रिएक्शन मैकेनिज्म और रोडमैप',
+      inorganicTitle: 'इनऑर्गेनिक केमिस्ट्री',
+      inorganicSub: 'बॉन्डिंग और आवर्त सारणी',
+      practicalTitle: 'प्रैक्टिकल केमिस्ट्री',
+      practicalSub: 'साल्ट एनालिसिस और वाइवा तैयारी',
+      ctaMaterials: 'नोट्स डाउनलोड करें',
+      ctaNotices: 'नोटिस बोर्ड देखें',
+      ctaContact: 'सर को ईमेल भेजें',
+      statStudents: '5,000+ विद्यार्थियों को पढ़ाया',
+      statConcept: '100% कॉन्सेप्ट-आधारित पढ़ाई',
+      statPapers: 'फ्री प्रश्न पत्र और सटीक समाधान',
+      teacherCardRole: 'सीनियर केमिस्ट्री फैकल्टी • 8+ वर्ष अनुभव',
+      teachingAt: 'पढ़ाने के केंद्र',
+      teachingCenters: '3 कोचिंग संस्थान',
+      teachingExp: 'अनुभव',
       experienceYears: '8+ वर्ष'
     },
     stats: {
       expTitle: '8+ वर्ष',
-      expDesc: 'बोर्ड एवं प्रतियोगी परीक्षाओं में अध्यापन का अनुभव',
+      expDesc: 'बोर्ड और प्रतियोगी परीक्षाओं में पढ़ाने का लंबा अनुभव',
       centersTitle: '3 कोचिंग केंद्र',
-      centersDesc: 'प्रतिष्ठित संस्थानों में नियमित शिक्षण बैच',
-      masteryTitle: '100% वैचारिक स्पष्टता',
-      masteryDesc: 'रटने की बजाय हर अभिक्रिया को वैज्ञानिक आधार से समझना',
+      centersDesc: 'प्रमुख संस्थानों में नियमित और सक्रिय बैच',
+      masteryTitle: '100% कॉन्सेप्ट',
+      masteryDesc: 'बिना रटे हर रिएक्शन को लॉजिक से समझने की सीख',
       studentsTitle: '5,000+ विद्यार्थी',
-      studentsDesc: 'बोर्ड्स में 95%+ अंक और JEE/NEET में उत्कृष्ट परिणाम'
+      studentsDesc: 'बोर्ड परीक्षा में 95%+ अंक और JEE/NEET में बेहतरीन परिणाम'
     },
     subjects: {
-      badge: 'रसायन विज्ञान के मुख्य स्तंभ',
-      title: 'रसायन विज्ञान के तीनों अंगों में विशेषज्ञता',
-      subtitle: 'विद्यार्थियों को अभिक्रियाओं को समझने, आवर्त सारणी के नियमों को जानने और प्रयोगशाला में पूरे अंक प्राप्त करने के लिए संपूर्ण पाठ्यक्रम।',
-      organicName: 'कार्बनिक रसायन (Organic Chemistry)',
-      organicDesc: 'इलेक्ट्रॉन स्थानांतरण, प्रेरणिक व अनुनाद प्रभाव, नाम वाली अभिक्रियाएं और बहु-चरणीय रासायनिक संश्लेषण।',
-      inorganicName: 'अकार्बनिक रसायन (Inorganic Chemistry)',
-      inorganicDesc: 'क्रिस्टल फील्ड सिद्धांत (CFT), उपसहसंयोजक यौगिक, रासायनिक आबंधन एवं आण्विक कक्षक सिद्धांत।',
-      practicalName: 'प्रायोगिक रसायन (Practical Chemistry)',
-      practicalDesc: 'गुणात्मक लवण विश्लेषण (धनायन/ऋणायन परीक्षण), अनुमापन गणनाएं और बोर्ड प्रायोगिक मौखिक (Viva) की तैयारी।',
+      badge: 'केमिस्ट्री के तीन मुख्य भाग',
+      title: 'रसायन विज्ञान के तीनों भागों में पूरी पकड़',
+      subtitle: 'विद्यार्थियों को रिएक्शन आसानी से समझाने, आवर्त सारणी याद रखने और लैब प्रैक्टिकल में पूरे अंक दिलाने के लिए तैयार किया गया कोर्स।',
+      organicName: 'ऑर्गेनिक केमिस्ट्री (Organic Chemistry)',
+      organicDesc: 'इलेक्ट्रॉन शिफ्ट, रेजोनेंस, नाम वाली रिएक्शन और स्टेप-बाय-स्टेप केमिकल कन्वर्जन।',
+      inorganicName: 'इनऑर्गेनिक केमिस्ट्री (Inorganic Chemistry)',
+      inorganicDesc: 'क्रिस्टल फील्ड थ्योरी, कोऑर्डिनेशन कम्पाउंड, आवर्त सारणी के नियम और केमिकल बॉन्डिंग।',
+      practicalName: 'प्रैक्टिकल केमिस्ट्री (Practical Chemistry)',
+      practicalDesc: 'साल्ट एनालिसिस (धनायन/ऋणायन टेस्ट), टाइट्रेशन और बोर्ड प्रैक्टिकल वाइवा की पूरी तैयारी।',
       exploreBtn: 'सिलेबस और नोट्स देखें'
     },
     notices: {
-      badge: 'नवीनतम घोषणाएं',
-      title: 'महत्वपूर्ण नोटिस, परीक्षा तिथियां और कक्षा अपडेट',
-      subtitle: 'सभी 3 केंद्रों के टेस्ट शेड्यूल, गृहकार्य, डाउट सेशन और अवकाश की जानकारी प्राप्त करें।',
+      badge: 'कक्षा सूचनाएं',
+      title: 'ताज़ा नोटिस, परीक्षा तिथियां और क्लास अपडेट',
+      subtitle: 'तीनों कोचिंग केंद्रों के टेस्ट शेड्यूल, होमवर्क, डाउट क्लास और छुट्टी से जुड़ी सभी जानकारी यहां देखें।',
       viewAll: 'सभी नोटिस देखें',
       downloadBtn: 'फाइल डाउनलोड करें',
-      pinned: 'मुख्य सूचना',
+      pinned: 'मुख्य नोटिस',
       allBatches: 'सभी बैच',
       clickToRead: 'पूरी सूचना पढ़ने के लिए क्लिक करें'
     },
     materials: {
-      badge: 'निःशुल्क अध्ययन सामग्री',
-      title: 'हस्तलिखित नोट्स एवं फॉर्मूला चार्ट',
-      subtitle: 'अजय चौधरी सर द्वारा तैयार किए गए उच्च गुणवत्ता वाले रिएक्शन मैप, फॉर्मूला शीट्स और चैप्टर नोट्स।',
-      viewVault: 'सभी सामग्री देखें',
+      badge: 'मुफ़्त अध्ययन सामग्री',
+      title: 'चैप्टर नोट्स और फॉर्मूला शीट्स',
+      subtitle: 'अजय चौधरी सर द्वारा बनाए गए आसान रिएक्शन मैप, फॉर्मूला चार्ट और विस्तृत रिवीजन नोट्स डाउनलोड करें।',
+      viewVault: 'सभी नोट्स देखें',
       previewBtn: 'PDF देखें',
       downloadBtn: 'डाउनलोड करें',
       downloadsText: 'डाउनलोड'
     },
     papersSolutions: {
-      badge: 'अभ्यास एवं समाधान',
-      title: 'नवीनतम प्रश्न पत्र एवं सत्यापित समाधान',
-      subtitle: 'गत वर्षों के प्रश्न पत्र, यूनिट टेस्ट और बोर्ड मॉडल पेपर हल करें तथा स्टेप-बाय-स्टेप समाधान देखें।',
+      badge: 'अभ्यास और समाधान',
+      title: 'प्रश्न पत्र और आसान समाधान',
+      subtitle: 'पिछले वर्षों के पेपर्स, यूनिट टेस्ट और मॉडल पेपर हल करें तथा स्टेप-बाय-स्टेप सही समाधान से जांचें।',
       viewSolution: 'समाधान देखें',
-      viewPaper: 'प्रश्न पत्र देखें',
+      viewPaper: 'पेपर देखें',
       downloadPdf: 'PDF डाउनलोड करें',
-      allPapersBtn: 'सभी प्रश्न पत्र देखें',
-      allSolutionsBtn: 'सभी समाधान देखें',
+      allPapersBtn: 'सभी प्रश्न पत्र',
+      allSolutionsBtn: 'सभी समाधान',
       solutionReady: 'समाधान उपलब्ध',
-      officialKey: 'सटीक उत्तर कुंजी एवं व्याख्या'
+      officialKey: 'सत्यापित उत्तर कुंजी और व्याख्या'
     },
     whyLearn: {
-      badge: 'शिक्षण पद्धति',
-      title: 'अजय सर से रसायन विज्ञान क्यों पढ़ें?',
-      subtitle: 'एक प्रमाणित 6-चरणीय वैज्ञानिक पद्धति जो कठिन से कठिन समीकरणों को भी आसान बनाती है।',
-      pillar1Title: 'मूल सिद्धांतों से शुरुआत',
-      pillar1Desc: 'हम अभिक्रिया लिखने से पहले परमाणु संरचना और कक्षक संकरण को गहराई से समझते हैं।',
-      pillar2Title: 'चित्रात्मक अभिक्रिया मैकेनिज्म',
-      pillar2Desc: 'रटने के बजाय तीर चिह्नों (Curved Arrows) द्वारा इलेक्ट्रॉन प्रवाह को समझना।',
-      pillar3Title: 'प्रयोगशाला से सीधा संबंध',
-      pillar3Desc: 'किताबी सूत्रों को प्रयोगशाला के रंगों, अवक्षेपों और गंध परीक्षणों से जोड़ना।',
-      pillar4Title: 'स्तरवार अभ्यास प्रश्न (DPP)',
-      pillar4Desc: 'NCERT से लेकर JEE एडवांस और NEET स्तर तक के प्रश्न पत्रों का अभ्यास।',
-      pillar5Title: 'व्यक्तिगत संदेह निवारण',
-      pillar5Desc: 'हर अध्याय के बाद विशेष डाउट क्लास और गलतियों का सूक्ष्म विश्लेषण।',
-      pillar6Title: 'परीक्षा में प्रस्तुति की रणनीति',
-      pillar6Desc: 'बोर्ड परीक्षा में 3 और 5 अंक वाले प्रश्नों में पूरे अंक प्राप्त करने की सही शैली।'
+      badge: 'पढ़ाने का तरीका',
+      title: 'अजय सर से केमिस्ट्री क्यों पढ़ें?',
+      subtitle: 'एक आसान और असरदार 6-चरणीय तरीका जो कठिन से कठिन टॉपिक्स को भी आसान बना देता है।',
+      pillar1Title: '1. बुनियादी बातें मजबूत करना',
+      pillar1Desc: 'कठिन सवालों से पहले फॉर्मूलों और बेसिक नियमों को अच्छी तरह समझना।',
+      pillar2Title: '2. रटने के बजाय विज़ुअलाइज़ करना',
+      pillar2Desc: 'रिएक्शन में इलेक्ट्रॉन के बहाव को समझें, रट्टा मारने की कोई जरूरत नहीं।',
+      pillar3Title: '3. थ्योरी के साथ प्रैक्टिकल प्रयोग',
+      pillar3Desc: 'किताबी बातों को लैब के रंगों, टेस्ट और प्रयोगों से जोड़कर देखना।',
+      pillar4Title: '4. चरणबद्ध प्रश्न अभ्यास (DPP)',
+      pillar4Desc: 'NCERT से लेकर बोर्ड, JEE मेन और NEET स्तर तक के प्रश्नों की तैयारी।',
+      pillar5Title: '5. गलतियों का विश्लेषण और समाधान',
+      pillar5Desc: 'हर टेस्ट के बाद कमजोर टॉपिक्स की पहचान और डाउट्स का तुरंत समाधान।',
+      pillar6Title: '6. परीक्षा में उत्तर लिखने की सही कला',
+      pillar6Desc: 'बोर्ड परीक्षा में पूरे अंक पाने के लिए सही स्टेप्स और समीकरण लिखने का तरीका।'
     },
     portfolio: {
-      badge: 'कक्षा एवं प्रयोगशाला गैलरी',
-      title: 'अध्यापन यात्रा एवं कक्षा अनुभव',
-      subtitle: 'अजय चौधरी सर की इंटरैक्टिव क्लासरूम, प्रयोगशाला लवण विश्लेषण और विद्यार्थियों के मार्गदर्शन के दृश्य।',
-      bannerTag: 'शैक्षणिक अनुभव एवं मेंटरशिप',
-      bannerHeading: '3 कोचिंग संस्थानों में सक्रिय कक्षा बैच',
-      bannerSub: 'कक्षा 11, 12, JEE मेन/एडवांस्ड और NEET के छात्रों के लिए व्यक्तिगत मार्गदर्शन।',
+      badge: 'क्लासरूम और लैब गैलरी',
+      title: 'शिक्षण यात्रा और क्लासरूम अनुभव',
+      subtitle: 'अजय सर की क्लासरूम, लैब साल्ट एनालिसिस और छात्रों के मार्गदर्शन की कुछ झलकियां।',
+      bannerTag: 'अनुभव और मेंटरशिप',
+      bannerHeading: '3 कोचिंग संस्थानों में सक्रिय क्लास बैच',
+      bannerSub: 'कक्षा 11वीं, 12वीं, JEE और NEET के छात्रों के लिए विशेष मार्गदर्शन।',
       readBio: 'पूरा परिचय पढ़ें'
     },
     interactive: {
-      badge: 'इंटरैक्टिव लर्निंग टूल',
-      title: 'इंटरैक्टिव कॉन्सेप्ट एक्सप्लोरर एवं रिएक्शन टूल',
-      subtitle: 'किसी भी विषय पर क्लिक करें और उसकी चरणबद्ध क्रियाविधि, परिस्थितियां और परीक्षा के महत्वपूर्ण बिंदु देखें।',
-      selectTopic: 'विषय का चयन करें:',
-      reactionBoxTitle: 'रासायनिक समीकरण एवं अभिक्रिया पथ',
-      mechanismTitle: 'चरणबद्ध अभिक्रिया क्रियाविधि (Mechanism):',
-      takeawayTitle: 'मुख्य वैचारिक नियम:',
-      examRelevance: 'परीक्षा अंक भार (Weightage):'
+      badge: 'इंटरैक्टिव टूल',
+      title: 'इंटरैक्टिव कॉन्सेप्ट और रिएक्शन टूल',
+      subtitle: 'किसी भी टॉपिक को चुनें और उसके स्टेप्स, रिएक्शन और परीक्षा के महत्वपूर्ण बिंदु आसानी से देखें।',
+      selectTopic: 'केमिस्ट्री टॉपिक चुनें:',
+      reactionBoxTitle: 'रासायनिक समीकरण और रिएक्शन पाथ',
+      mechanismTitle: 'स्टेप-बाय-स्टेप रिएक्शन मैकेनिज्म:',
+      takeawayTitle: 'मुख्य नियम:',
+      examRelevance: 'परीक्षा में वेटेज:'
     },
     cta: {
-      badge: 'प्रवेश एवं मार्गदर्शन',
+      badge: 'प्रवेश और मार्गदर्शन',
       title: 'केमिस्ट्री में 95%+ अंक और JEE / NEET क्रैक करने के लिए तैयार हैं?',
-      description: 'कैटेलिस्ट करियर इंस्टीट्यूट, एपेक्स साइंस एकेडमी या प्रेरणा लर्निंग हब में अजय सर के बैच में शामिल हों। व्यक्तिगत ध्यान के लिए सीमित सीटें।',
-      joinBtn: 'प्रवेश पूछताछ भेजें',
-      emailBtn: 'ईमेल द्वारा संपर्क करें'
+      description: 'कैटेलिस्ट करियर इंस्टीट्यूट, एपेक्स साइंस एकेडमी या प्रेरणा लर्निंग हब में अजय सर के बैच से जुड़ें। व्यक्तिगत ध्यान के लिए सीमित सीटें।',
+      joinBtn: 'पूछताछ फॉर्म भरें',
+      emailBtn: 'ईमेल से संपर्क करें'
     },
     contact: {
       title: 'अजय चौधरी सर से संपर्क करें',
-      subtitle: 'बैच समय, प्रवेश या टेस्ट सीरीज़ के संबंध में कोई प्रश्न है? अपना संदेश भेजें या सीधे संपर्क करें।',
-      nameLabel: 'आपका पूरा नाम *',
-      emailLabel: 'ईमेल पता *',
-      phoneLabel: 'मोबाइल नंबर (WhatsApp) *',
-      classLabel: 'कक्षा / लक्ष्य परीक्षा *',
+      subtitle: 'बैच समय, नए एडमिशन या टेस्ट सीरीज से जुड़ा कोई भी सवाल हो, फॉर्म भरें या ईमेल करें।',
+      nameLabel: 'विद्यार्थी / अभिभावक का नाम *',
+      emailLabel: 'ईमेल पता (जवाब पाने के लिए) *',
+      phoneLabel: 'मोबाइल नंबर (वैकल्पिक)',
+      classLabel: 'कक्षा / लक्ष्य परीक्षा',
       messageLabel: 'आपका प्रश्न या संदेश *',
-      sendBtn: 'संदेश भेजें',
+      sendBtn: 'पूछताछ संदेश भेजें',
       sending: 'भेजा जा रहा है...',
-      centersTitle: 'कोचिंग संस्थान एवं पते',
-      schedulesTitle: 'साप्ताहिक कक्षा समय-सारणी',
-      faqTitle: 'अक्सर पूछे जाने वाले प्रश्न'
+      centersTitle: 'कोचिंग संस्थान और पते',
+      schedulesTitle: 'साप्ताहिक क्लास समय',
+      faqTitle: 'अक्सर पूछे जाने वाले सवाल'
+    },
+    about: {
+      heroBadge: 'शिक्षक परिचय',
+      heroTitle: 'अजय चौधरी सर के बारे में',
+      heroDesc: '8+ वर्षों के अनुभवी वरिष्ठ रसायन विज्ञान शिक्षक, जिन्होंने तीन प्रमुख कोचिंग संस्थानों में हजारों छात्रों को बोर्ड और प्रतियोगी परीक्षाओं में उत्कृष्ट सफलता दिलाई है।',
+      journeyBadge: 'शिक्षण यात्रा',
+      journeyTitle: 'रसायन विज्ञान को समझें तर्क, स्पष्टता और प्रयोगों के साथ',
+      journeyP1: 'अजय चौधरी सर ने शिक्षण की शुरुआत इस सोच के साथ की कि रसायन विज्ञान को बिना रटे, लॉजिक और कॉन्सेप्ट से आसानी से सीखा जा सकता है। पिछले 8+ वर्षों में उन्होंने 5,000+ से अधिक विद्यार्थियों को कक्षा 11वीं, 12वीं, सीबीएसई/आईएससी बोर्ड और JEE/NEET परीक्षाओं में सफलता दिलाई है।',
+      journeyP2: 'वर्तमान में अजय सर तीन प्रमुख कोचिंग संस्थानों में वरिष्ठ रसायन विज्ञान शिक्षक के रूप में पढ़ाते हैं। वे ऑर्गेनिक रिएक्शन मैकेनिज्म, इनऑर्गेनिक बॉन्डिंग और प्रैक्टिकल साल्ट एनालिसिस को आसान ट्रिक्स और स्पष्ट लॉजिक के साथ समझाने के लिए जाने जाते हैं।',
+      statExp: '8+',
+      statExpLabel: 'वर्षों का अनुभव',
+      statCenters: '3',
+      statCentersLabel: 'कोचिंग संस्थान',
+      statStudents: '5,000+',
+      statStudentsLabel: 'सफल विद्यार्थी',
+      philosophyBadge: 'शिक्षण का सिद्धांत',
+      philosophyQuote: '“जब कॉन्सेप्ट समझ में आ जाते हैं, तो केमिस्ट्री याद रखना बहुत आसान हो जाता है।”',
+      philosophySub: 'कक्षा में पढ़ाने और डाउट्स दूर करने का 6-चरणीय सरल तरीका।',
+      step1Title: '1. बुनियादी बातें मजबूत करना',
+      step1Desc: 'कठिन सवालों से पहले फॉर्मूलों, परमाणु संरचना और बेसिक सिद्धांतों को अच्छी तरह समझना।',
+      step2Title: '2. रटने के बजाय गहराई से समझना',
+      step2Desc: 'रिएक्शन मैकेनिज्म और मॉलिक्यूल्स को 3D मॉडल और एरो नोटेशन से समझना।',
+      step3Title: '3. थ्योरी के साथ प्रैक्टिकल प्रयोग',
+      step3Desc: 'किताबी ज्ञान को लैब के साल्ट एनालिसिस और टाइट्रेशन से जोड़कर देखना।',
+      step4Title: '4. चरणबद्ध प्रश्न अभ्यास',
+      step4Desc: 'NCERT से लेकर पिछले वर्षों के बोर्ड और JEE/NEET पेपर्स की नियमित प्रैक्टिस।',
+      step5Title: '5. गलतियों का विश्लेषण',
+      step5Desc: 'हर टेस्ट के बाद कमजोर टॉपिक्स की पहचान और उनका तुरंत समाधान।',
+      step6Title: '6. परीक्षा में सही रणनीति',
+      step6Desc: 'बोर्ड और प्रतियोगी परीक्षा में समय प्रबंधन और अच्छे मार्क्स लाने की ट्रिक्स।',
+      centersBadge: 'क्लास की जगहें',
+      centersTitle: 'सक्रिय कोचिंग केंद्र और बैच',
+      centersSub: 'अजय सर इन तीन स्थापित कोचिंग संस्थानों में ऑफलाइन कक्षाएं, लैब वर्कशॉप और वीकली टेस्ट लेते हैं।',
+      center1Name: 'कैटेलिस्ट करियर इंस्टीट्यूट',
+      center1Batch: 'कक्षा 12 बोर्ड और JEE टारगेट बैच',
+      center1Schedule: 'सोम, बुध, शुक्र • शाम 4:30 से 7:30 (सेक्टर 14 सेंटर)',
+      center2Name: 'एपेक्स साइंस एकेडमी',
+      center2Batch: 'कक्षा 11 फाउंडेशन और GOC स्पेशल',
+      center2Schedule: 'मंगल, गुरु, शनि • शाम 4:30 से 7:30 (मॉडल टाउन सेंटर)',
+      center3Name: 'प्रेरणा लर्निंग हब',
+      center3Batch: 'NEET स्पेशल और लैब वर्कशॉप',
+      center3Schedule: 'रविवार स्पेशल • सुबह 9:00 से दोपहर 2:00 (साउथ एक्स सेंटर)',
+      credentialsBadge: 'शैक्षणिक योग्यता',
+      credentialsTitle: 'योग्यता और अनुभव',
+      credentialsSub: 'अजय सर की औपचारिक उच्च शैक्षणिक डिग्रियां और शिक्षण प्रशिक्षण।',
+      qual1Title: 'मास्टर ऑफ साइंस (M.Sc.) केमिस्ट्री',
+      qual1Desc: 'ऑर्गेनिक सिंथेसिस और स्पेक्ट्रोस्कोपी में प्रथम श्रेणी के साथ स्नातकोत्तर डिग्री।',
+      qual2Title: 'बैचलर ऑफ एजुकेशन (B.Ed)',
+      qual2Desc: 'आधुनिक विज्ञान शिक्षण पद्धति और सुधारात्मक शिक्षण में प्रमाणित।',
+      qual3Title: '8+ वर्ष सीनियर केमिस्ट्री फैकल्टी',
+      qual3Desc: '5,000+ से अधिक छात्रों को पढ़ाया, जिनमें कई बोर्ड टॉपर्स और JEE/NEET रैंकर्स शामिल हैं।',
+      qual4Title: 'प्रैक्टिकल केमिस्ट्री विशेषज्ञ',
+      qual4Desc: '100+ से अधिक साल्ट एनालिसिस और वॉल्यूमेट्रिक टाइट्रेशन लैब वर्कशॉप आयोजित किए।',
+      ctaTitle: 'केमिस्ट्री को आसान और स्पष्ट तरीके से समझें',
+      ctaSub: 'बैच में एडमिशन, नोट्स या पढ़ाई से जुड़े किसी भी सवाल के लिए अजय सर से जुड़ें।',
+      ctaContactBtn: 'पूछताछ संदेश भेजें',
+      ctaNotesBtn: 'अध्ययन सामग्री देखें'
+    },
+    pages: {
+      allClasses: 'सभी कक्षाएं',
+      allSubjects: 'सभी विषय',
+      allCategories: 'सभी श्रेणियां',
+      allTypes: 'सभी प्रकार',
+      searchPlaceholder: 'टॉपिक, चैप्टर या कीवर्ड से खोजें...',
+      downloadBtn: 'डाउनलोड PDF',
+      previewBtn: 'PDF देखें',
+      viewSolutionBtn: 'समाधान देखें',
+      viewPaperBtn: 'पेपर देखें',
+      closeBtn: 'बंद करें',
+      noResults: 'आपकी खोज से मिलता-जुलता कोई कंटेंट नहीं मिला।',
+      noResultsSub: 'कृपया कोई दूसरा कीवर्ड खोजें या फिल्टर हटाएं।'
     },
     footer: {
       tagline: '3 प्रमुख कोचिंग केंद्रों में 8+ वर्षों के अनुभव के साथ कार्बनिक, अकार्बनिक एवं प्रायोगिक रसायन में विद्यार्थियों का मार्गदर्शन।',
@@ -534,7 +749,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       practicalSub: 'Salt Analysis & Viva Prep',
       ctaMaterials: 'Study Materials Dekhein',
       ctaNotices: 'Notice Board & Tests',
-      ctaContact: 'Sir se Contact Karein',
+      ctaContact: 'Sir se Email par Contact Karein',
       statStudents: '5,000+ Students Mentored',
       statConcept: '100% Concept-First Learning',
       statPapers: 'Free Question Papers & Solutions',
@@ -642,17 +857,88 @@ const TRANSLATIONS: Record<Language, Translations> = {
     },
     contact: {
       title: 'Ajay Sir se Contact Karein',
-      subtitle: 'Batch timings, admissions ya test series se related koi bhi sawal ho toh form fill karein ya WhatsApp karein.',
+      subtitle: 'Batch timings, admissions ya test series se related koi bhi sawal ho toh form fill karein ya email bhejein.',
       nameLabel: 'Aapka Pura Naam *',
       emailLabel: 'Email Address *',
-      phoneLabel: 'Phone Number (WhatsApp) *',
-      classLabel: 'Class / Target Exam *',
+      phoneLabel: 'Phone Number (Optional)',
+      classLabel: 'Class / Target Exam',
       messageLabel: 'Aapka Message ya Doubt *',
       sendBtn: 'Inquiry Message Bhejein',
       sending: 'Bheja ja raha hai...',
       centersTitle: 'Coaching Centers aur Locations',
       schedulesTitle: 'Weekly Class Timings',
       faqTitle: 'Frequently Asked Questions'
+    },
+    about: {
+      heroBadge: 'Faculty Profile',
+      heroTitle: 'Ajay Choudhary Sir ke baare mein',
+      heroDesc: 'Senior Chemistry Educator jinka 8+ saal ka rich experience hai board toppers aur competitive rankers ko mentor karne ka across 3 coaching institutes.',
+      journeyBadge: 'Pedagogical Journey',
+      journeyTitle: 'Chemistry ko samjhein Logic, Clarity aur Lab Insights ke sath',
+      journeyP1: 'Ajay Choudhary Sir ne padhana is vision se shuru kiya tha ki Chemistry se rattebaazi ka dar khatam kiya ja sake. Pichhle 8+ saalon mein unhone 5,000+ se zyada students ko Class 11, 12, CBSE/ISC Boards aur JEE/NEET ke liye guide kiya hai.',
+      journeyP2: 'Currently teen top coaching centers mein Senior Chemistry Faculty ke taur par Ajay Sir Organic Mechanisms, Inorganic Periodic Trends aur Practical Salt Analysis workshops conduct karte hain.',
+      statExp: '8+',
+      statExpLabel: 'Years Experience',
+      statCenters: '3',
+      statCentersLabel: 'Coaching Centers',
+      statStudents: '5,000+',
+      statStudentsLabel: 'Students Mentored',
+      philosophyBadge: 'Teaching Philosophy',
+      philosophyQuote: '“Chemistry bahut aasan ban jaati hai jab concepts ko samjha jaye, ratta na mara jaye.”',
+      philosophySub: '6-step method jo har batch lecture aur doubt session mein use hota hai.',
+      step1Title: '1. Strong Fundamentals',
+      step1Desc: 'Tough sawalon se pehle atomic structure aur basic chemical rules ko crystal-clear karna.',
+      step2Title: '2. Deep Conceptual Visualization',
+      step2Desc: 'Curved arrows se reaction mechanism samajhna bina equations ratte.',
+      step3Title: '3. Theory aur Practical Connection',
+      step3Desc: 'Kitabi equations ko laboratory salt analysis aur titration experiments se relate karna.',
+      step4Title: '4. Targeted Multi-Tier Practice',
+      step4Desc: 'NCERT basics se lekar JEE Main, Advanced aur NEET level ke DPPs solve karna.',
+      step5Title: '5. Detailed Mistake Analysis',
+      step5Desc: 'Regular unit test reviews jahan calculation aur conceptual traps highlight kiye jaate hain.',
+      step6Title: '6. Board Exam Presentation',
+      step6Desc: 'Step-by-step scoring presentation aur time management tricks board exams ke liye.',
+      centersBadge: 'Teaching Locations',
+      centersTitle: 'Active Batches Across 3 Centers',
+      centersSub: 'Ajay Sir offline lectures, lab sessions aur weekly test series in 3 institutes mein conduct karte hain.',
+      center1Name: 'Catalyst Career Institute',
+      center1Batch: 'Class 12 Boards & JEE Target Batch',
+      center1Schedule: 'Mon, Wed, Fri • 4:30 PM – 7:30 PM (Sector 14 Center)',
+      center2Name: 'Apex Science Academy',
+      center2Batch: 'Class 11 Foundation & GOC Special',
+      center2Schedule: 'Tue, Thu, Sat • 4:30 PM – 7:30 PM (Model Town Center)',
+      center3Name: 'Prerana Learning Hub',
+      center3Batch: 'NEET Intensive & Lab Workshops',
+      center3Schedule: 'Sunday Special • 9:00 AM – 2:00 PM (South Ext Center)',
+      credentialsBadge: 'Verified Qualifications',
+      credentialsTitle: 'Academic Degrees & Experience',
+      credentialsSub: 'Ajay Sir ke formal academic degrees aur professional credentials.',
+      qual1Title: 'Master of Science (M.Sc.) Chemistry',
+      qual1Desc: 'Organic Synthesis, Kinetics aur Spectroscopy mein First Division Honours degree.',
+      qual2Title: 'Bachelor of Education (B.Ed)',
+      qual2Desc: 'Certified in Modern Science Pedagogy aur Remedial Teaching methods.',
+      qual3Title: '8+ Years Senior Chemistry Faculty',
+      qual3Desc: '5,000+ students ko mentor kiya with 95%+ Board scorers aur top JEE/NEET ranks.',
+      qual4Title: 'Practical Chemistry Specialist',
+      qual4Desc: '100+ hands-on Salt Analysis aur Titration lab workshops conduct kiye.',
+      ctaTitle: 'Chemistry ko Pure Concept ke sath Seekhein',
+      ctaSub: 'Batch admissions ya notes ke liye Ajay Sir se connect karein.',
+      ctaContactBtn: 'Inquiry Bhejein',
+      ctaNotesBtn: 'Study Materials Dekhein'
+    },
+    pages: {
+      allClasses: 'All Classes',
+      allSubjects: 'All Subjects',
+      allCategories: 'All Categories',
+      allTypes: 'All Types',
+      searchPlaceholder: 'Topic, chapter ya keyword search karein...',
+      downloadBtn: 'Download PDF',
+      previewBtn: 'Preview PDF',
+      viewSolutionBtn: 'Solution Dekhein',
+      viewPaperBtn: 'Paper Dekhein',
+      closeBtn: 'Close',
+      noResults: 'Aapki search se match karta koi material nahi mila.',
+      noResultsSub: 'Kripya koi doosra keyword search karein ya filter hatayein.'
     },
     footer: {
       tagline: '8+ years ke experience ke sath Organic, Inorganic aur Practical Chemistry mein students ko empower karna across 3 coaching centers.',
@@ -687,7 +973,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('ajay_chem_lang', lang);
   };
 
-  const t = TRANSLATIONS[language];
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

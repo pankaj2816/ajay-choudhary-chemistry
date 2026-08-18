@@ -21,6 +21,7 @@ import { useToast } from '@/context/ToastContext';
 import ChemistryContentRenderer from '@/components/ui/ChemistryContentRenderer';
 import { getUpdates } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
+import { useLanguage } from '@/context/LanguageContext';
 
 const CATEGORIES: (NoticeCategory | 'All Categories')[] = [
   'All Categories',
@@ -44,6 +45,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 function UpdatesContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
   const initialCategory = searchParams.get('category') || 'All Categories';
@@ -99,13 +101,13 @@ function UpdatesContent() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950 border border-rose-500/30 text-rose-300 font-bold text-xs">
               <Bell className="w-3.5 h-3.5 animate-bounce" />
-              Academic Announcements
+              {t.notices.badge}
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              Latest Updates & Notice Board
+              {t.notices.title}
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              Official announcements, test schedules, assignment deadlines, and question paper alerts posted directly by Ajay Choudhary Sir.
+              {t.notices.subtitle}
             </p>
           </div>
         </div>
