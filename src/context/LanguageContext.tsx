@@ -152,7 +152,7 @@ export interface Translations {
     title: string;
     description: string;
     joinBtn: string;
-    callBtn: string;
+    emailBtn: string;
   };
   // Contact
   contact: {
@@ -316,7 +316,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       title: 'Ready to Score 95%+ in Chemistry & Crack JEE / NEET?',
       description: 'Join Ajay Sir’s classroom batches at Catalyst Career Institute, Apex Science Academy, or Prerana Learning Hub. Limited seats per batch for personalized attention.',
       joinBtn: 'Enroll / Send Inquiry',
-      callBtn: 'Call Teacher Directly'
+      emailBtn: 'Contact via Email'
     },
     contact: {
       title: 'Get in Touch with Ajay Choudhary Sir',
@@ -477,7 +477,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       title: 'केमिस्ट्री में 95%+ अंक और JEE / NEET क्रैक करने के लिए तैयार हैं?',
       description: 'कैटेलिस्ट करियर इंस्टीट्यूट, एपेक्स साइंस एकेडमी या प्रेरणा लर्निंग हब में अजय सर के बैच में शामिल हों। व्यक्तिगत ध्यान के लिए सीमित सीटें।',
       joinBtn: 'प्रवेश पूछताछ भेजें',
-      callBtn: 'सीधे कॉल करें'
+      emailBtn: 'ईमेल द्वारा संपर्क करें'
     },
     contact: {
       title: 'अजय चौधरी सर से संपर्क करें',
@@ -638,7 +638,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       title: 'Chemistry mein 95%+ aur JEE / NEET crack karne ke liye ready hain?',
       description: 'Catalyst Career Institute, Apex Science Academy ya Prerana Learning Hub mein Ajay Sir ke batches join karein. Personal attention ke liye limited seats.',
       joinBtn: 'Admission Inquiry Bhejein',
-      callBtn: 'Direct Call Karein'
+      emailBtn: 'Email Se Contact Karein'
     },
     contact: {
       title: 'Ajay Sir se Contact Karein',

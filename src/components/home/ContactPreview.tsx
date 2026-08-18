@@ -23,15 +23,17 @@ export default function ContactPreview() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.message.trim()) {
-      showToast('Please fill out all required fields (Name, Phone, Message)', 'error');
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      showToast('Please fill out Name, Email, and Message', 'error');
       return;
     }
 
-    const cleanPhone = formData.phone.replace(/\D/g, '');
-    if (cleanPhone.length < 10) {
-      showToast('Please enter a valid 10-digit mobile or WhatsApp number', 'error');
-      return;
+    if (formData.phone.trim()) {
+      const cleanPhone = formData.phone.replace(/\D/g, '');
+      if (cleanPhone.length < 10) {
+        showToast('Please enter a valid 10-digit phone number, or leave it blank', 'error');
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -39,14 +41,14 @@ export default function ContactPreview() {
       await saveMessage({
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        phone: formData.phone || '',
         studentClass: formData.studentClass,
         subject: formData.subject,
         message: formData.message
       });
 
       setSubmitted(true);
-      showToast('Your message has been sent successfully to Ajay Sir!', 'success');
+      showToast('Your inquiry has been sent to Ajay Sir! We will reply via email.', 'success');
       setFormData({
         name: '',
         email: '',
@@ -117,7 +119,7 @@ export default function ContactPreview() {
 
             <div className="p-4 rounded-2xl bg-cyan-50/60 border border-cyan-200 text-xs text-cyan-950 space-y-1">
               <strong className="block font-bold">Privacy Guarantee:</strong>
-              <p>Your phone number and inquiry details are strictly kept confidential and only used for academic communication.</p>
+              <p>Your email and inquiry details are strictly kept confidential and only used for academic communication.</p>
             </div>
           </div>
 
@@ -127,15 +129,15 @@ export default function ContactPreview() {
               Send an Inquiry to Ajay Sir
             </h3>
             <p className="text-xs text-slate-500 mb-6">
-              Fill out the details below and we will get back to you within 24 hours.
+              Fill out the details below and Ajay Sir will reply to your email within 24 hours.
             </p>
 
             {submitted ? (
               <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
                 <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
-                <h4 className="text-base font-bold text-emerald-900">Message Received!</h4>
+                <h4 className="text-base font-bold text-emerald-900">Inquiry Received!</h4>
                 <p className="text-xs text-emerald-700 max-w-sm mx-auto">
-                  Thank you for reaching out. Ajay Sir and the academic team will contact you shortly.
+                  Thank you for reaching out. Ajay Sir will review your message and reply directly to your email address shortly.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}

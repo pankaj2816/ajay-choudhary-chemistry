@@ -12,7 +12,7 @@ import {
   BookOpen, 
   CheckCircle2, 
   GraduationCap, 
-  PhoneCall, 
+  Mail, 
   ShieldCheck, 
   Compass,
   TestTubes
@@ -113,7 +113,7 @@ export default function Hero() {
                 href="/contact"
                 className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 text-slate-300 hover:text-cyan-300 font-medium text-sm border border-slate-800 transition-all"
               >
-                <PhoneCall className="w-4 h-4" />
+                <Mail className="w-4 h-4" />
                 <span>{t.hero.ctaContact}</span>
               </Link>
             </div>

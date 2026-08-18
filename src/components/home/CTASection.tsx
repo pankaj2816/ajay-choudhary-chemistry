@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, BookOpen, Bell, PhoneCall } from 'lucide-react';
+import { Sparkles, ArrowRight, BookOpen, Bell, Mail } from 'lucide-react';
 
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -49,11 +49,11 @@ export default function CTASection() {
           </Link>
 
           <a
-            href="tel:+919876543210"
+            href="mailto:contact@ajaychemistry.com?subject=Chemistry%20Batch%20Inquiry"
             className="px-5 py-3.5 rounded-xl bg-slate-900/50 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 font-semibold text-sm border border-slate-800 transition-all inline-flex items-center gap-2"
           >
-            <PhoneCall className="w-4 h-4" />
-            <span>{t.cta.callBtn}</span>
+            <Mail className="w-4 h-4 text-cyan-400" />
+            <span>{t.cta.emailBtn}</span>
           </a>
         </div>
 

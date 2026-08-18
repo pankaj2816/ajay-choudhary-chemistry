@@ -43,35 +43,43 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [unreadCount, setUnreadCount] = useState(0);
   const [authChecked, setAuthChecked] = useState(false);
 
-  // Skip layout shell for login page
-  if (pathname === '/admin/login') {
-    return <>{children}</>;
-  }
+  // Robust check for login page across local and GitHub Pages basePaths
+  const isLoginPage = pathname ? (pathname.includes('/login') || pathname.endsWith('/login')) : false;
 
   // Client-side authentication guard
   useEffect(() => {
+    if (isLoginPage) {
+      setAuthChecked(true);
+      return;
+    }
+
     if (typeof window !== 'undefined') {
-      const session = localStorage.getItem('ajay_admin_session');
-      if (!session) {
-        router.push('/admin/login');
-      } else {
-        try {
+      try {
+        const session = localStorage.getItem('ajay_admin_session');
+        if (session) {
           const parsed = JSON.parse(session);
           if (parsed && parsed.authenticated) {
             setAuthChecked(true);
-          } else {
-            router.push('/admin/login');
+            return;
           }
-        } catch {
-          router.push('/admin/login');
         }
+      } catch (err) {
+        console.error('Session verification error:', err);
       }
+
+      // Not authenticated: redirect to login
+      router.replace('/admin/login');
     }
-  }, [pathname, router]);
+  }, [pathname, isLoginPage, router]);
+
+  // Skip layout shell for login page
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   // Fetch unread count for badge
   useEffect(() => {
-    if (!authChecked) return;
+    if (!authChecked || isLoginPage) return;
     getMessages()
       .then(data => {
         if (Array.isArray(data)) {
@@ -80,13 +88,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
       })
       .catch(() => {});
-  }, [pathname, authChecked]);
+  }, [pathname, authChecked, isLoginPage]);
 
   if (!authChecked) {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400 gap-3">
         <FlaskConical className="w-8 h-8 text-cyan-400 animate-pulse" />
         <span className="text-xs font-semibold uppercase tracking-wider">Verifying Admin Session...</span>
+        <Link href="/admin/login" className="text-xs text-cyan-400 hover:underline mt-2">
+          Click here to enter Login Credentials →
+        </Link>
       </div>
     );
   }

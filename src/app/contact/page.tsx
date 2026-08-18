@@ -51,15 +51,17 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim() || !formData.message.trim()) {
-      showToast('Please fill out all required fields (Name, Phone, Message)', 'error');
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      showToast('Please fill out Name, Email, and Message', 'error');
       return;
     }
 
-    const cleanPhone = formData.phone.replace(/\D/g, '');
-    if (cleanPhone.length < 10) {
-      showToast('Please enter a valid 10-digit mobile or WhatsApp number', 'error');
-      return;
+    if (formData.phone.trim()) {
+      const cleanPhone = formData.phone.replace(/\D/g, '');
+      if (cleanPhone.length < 10) {
+        showToast('Please enter a valid 10-digit phone number, or leave it blank', 'error');
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -67,14 +69,14 @@ export default function ContactPage() {
       await saveMessage({
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        phone: formData.phone || '',
         studentClass: formData.studentClass,
         subject: formData.subject,
         message: formData.message
       });
 
       setSubmitted(true);
-      showToast('Your message has been received! Ajay Sir will contact you shortly.', 'success');
+      showToast('Your inquiry has been submitted! Ajay Sir will reply via email shortly.', 'success');
       setFormData({
         name: '',
         email: '',
@@ -188,17 +190,20 @@ export default function ContactPage() {
             {/* Direct Contact Card */}
             <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-3 shadow-lg">
               <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-                Direct Communication Line
+                Official Communication
               </h4>
-              <div className="space-y-2 text-xs">
+              <div className="space-y-2.5 text-xs">
                 <div className="flex items-center gap-2 text-slate-200">
-                  <Phone className="w-4 h-4 text-cyan-400" />
-                  <span>+91 98765 43210 (Counseling Desk)</span>
+                  <Mail className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="font-semibold">contact@ajaychemistry.com</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-200">
-                  <Mail className="w-4 h-4 text-cyan-400" />
-                  <span>contact@ajaychemistry.com</span>
+                  <Mail className="w-4 h-4 text-teal-400 shrink-0" />
+                  <span>ajay.choudhary.chemistry@gmail.com</span>
                 </div>
+                <p className="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-relaxed">
+                  * Note: Direct calling is disabled during active classroom hours. Please send your inquiries via email or this contact form for a prompt response.
+                </p>
               </div>
             </div>
 
@@ -223,7 +228,7 @@ export default function ContactPage() {
                 <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
                 <h3 className="text-lg font-bold text-emerald-900">Inquiry Received!</h3>
                 <p className="text-xs sm:text-sm text-emerald-700 max-w-md mx-auto leading-relaxed">
-                  Thank you for reaching out. Ajay Sir or our academic counselor will contact you at your phone/email within 24 hours.
+                  Thank you for reaching out. Ajay Sir will review your inquiry and reply directly to your email address within 24 hours.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -251,7 +256,7 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Email Address *
+                      Email Address (For Reply) *
                     </label>
                     <input
                       type="email"
@@ -267,12 +272,11 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Phone Number (WhatsApp) *
+                      Phone Number (Optional)
                     </label>
                     <input
                       type="tel"
-                      required
-                      placeholder="e.g. +91 98765 43210"
+                      placeholder="e.g. 9876543210 (Optional)"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500"
