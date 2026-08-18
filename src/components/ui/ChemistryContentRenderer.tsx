@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sparkles, CheckCircle2, ChevronRight, ArrowRight } from 'lucide-react';
+import { Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 
 interface ChemistryContentRendererProps {
   content: string;
@@ -34,7 +34,7 @@ function cleanChemistryText(text: string): string {
     // Clean up $ and $$
     .replace(/\$\$/g, '')
     .replace(/\$/g, '')
-    // Clean backslashes
+    // Clean rogue backslashes
     .replace(/\\/g, '');
 
   return cleaned.trim();
@@ -57,15 +57,78 @@ function toSuperscript(str: string): string {
   return str.split('').map(c => map[c] || c).join('');
 }
 
+/**
+ * Parses inline rich text formatting (Bold, Italic, Highlights, Color Badges) with high contrast for both daylight and dark themes
+ */
+function renderFormattedLine(text: string): React.ReactNode {
+  if (!text) return null;
+
+  // Split by bold (**bold**), highlight (==text== or [highlight]text[/highlight]), italic (*italic*), and color tags
+  const tokens = text.split(/(\*\*[^*]+\*\*|==[^=]+==|\[highlight\][\s\S]*?\[\/highlight\]|\[(?:cyan|emerald|amber|rose|purple)\][\s\S]*?\[\/(?:cyan|emerald|amber|rose|purple)\]|\*[^*]+\*)/g);
+
+  return tokens.map((token, i) => {
+    // Bold: **text**
+    if (token.startsWith('**') && token.endsWith('**') && token.length > 4) {
+      return (
+        <strong key={i} className="font-extrabold text-slate-950 dark:text-white bg-amber-500/10 dark:bg-white/10 px-1 py-0.5 rounded">
+          {token.slice(2, -2)}
+        </strong>
+      );
+    }
+
+    // Highlight: ==text== or [highlight]text[/highlight]
+    if (
+      (token.startsWith('==') && token.endsWith('==') && token.length > 4) ||
+      (token.startsWith('[highlight]') && token.endsWith('[/highlight]'))
+    ) {
+      const inner = token.startsWith('==') ? token.slice(2, -2) : token.replace(/\[\/?highlight\]/g, '');
+      return (
+        <mark key={i} className="bg-amber-200 dark:bg-amber-500/30 text-amber-950 dark:text-amber-200 font-bold px-1.5 py-0.5 rounded border border-amber-300 dark:border-amber-500/40">
+          {inner}
+        </mark>
+      );
+    }
+
+    // Colors: [cyan]text[/cyan], [emerald]text[/emerald], [rose]text[/rose], etc.
+    const colorMatch = token.match(/^\[(cyan|emerald|amber|rose|purple)\]([\s\S]*?)\[\/\1\]$/);
+    if (colorMatch) {
+      const color = colorMatch[1];
+      const inner = colorMatch[2];
+      const colorMap: Record<string, string> = {
+        cyan: 'bg-cyan-100 dark:bg-cyan-950/80 text-cyan-900 dark:text-cyan-200 border-cyan-300 dark:border-cyan-700',
+        emerald: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700',
+        amber: 'bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700',
+        rose: 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-200 border-rose-300 dark:border-rose-700',
+        purple: 'bg-purple-100 dark:bg-purple-950/80 text-purple-900 dark:text-purple-200 border-purple-300 dark:border-purple-700',
+      };
+      return (
+        <span key={i} className={`inline-block px-2 py-0.5 rounded-md font-bold text-xs border ${colorMap[color] || ''}`}>
+          {inner}
+        </span>
+      );
+    }
+
+    // Italic: *text*
+    if (token.startsWith('*') && token.endsWith('*') && token.length > 2 && !token.startsWith('**')) {
+      return (
+        <em key={i} className="italic text-slate-800 dark:text-slate-200 font-semibold">
+          {token.slice(1, -1)}
+        </em>
+      );
+    }
+
+    return token;
+  });
+}
+
 export default function ChemistryContentRenderer({ content }: ChemistryContentRendererProps) {
   if (!content) return null;
 
-  // Split into lines/blocks
   const lines = content.split('\n');
   const elements: React.ReactNode[] = [];
 
   let currentBlock: string[] = [];
-  let currentBlockType: 'paragraph' | 'reaction' | 'steps' = 'paragraph';
+  let currentBlockType: 'paragraph' | 'reaction' = 'paragraph';
 
   const flushBlock = (idx: number) => {
     if (currentBlock.length === 0) return;
@@ -79,7 +142,7 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
       elements.push(
         <div 
           key={`reaction-${idx}`} 
-          className="my-3.5 p-4 rounded-2xl bg-slate-950 border border-cyan-500/30 shadow-inner overflow-x-auto"
+          className="my-3.5 p-4 rounded-2xl bg-slate-950 border-2 border-cyan-500/40 shadow-lg overflow-x-auto"
         >
           <div className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1.5 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
@@ -91,46 +154,44 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
         </div>
       );
     } else {
-      // Process lines with bullet or normal text
       elements.push(
-        <div key={`text-${idx}`} className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+        <div key={`text-${idx}`} className="space-y-2.5 text-xs sm:text-sm text-slate-800 dark:text-slate-100 font-medium leading-relaxed">
           {currentBlock.map((line, lIdx) => {
             const cleanLine = cleanChemistryText(line);
             
-            // Check if line is a numbered step (e.g., 1. Step title: Description)
+            // Check if line is a numbered step (e.g. 1. Step title)
             const stepMatch = cleanLine.match(/^(\d+)\.\s+(.*)/);
             if (stepMatch) {
               const stepNum = stepMatch[1];
               const stepText = stepMatch[2];
-              const parts = stepText.split(':**');
-              const hasBoldTitle = parts.length > 1;
 
               return (
-                <div key={lIdx} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3 my-1.5">
-                  <span className="w-6 h-6 rounded-full bg-cyan-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                <div key={lIdx} className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 flex items-start gap-3 my-1.5 shadow-sm">
+                  <span className="w-6 h-6 rounded-full bg-cyan-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow">
                     {stepNum}
                   </span>
-                  <div className="flex-1">
+                  <div className="flex-1 text-slate-900 dark:text-slate-100 font-medium">
                     {renderFormattedLine(stepText)}
                   </div>
                 </div>
               );
             }
 
-            // Check if bullet point
-            if (cleanLine.startsWith('- ') || cleanLine.startsWith('* ')) {
+            // Check if bullet point (- or * or > or •)
+            if (cleanLine.startsWith('- ') || cleanLine.startsWith('* ') || cleanLine.startsWith('> ') || cleanLine.startsWith('• ')) {
+              const bulletText = cleanLine.replace(/^[-*>•]\s+/, '');
               return (
-                <div key={lIdx} className="flex items-start gap-2 pl-2">
-                  <ChevronRight className="w-4 h-4 text-cyan-500 shrink-0 mt-0.5" />
-                  <div className="flex-1">
-                    {renderFormattedLine(cleanLine.substring(2))}
+                <div key={lIdx} className="flex items-start gap-2 pl-2 my-1">
+                  <ChevronRight className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5 font-bold" />
+                  <div className="flex-1 text-slate-900 dark:text-slate-100 font-medium">
+                    {renderFormattedLine(bulletText)}
                   </div>
                 </div>
               );
             }
 
             return (
-              <p key={lIdx} className="leading-relaxed">
+              <p key={lIdx} className="leading-relaxed text-slate-900 dark:text-slate-100 font-medium">
                 {renderFormattedLine(cleanLine)}
               </p>
             );
@@ -145,20 +206,20 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
   lines.forEach((line, index) => {
     const trimmed = line.trim();
 
-    // Check for Section Header (### or ####)
+    // Section Header (### or ####)
     if (trimmed.startsWith('### ') || trimmed.startsWith('#### ')) {
       flushBlock(index);
       const headerText = cleanChemistryText(trimmed.replace(/^#{3,4}\s+/, ''));
       const isQuestion = headerText.toLowerCase().includes('question') || headerText.toLowerCase().includes('q1') || headerText.toLowerCase().includes('q2');
 
       elements.push(
-        <div key={`header-${index}`} className="pt-5 pb-2 first:pt-0">
-          <div className={`p-3 rounded-xl border flex items-center justify-between gap-3 ${
+        <div key={`header-${index}`} className="pt-4 pb-2 first:pt-0">
+          <div className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-sm ${
             isQuestion 
-              ? 'bg-cyan-950/60 border-cyan-500/40 text-cyan-200 shadow-sm' 
-              : 'bg-slate-900 border-slate-800 text-white'
+              ? 'bg-cyan-950 border-cyan-500/50 text-cyan-200' 
+              : 'bg-slate-900 dark:bg-slate-950 border-slate-800 text-white'
           }`}>
-            <div className="flex items-center gap-2 font-black text-sm sm:text-base tracking-tight">
+            <div className="flex items-center gap-2 font-black text-sm sm:text-base tracking-tight text-white">
               <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
               <span>{headerText}</span>
             </div>
@@ -168,13 +229,14 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
       return;
     }
 
-    // Check if line is a reaction formula
+    // Reaction formula line
     const isFormulaLine = 
       trimmed.startsWith('$$') || 
       trimmed.includes('➔') || 
       trimmed.includes('\\xrightarrow') || 
       trimmed.includes('->') ||
-      trimmed.startsWith('**Reaction');
+      trimmed.startsWith('**Reaction') ||
+      trimmed.startsWith('Reaction:');
 
     if (isFormulaLine) {
       if (currentBlockType !== 'reaction') {
@@ -198,25 +260,8 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
   flushBlock(lines.length);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3.5 text-slate-900 dark:text-slate-100">
       {elements}
     </div>
   );
-}
-
-/**
- * Parses bold text **word** into strong tags
- */
-function renderFormattedLine(text: string): React.ReactNode {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return (
-        <strong key={i} className="font-bold text-slate-900 dark:text-white">
-          {part.slice(2, -2)}
-        </strong>
-      );
-    }
-    return part;
-  });
 }
