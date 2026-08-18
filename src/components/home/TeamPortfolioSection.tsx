@@ -8,14 +8,14 @@ import { TeamMember } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useLanguage } from '@/context/LanguageContext';
 import SafeImage from '@/components/ui/SafeImage';
+import { getTeam } from '@/lib/dataService';
 
 export default function TeamPortfolioSection() {
   const { t } = useLanguage();
   const [portfolio, setPortfolio] = useState<TeamMember[]>(initialDatabase.teamMembers);
 
   useEffect(() => {
-    fetch('/api/team')
-      .then((res) => res.json())
+    getTeam()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setPortfolio(data);
       })

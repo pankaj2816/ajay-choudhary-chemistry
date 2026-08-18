@@ -57,12 +57,13 @@ const METHODOLOGY_STEPS = [
   }
 ];
 
+import { getTeam } from '@/lib/dataService';
+
 export default function AboutPage() {
   const [team, setTeam] = useState<TeamMember[]>(initialDatabase.teamMembers);
 
   useEffect(() => {
-    fetch('/api/team')
-      .then((res) => res.json())
+    getTeam()
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setTeam(data);
       })

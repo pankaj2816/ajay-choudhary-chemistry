@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import SafeImage from '@/components/ui/SafeImage';
 import { 
   Users, 
   Plus, 
@@ -159,7 +159,7 @@ export default function AdminTeamPage() {
           >
             <div>
               <div className="relative aspect-[4/3] w-full bg-slate-900">
-                <Image
+                <SafeImage
                   src={member.image || '/images/ajay-choudhary.jpg'}
                   alt={member.name}
                   fill

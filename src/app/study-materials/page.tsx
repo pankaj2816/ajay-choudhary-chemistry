@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { 
   BookOpen, 
   Search, 
@@ -33,15 +34,28 @@ const RESOURCE_TYPES: (ResourceType | 'All Types')[] = [
   'Revision Material'
 ];
 
-export default function StudyMaterialsPage() {
+function StudyMaterialsContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
+  const initialSubject = searchParams.get('subject') || 'All';
+  const initialClass = searchParams.get('class') || 'All';
+  const initialType = searchParams.get('type') || 'All Types';
+
   const [materials, setMaterials] = useState<StudyMaterial[]>(initialDatabase.studyMaterials);
-  const [selectedSubject, setSelectedSubject] = useState<string>('All');
-  const [selectedClass, setSelectedClass] = useState<string>('All');
-  const [selectedType, setSelectedType] = useState<string>('All Types');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState<string>(initialSubject);
+  const [selectedClass, setSelectedClass] = useState<string>(initialClass);
+  const [selectedType, setSelectedType] = useState<string>(initialType);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedMaterial, setSelectedMaterial] = useState<StudyMaterial | null>(null);
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    if (initialSubject && initialSubject !== 'All') setSelectedSubject(initialSubject);
+    if (initialClass && initialClass !== 'All') setSelectedClass(initialClass);
+    if (initialType && initialType !== 'All Types') setSelectedType(initialType);
+    if (initialSearch) setSearchQuery(initialSearch);
+  }, [initialSubject, initialClass, initialType, initialSearch]);
 
   useEffect(() => {
     getStudyMaterials()
@@ -54,7 +68,7 @@ export default function StudyMaterialsPage() {
 
   const filteredMaterials = useMemo(() => {
     return materials.filter((item) => {
-      const matchSubj = selectedSubject === 'All' || item.subject === selectedSubject;
+      const matchSubj = selectedSubject === 'All' || item.subject.toLowerCase() === selectedSubject.toLowerCase();
       const matchClass = selectedClass === 'All' || item.className === selectedClass || item.className === 'All Classes';
       const matchType = selectedType === 'All Types' || item.resourceType === selectedType;
       const matchSearch = 
@@ -295,5 +309,13 @@ export default function StudyMaterialsPage() {
       )}
 
     </div>
+  );
+}
+
+export default function StudyMaterialsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Study Materials Vault...</div>}>
+      <StudyMaterialsContent />
+    </Suspense>
   );
 }

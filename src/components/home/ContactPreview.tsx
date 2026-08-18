@@ -23,8 +23,14 @@ export default function ContactPreview() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone || !formData.message) {
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.message.trim()) {
       showToast('Please fill out all required fields (Name, Phone, Message)', 'error');
+      return;
+    }
+
+    const cleanPhone = formData.phone.replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      showToast('Please enter a valid 10-digit mobile or WhatsApp number', 'error');
       return;
     }
 

@@ -41,14 +41,37 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { showToast } = useToast();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [authChecked, setAuthChecked] = useState(false);
 
   // Skip layout shell for login page
   if (pathname === '/admin/login') {
     return <>{children}</>;
   }
 
+  // Client-side authentication guard
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const session = localStorage.getItem('ajay_admin_session');
+      if (!session) {
+        router.push('/admin/login');
+      } else {
+        try {
+          const parsed = JSON.parse(session);
+          if (parsed && parsed.authenticated) {
+            setAuthChecked(true);
+          } else {
+            router.push('/admin/login');
+          }
+        } catch {
+          router.push('/admin/login');
+        }
+      }
+    }
+  }, [pathname, router]);
+
   // Fetch unread count for badge
   useEffect(() => {
+    if (!authChecked) return;
     getMessages()
       .then(data => {
         if (Array.isArray(data)) {
@@ -57,7 +80,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
       })
       .catch(() => {});
-  }, [pathname]);
+  }, [pathname, authChecked]);
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400 gap-3">
+        <FlaskConical className="w-8 h-8 text-cyan-400 animate-pulse" />
+        <span className="text-xs font-semibold uppercase tracking-wider">Verifying Admin Session...</span>
+      </div>
+    );
+  }
 
   const handleLogout = async () => {
     try {

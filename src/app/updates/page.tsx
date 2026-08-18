@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { 
   Bell, 
   Search, 
@@ -19,6 +20,7 @@ import { initialDatabase } from '@/data/initialData';
 import { useToast } from '@/context/ToastContext';
 import ChemistryContentRenderer from '@/components/ui/ChemistryContentRenderer';
 import { getUpdates } from '@/lib/dataService';
+import { triggerDownload } from '@/lib/downloadUtils';
 
 const CATEGORIES: (NoticeCategory | 'All Categories')[] = [
   'All Categories',
@@ -41,14 +43,25 @@ const CATEGORY_COLORS: Record<string, string> = {
   'General Announcement': 'bg-slate-100 text-slate-800 border-slate-200'
 };
 
-export default function UpdatesPage() {
+function UpdatesContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
+  const initialCategory = searchParams.get('category') || 'All Categories';
+  const initialClass = searchParams.get('class') || 'All';
+
   const [updates, setUpdates] = useState<NoticeUpdate[]>(initialDatabase.updates.filter(u => u.isPublished));
-  const [selectedCategory, setSelectedCategory] = useState<string>('All Categories');
-  const [selectedClass, setSelectedClass] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+  const [selectedClass, setSelectedClass] = useState<string>(initialClass);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedNotice, setSelectedNotice] = useState<NoticeUpdate | null>(null);
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    if (initialCategory && initialCategory !== 'All Categories') setSelectedCategory(initialCategory);
+    if (initialClass && initialClass !== 'All') setSelectedClass(initialClass);
+    if (initialSearch) setSearchQuery(initialSearch);
+  }, [initialCategory, initialClass, initialSearch]);
 
   useEffect(() => {
     getUpdates()
@@ -364,5 +377,13 @@ export default function UpdatesPage() {
       )}
 
     </div>
+  );
+}
+
+export default function UpdatesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Notice Board & Updates...</div>}>
+      <UpdatesContent />
+    </Suspense>
   );
 }

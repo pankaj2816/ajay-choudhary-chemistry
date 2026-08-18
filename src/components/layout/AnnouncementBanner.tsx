@@ -6,6 +6,7 @@ import { Megaphone, X, ArrowRight } from 'lucide-react';
 import { SiteSettings } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { useLanguage } from '@/context/LanguageContext';
+import { getSettings } from '@/lib/dataService';
 
 export default function AnnouncementBanner() {
   const { t } = useLanguage();
@@ -13,8 +14,7 @@ export default function AnnouncementBanner() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    fetch('/api/settings')
-      .then((res) => res.json())
+    getSettings()
       .then((data) => {
         if (data && data.teacherName) setSettings(data);
       })

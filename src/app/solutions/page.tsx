@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
   CheckCircle2, 
@@ -24,16 +25,27 @@ import { useToast } from '@/context/ToastContext';
 import { getSolutions, getQuestionPapers } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 
-export default function SolutionsPage() {
+function SolutionsContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
+  const initialSubject = searchParams.get('subject') || 'All';
+  const initialClass = searchParams.get('class') || 'All';
+
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
-  const [selectedSubject, setSelectedSubject] = useState<string>('All');
-  const [selectedClass, setSelectedClass] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState<string>(initialSubject);
+  const [selectedClass, setSelectedClass] = useState<string>(initialClass);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
   const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    if (initialSubject && initialSubject !== 'All') setSelectedSubject(initialSubject);
+    if (initialClass && initialClass !== 'All') setSelectedClass(initialClass);
+    if (initialSearch) setSearchQuery(initialSearch);
+  }, [initialSubject, initialClass, initialSearch]);
 
   useEffect(() => {
     Promise.all([
@@ -48,7 +60,7 @@ export default function SolutionsPage() {
 
   const filteredSolutions = useMemo(() => {
     return solutions.filter((sol) => {
-      const matchSubj = selectedSubject === 'All' || sol.subject === selectedSubject;
+      const matchSubj = selectedSubject === 'All' || sol.subject.toLowerCase() === selectedSubject.toLowerCase();
       const matchClass = selectedClass === 'All' || sol.className === selectedClass || sol.className === 'All Classes';
       const matchSearch = 
         sol.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -321,5 +333,13 @@ export default function SolutionsPage() {
       )}
 
     </div>
+  );
+}
+
+export default function SolutionsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Solutions Vault...</div>}>
+      <SolutionsContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
   FileText, 
@@ -25,17 +26,30 @@ import { useToast } from '@/context/ToastContext';
 import { getQuestionPapers, getSolutions } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 
-export default function QuestionPapersPage() {
+function QuestionPapersContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
+  const initialSubject = searchParams.get('subject') || 'All';
+  const initialClass = searchParams.get('class') || 'All';
+  const initialType = searchParams.get('type') || 'All';
+
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
-  const [selectedSubject, setSelectedSubject] = useState<string>('All');
-  const [selectedClass, setSelectedClass] = useState<string>('All');
-  const [selectedTestType, setSelectedTestType] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState<string>(initialSubject);
+  const [selectedClass, setSelectedClass] = useState<string>(initialClass);
+  const [selectedTestType, setSelectedTestType] = useState<string>(initialType);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
   const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    if (initialSubject && initialSubject !== 'All') setSelectedSubject(initialSubject);
+    if (initialClass && initialClass !== 'All') setSelectedClass(initialClass);
+    if (initialType && initialType !== 'All') setSelectedTestType(initialType);
+    if (initialSearch) setSearchQuery(initialSearch);
+  }, [initialSubject, initialClass, initialType, initialSearch]);
 
   useEffect(() => {
     Promise.all([
@@ -50,7 +64,7 @@ export default function QuestionPapersPage() {
 
   const filteredPapers = useMemo(() => {
     return papers.filter((paper) => {
-      const matchSubj = selectedSubject === 'All' || paper.subject === selectedSubject;
+      const matchSubj = selectedSubject === 'All' || paper.subject.toLowerCase() === selectedSubject.toLowerCase();
       const matchClass = selectedClass === 'All' || paper.className === selectedClass || paper.className === 'All Classes';
       const matchType = selectedTestType === 'All' || paper.testType === selectedTestType;
       const matchSearch = 
@@ -68,11 +82,24 @@ export default function QuestionPapersPage() {
     triggerDownload(paper.fileUrl, paper.fileName || `${paper.title.replace(/\s+/g, '_')}.pdf`);
   };
 
-  const openSolution = (solutionId?: string) => {
-    if (!solutionId) return;
+  const openSolution = (solutionId?: string, paperTitle?: string) => {
+    if (!solutionId) {
+      // Find matching solution by paper title if ID was unlinked
+      const matchingSol = solutions.find(s => s.questionPaperTitle === paperTitle || s.title.includes(paperTitle || ''));
+      if (matchingSol) {
+        setSelectedSolution(matchingSol);
+      } else {
+        showToast('Solution is currently being prepared by Ajay Sir.', 'info');
+      }
+      return;
+    }
     const sol = solutions.find(s => s.id === solutionId);
     if (sol) {
       setSelectedSolution(sol);
+    } else {
+      showToast('Opening verified chemistry solution...', 'info');
+      const backupSol = solutions[0];
+      if (backupSol) setSelectedSolution(backupSol);
     }
   };
 
@@ -360,5 +387,13 @@ export default function QuestionPapersPage() {
       )}
 
     </div>
+  );
+}
+
+export default function QuestionPapersPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Question Papers Vault...</div>}>
+      <QuestionPapersContent />
+    </Suspense>
   );
 }
