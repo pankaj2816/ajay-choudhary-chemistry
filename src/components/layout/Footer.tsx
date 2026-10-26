@@ -148,7 +148,21 @@ export default function Footer() {
 
         {/* Bottom Bar with Admin Login Link */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} {t.footer.rightsReserved}</p>
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <p>© {new Date().getFullYear()} {t.footer.rightsReserved}</p>
+            <span className="hidden sm:inline opacity-50">•</span>
+            <p>
+              Designed &amp; Developed by{' '}
+              <a
+                href="https://pixeltocloud.com?utm_source=chemistry_classes&utm_medium=footer_credit&utm_campaign=client_referral"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-400/90 hover:text-cyan-300 underline underline-offset-2 transition-colors"
+              >
+                PixelToCloud
+              </a>
+            </p>
+          </div>
           <div className="flex items-center gap-6">
             <Link href="/contact" className="hover:text-slate-300 transition-colors">
               Student Helpdesk
