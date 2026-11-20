@@ -81,7 +81,7 @@ export default function Navbar() {
   if (pathname?.startsWith('/admin')) return null;
 
   const linkClass = (active: boolean) =>
-    `relative py-2 text-[0.9rem] transition-colors ${
+    `relative py-2 text-[0.9rem] whitespace-nowrap transition-colors ${
       active ? 'text-ink' : 'text-muted hover:text-ink'
     } after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-accent after:transition-transform after:origin-left ${
       active ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
@@ -94,7 +94,7 @@ export default function Navbar() {
           scrolled ? 'bg-paper/92 backdrop-blur-md border-b border-line' : 'bg-paper border-b border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-4 xl:gap-6">
           {/* Brand */}
           <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Ajay Choudhary Sir — Home">
             <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
@@ -107,7 +107,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop navigation */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Main">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-8" aria-label="Main">
             {primaryLinks.map((l) => (
               <Link key={l.href} href={l.href} className={linkClass(isActive(l.href))}>
                 {l.label}
@@ -167,7 +167,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center ml-2 px-5 py-2.5 bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors"
+              className="hidden md:inline-flex items-center whitespace-nowrap ml-2 px-5 py-2.5 bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors"
             >
               {t.home.enquire}
             </Link>
