@@ -21,7 +21,7 @@ import {
   Quote,
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
-import { getSignedInLogin, hasAdminSession, signOut } from '@/lib/github';
+import { hasAdminSession, signOut } from '@/lib/github';
 import { refreshAdminData } from '@/lib/dataService';
 import ElementTile from '@/components/ui/ElementTile';
 
@@ -44,7 +44,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { showToast } = useToast();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
-  const [login, setLogin] = useState<string | null>(null);
 
   const isLoginPage = !!pathname && pathname.replace(/\/$/, '').endsWith('/login');
 
@@ -55,7 +54,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     // Reading localStorage must happen after mount
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSignedIn(ok);
-    setLogin(getSignedInLogin());
     if (!ok) router.replace('/admin/login');
   }, [isLoginPage, router, pathname]);
 
@@ -142,7 +140,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="p-4 border-t border-slate-800/80 space-y-2">
-          {login && <p className="px-1 pb-1 text-xs text-slate-500">Signed in via GitHub ({login})</p>}
           <Link
             href="/"
             target="_blank"

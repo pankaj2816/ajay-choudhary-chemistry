@@ -79,7 +79,7 @@ export class GitHubError extends Error {
 }
 
 async function api<T>(path: string, init: RequestInit = {}, token = getToken()): Promise<T> {
-  if (!token) throw new GitHubError('Not signed in. Please sign in to the admin panel again.', 401);
+  if (!token) throw new GitHubError('You have been signed out. Please sign in again.', 401);
 
   const res = await fetch(`https://api.github.com${path}`, {
     ...init,
@@ -94,23 +94,16 @@ async function api<T>(path: string, init: RequestInit = {}, token = getToken()):
   });
 
   if (!res.ok) {
-    let detail = '';
-    try {
-      const body = await res.json();
-      detail = body?.message || '';
-    } catch {
-      // ignore
-    }
     const friendly =
       res.status === 401
-        ? 'The access token is invalid or has expired. Please sign in again with a new token.'
+        ? 'This access key is not working any more. Please ask your website manager for a new one.'
         : res.status === 403
-          ? 'This token is not allowed to make changes. It needs "Contents: Read and write" on the website repository.'
+          ? 'This access key can view but not save changes. Please ask your website manager for a new one.'
           : res.status === 404
-            ? 'Could not find the website repository with this token. Check that the token has access to it.'
+            ? 'This access key is not valid for this website. Please check it and try again.'
             : res.status === 409
               ? 'Someone else saved a change at the same time. Please try again.'
-              : `GitHub error ${res.status}${detail ? `: ${detail}` : ''}`;
+              : `Something went wrong (code ${res.status}). Please try again in a minute.`;
     throw new GitHubError(friendly, res.status);
   }
 
@@ -126,7 +119,7 @@ const repoPath = `/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
  */
 export async function signInWithToken(rawToken: string): Promise<{ login: string }> {
   const token = rawToken.trim();
-  if (!token) throw new GitHubError('Please paste the access token.', 400);
+  if (!token) throw new GitHubError('Please enter your access key.', 400);
 
   // 1. The token must be able to see the website repository.
   await api(`${repoPath}`, {}, token);
@@ -166,7 +159,7 @@ export async function readJsonFile<T>(path: string): Promise<{ data: T; sha: str
     text = await api<string>(`${repoPath}/contents/${path}?ref=${GITHUB_BRANCH}`, {
       headers: { Accept: 'application/vnd.github.raw+json' },
     }).catch(async () => {
-      throw new GitHubError('Could not read the content file from GitHub.', 500);
+      throw new GitHubError('Could not load the website content. Please try again.', 500);
     });
     if (typeof text !== 'string') text = JSON.stringify(text);
   }

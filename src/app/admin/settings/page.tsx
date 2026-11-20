@@ -338,7 +338,7 @@ export default function AdminSettingsPage() {
           </h3>
           <p className="text-xs sm:text-sm text-slate-400">
             Leave empty to use the public contact email. The first enquiry to a new address sends a one-time
-            confirmation email from FormSubmit. Click &ldquo;Activate&rdquo; in it.
+            confirmation email. Open it and click &ldquo;Activate&rdquo; once.
           </p>
           <input
             type="email"

@@ -33,8 +33,8 @@ export default function AdminMessagesPage() {
         </p>
         <ol className="list-decimal pl-5 space-y-2">
           <li>
-            The first time a student sends an enquiry, you will receive an email from <strong>FormSubmit</strong> asking
-            you to confirm. Click <strong>Activate Form</strong> in that email once.
+            The first time a student sends an enquiry, you will receive an email asking you to
+            confirm. Click <strong>Activate Form</strong> in that email once.
           </li>
           <li>After that, every enquiry arrives in your inbox with the student&apos;s name, phone, class and message.</li>
           <li>Reply to the email directly. It goes to the student&apos;s email address.</li>
