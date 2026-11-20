@@ -242,6 +242,37 @@ export interface Translations {
     noResults: string;
     noResultsSub: string;
   };
+  // Premium home page
+  home: {
+    eyebrow: string;
+    factYears: string;
+    factCenters: string;
+    factStudents: string;
+    secAbout: string;
+    aboutTitle: string;
+    readProfile: string;
+    secSubjects: string;
+    secMethod: string;
+    methodTitle: string;
+    secResources: string;
+    resourcesTitle: string;
+    latestNotes: string;
+    latestPapers: string;
+    download: string;
+    paper: string;
+    solution: string;
+    viewAll: string;
+    secNotices: string;
+    readNotice: string;
+    secVisit: string;
+    visitTitle: string;
+    visitSub: string;
+    enquire: string;
+    whatsapp: string;
+    call: string;
+    footerLine: string;
+    resources: string;
+  };
   // Footer
   footer: {
     tagline: string;
@@ -476,6 +507,36 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       noResults: 'No materials found matching your search criteria.',
       noResultsSub: 'Try adjusting your search keywords or removing selected filters.'
     },
+    home: {
+      eyebrow: 'Chemistry · Class 11 & 12 · JEE · NEET',
+      factYears: 'years of teaching',
+      factCenters: 'coaching centres',
+      factStudents: 'students taught',
+      secAbout: 'About',
+      aboutTitle: 'Concepts first. The marks follow.',
+      readProfile: 'Read full profile',
+      secSubjects: 'What he teaches',
+      secMethod: 'Method',
+      methodTitle: 'How a chapter is taught',
+      secResources: 'Free resources',
+      resourcesTitle: 'Notes, papers and worked solutions',
+      latestNotes: 'Latest study material',
+      latestPapers: 'Recent question papers',
+      download: 'Download',
+      paper: 'Paper',
+      solution: 'Solution',
+      viewAll: 'View all',
+      secNotices: 'Notice board',
+      readNotice: 'Read notice',
+      secVisit: 'Join a batch',
+      visitTitle: 'Study with Ajay Sir at a centre near you.',
+      visitSub: 'Ask about batch timings, fees or a free demo class. You will get a reply within a day.',
+      enquire: 'Send an enquiry',
+      whatsapp: 'WhatsApp',
+      call: 'Call',
+      footerLine: 'Chemistry, understood.',
+      resources: 'Resources'
+    },
     footer: {
       tagline: 'Empowering students to master Organic, Inorganic, and Practical Chemistry with 8+ years of academic excellence across 3 coaching centers.',
       specializationsTitle: 'Specializations',
@@ -708,6 +769,36 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       noResults: 'आपकी खोज से मिलता-जुलता कोई कंटेंट नहीं मिला।',
       noResultsSub: 'कृपया कोई दूसरा कीवर्ड खोजें या फिल्टर हटाएं।'
     },
+    home: {
+      eyebrow: 'रसायन विज्ञान · कक्षा 11 और 12 · JEE · NEET',
+      factYears: 'वर्षों का शिक्षण',
+      factCenters: 'कोचिंग केंद्र',
+      factStudents: 'विद्यार्थियों को पढ़ाया',
+      secAbout: 'परिचय',
+      aboutTitle: 'पहले कॉन्सेप्ट, फिर अंक अपने आप।',
+      readProfile: 'पूरा परिचय पढ़ें',
+      secSubjects: 'क्या पढ़ाते हैं',
+      secMethod: 'पढ़ाने का तरीका',
+      methodTitle: 'एक अध्याय कैसे पढ़ाया जाता है',
+      secResources: 'मुफ़्त सामग्री',
+      resourcesTitle: 'नोट्स, प्रश्न पत्र और हल',
+      latestNotes: 'नई अध्ययन सामग्री',
+      latestPapers: 'हाल के प्रश्न पत्र',
+      download: 'डाउनलोड',
+      paper: 'प्रश्न पत्र',
+      solution: 'हल',
+      viewAll: 'सभी देखें',
+      secNotices: 'नोटिस बोर्ड',
+      readNotice: 'नोटिस पढ़ें',
+      secVisit: 'बैच से जुड़ें',
+      visitTitle: 'अपने नज़दीकी केंद्र पर अजय सर से पढ़ें।',
+      visitSub: 'बैच का समय, फ़ीस या फ्री डेमो क्लास के बारे में पूछें। एक दिन के भीतर जवाब मिलेगा।',
+      enquire: 'पूछताछ भेजें',
+      whatsapp: 'व्हाट्सऐप',
+      call: 'कॉल करें',
+      footerLine: 'केमिस्ट्री, समझ के साथ।',
+      resources: 'अध्ययन सामग्री'
+    },
     footer: {
       tagline: '3 प्रमुख कोचिंग केंद्रों में 8+ वर्षों के अनुभव के साथ कार्बनिक, अकार्बनिक एवं प्रायोगिक रसायन में विद्यार्थियों का मार्गदर्शन।',
       specializationsTitle: 'विशेषज्ञता',
@@ -939,6 +1030,36 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       closeBtn: 'Close',
       noResults: 'Aapki search se match karta koi material nahi mila.',
       noResultsSub: 'Kripya koi doosra keyword search karein ya filter hatayein.'
+    },
+    home: {
+      eyebrow: 'Chemistry · Class 11 & 12 · JEE · NEET',
+      factYears: 'saal ka teaching experience',
+      factCenters: 'coaching centres',
+      factStudents: 'students ko padhaya',
+      secAbout: 'About',
+      aboutTitle: 'Pehle concept, marks apne aap aayenge.',
+      readProfile: 'Poora profile padhein',
+      secSubjects: 'Kya padhate hain',
+      secMethod: 'Method',
+      methodTitle: 'Ek chapter kaise padhaya jata hai',
+      secResources: 'Free resources',
+      resourcesTitle: 'Notes, papers aur solutions',
+      latestNotes: 'Latest study material',
+      latestPapers: 'Recent question papers',
+      download: 'Download',
+      paper: 'Paper',
+      solution: 'Solution',
+      viewAll: 'Sab dekhein',
+      secNotices: 'Notice board',
+      readNotice: 'Notice padhein',
+      secVisit: 'Batch join karein',
+      visitTitle: 'Apne nazdeeki centre par Ajay Sir se padhein.',
+      visitSub: 'Batch timings, fees ya free demo class ke baare mein poochein. Ek din ke andar reply milega.',
+      enquire: 'Enquiry bhejein',
+      whatsapp: 'WhatsApp',
+      call: 'Call karein',
+      footerLine: 'Chemistry, samajh ke saath.',
+      resources: 'Resources'
     },
     footer: {
       tagline: '8+ years ke experience ke sath Organic, Inorganic aur Practical Chemistry mein students ko empower karna across 3 coaching centers.',

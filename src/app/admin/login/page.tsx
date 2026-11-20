@@ -3,208 +3,110 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  ShieldCheck, 
-  FlaskConical, 
-  Lock, 
-  Mail, 
-  ArrowRight, 
-  Loader2, 
-  Eye, 
-  EyeOff, 
-  AlertCircle
-} from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { GITHUB_OWNER, GITHUB_REPO, signInWithToken } from '@/lib/github';
+import { refreshAdminData } from '@/lib/dataService';
+import ElementTile from '@/components/ui/ElementTile';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const { showToast } = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [token, setToken] = useState('');
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
     try {
-      let success = false;
-
-      // 1. Check custom saved credentials in localStorage
-      if (typeof window !== 'undefined') {
-        const savedCreds = localStorage.getItem('ajay_custom_admin_creds');
-        if (savedCreds) {
-          try {
-            const parsed = JSON.parse(savedCreds);
-            if (
-              parsed.email && 
-              parsed.password && 
-              email.trim().toLowerCase() === parsed.email.trim().toLowerCase() && 
-              password === parsed.password
-            ) {
-              success = true;
-            }
-          } catch {
-            // fallback
-          }
-        }
-      }
-
-      // 2. Fallback to API route if backend server exists
-      if (!success) {
-        try {
-          const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.success) success = true;
-          }
-        } catch {
-          // static fallback
-        }
-      }
-
-      // 3. Fallback to default credentials
-      if (!success) {
-        if (email.trim().toLowerCase() === 'admin@ajaychemistry.com' && password === 'ajay123456') {
-          success = true;
-        }
-      }
-
-      if (success) {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('ajay_admin_session', JSON.stringify({
-            authenticated: true,
-            email: email.trim().toLowerCase(),
-            name: 'Ajay Choudhary Sir',
-            timestamp: Date.now()
-          }));
-          document.cookie = 'admin_session=authenticated; path=/; max-age=86400';
-        }
-        showToast('Login successful! Welcome Ajay Sir.', 'success');
-        router.replace('/admin');
-      } else {
-        setError('Invalid admin email or password. Please check your credentials.');
-        showToast('Authentication failed. Please check credentials.', 'error');
-      }
+      await signInWithToken(token);
+      refreshAdminData();
+      showToast('Signed in. You can now manage the website.', 'success');
+      router.push('/admin');
     } catch (err) {
-      console.error(err);
-      setError('An unexpected error occurred. Please try again.');
-      showToast('Login error.', 'error');
+      setError(err instanceof Error ? err.message : 'Sign-in failed. Please check the token.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center space-y-3">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-600 via-teal-500 to-indigo-600 p-0.5 shadow-xl mx-auto">
-          <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-            <FlaskConical className="w-7 h-7 text-cyan-400" />
-          </div>
+    <div className="min-h-screen bg-paper flex items-center justify-center px-5 py-16">
+      <div className="w-full max-w-md">
+        <div className="flex items-center gap-3">
+          <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
+          <span className="font-display text-xl text-ink">Ajay Choudhary</span>
         </div>
-        
-        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-          Teacher Admin Portal
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-400">
-          Ajay Choudhary Chemistry Content Management System
-        </p>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
-        <div className="bg-slate-900 py-8 px-6 sm:px-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
-          
-          {error && (
-            <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-              <span>{error}</span>
+        <h1 className="mt-10 text-4xl text-ink">Admin sign in</h1>
+        <p className="mt-3 text-[0.98rem] leading-relaxed text-muted">
+          Paste the access key you were given. It is saved only in this browser, so you only need to do this
+          once on each device.
+        </p>
+
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          <label className="block">
+            <span className="text-sm font-medium text-ink">Access key (GitHub token)</span>
+            <div className="mt-2 flex border border-line bg-white focus-within:border-ink transition-colors">
+              <input
+                type={show ? 'text' : 'password'}
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                placeholder="github_pat_…"
+                autoComplete="off"
+                spellCheck={false}
+                className="flex-1 min-w-0 px-4 py-3.5 bg-transparent text-ink text-sm font-mono outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShow((s) => !s)}
+                className="px-4 text-muted hover:text-ink"
+                aria-label={show ? 'Hide key' : 'Show key'}
+              >
+                {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
+          </label>
+
+          {error && (
+            <p className="flex items-start gap-2 text-sm text-accent">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+              {error}
+            </p>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">
-                Admin Email Address
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter admin email..."
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                />
-              </div>
-            </div>
+          <button
+            type="submit"
+            disabled={loading || !token.trim()}
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-ink text-paper text-sm font-medium hover:bg-accent disabled:opacity-50 transition-colors"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
+            {loading ? 'Checking…' : 'Sign in'}
+          </button>
+        </form>
 
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  placeholder="Enter password..."
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 p-1"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
+        <details className="mt-10 border-t border-line pt-5 text-sm text-muted">
+          <summary className="cursor-pointer text-ink font-medium">How to create a new access key</summary>
+          <ol className="mt-4 space-y-2 list-decimal pl-5 leading-relaxed">
+            <li>
+              Sign in to GitHub as the owner of <span className="font-mono text-ink">{GITHUB_OWNER}/{GITHUB_REPO}</span>.
+            </li>
+            <li>Open Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
+            <li>Repository access: “Only select repositories” → choose {GITHUB_REPO}.</li>
+            <li>Permissions → Repository permissions → Contents: “Read and write”. Leave everything else as “No access”.</li>
+            <li>Choose an expiry (for example 1 year), generate, copy it and paste it above.</li>
+          </ol>
+          <p className="mt-4 leading-relaxed">
+            Never share this key publicly. If a device is lost, delete the key on GitHub and create a new one.
+          </p>
+        </details>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-cyan-600/25 transition-all"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  <span>Verifying Credentials...</span>
-                </>
-              ) : (
-                <>
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>Sign In to Dashboard</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="text-center pt-2">
-            <Link
-              href="/"
-              className="text-xs text-slate-400 hover:text-cyan-400 transition-colors"
-            >
-              ← Back to Student Website
-            </Link>
-          </div>
-
-        </div>
+        <Link href="/" className="mt-10 inline-block text-sm text-muted hover:text-ink">
+          ← Back to website
+        </Link>
       </div>
     </div>
   );

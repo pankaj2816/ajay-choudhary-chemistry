@@ -12,8 +12,7 @@ import {
   Save, 
   Loader2, 
   CheckCircle2,
-  Sparkles,
-  Lock
+  Sparkles
 } from 'lucide-react';
 import { SiteSettings, CoachingCenter } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -25,27 +24,13 @@ export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Security Credentials state
-  const [adminLoginEmail, setAdminLoginEmail] = useState('admin@ajaychemistry.com');
-  const [adminNewPassword, setAdminNewPassword] = useState('');
-  const [adminConfirmPassword, setAdminConfirmPassword] = useState('');
-
   const fetchSettings = async () => {
     try {
       const data = await getSettings();
       setSettings(data);
-      if (typeof window !== 'undefined') {
-        const customCreds = localStorage.getItem('ajay_custom_admin_creds');
-        if (customCreds) {
-          try {
-            const parsed = JSON.parse(customCreds);
-            if (parsed.email) setAdminLoginEmail(parsed.email);
-          } catch {}
-        }
-      }
     } catch (err) {
       console.error(err);
-      showToast('Error loading settings', 'error');
+      showToast(err instanceof Error ? err.message : 'Error loading settings', 'error');
     } finally {
       setLoading(false);
     }
@@ -59,32 +44,13 @@ export default function AdminSettingsPage() {
     e.preventDefault();
     if (!settings) return;
 
-    if (adminNewPassword && adminNewPassword !== adminConfirmPassword) {
-      showToast('New passwords do not match! Please check again.', 'error');
-      return;
-    }
-
     setSaving(true);
     try {
       await saveSettings(settings);
-
-      // Save custom admin credentials
-      if (typeof window !== 'undefined') {
-        const credsToSave = {
-          email: adminLoginEmail.trim(),
-          password: adminNewPassword ? adminNewPassword : (
-            JSON.parse(localStorage.getItem('ajay_custom_admin_creds') || '{}').password || 'ajay123456'
-          )
-        };
-        localStorage.setItem('ajay_custom_admin_creds', JSON.stringify(credsToSave));
-      }
-
-      showToast('Settings & Admin Credentials saved successfully!', 'success');
-      setAdminNewPassword('');
-      setAdminConfirmPassword('');
+      showToast('Settings saved. The website updates in about 2 minutes.', 'success');
     } catch (err) {
       console.error(err);
-      showToast('Failed to save settings', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to save settings', 'error');
     } finally {
       setSaving(false);
     }
@@ -334,7 +300,7 @@ export default function AdminSettingsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Inquiry Email</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Public Contact Email</label>
               <input
                 type="email"
                 value={settings.email}
@@ -365,51 +331,23 @@ export default function AdminSettingsPage() {
           </div>
         </div>
 
-        {/* 5. Admin Security & Login Credentials */}
+        {/* 5. Enquiry email */}
         <div className="p-6 sm:p-8 rounded-3xl bg-slate-950 border border-slate-800 space-y-4 shadow-xl">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-slate-800">
-            <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400">
-              <Lock className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">Admin Security & Login Credentials</h3>
-              <p className="text-xs text-slate-400">Change your teacher admin email and secret password for secure portal access.</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Admin Login Email</label>
-              <input
-                type="email"
-                value={adminLoginEmail}
-                onChange={(e) => setAdminLoginEmail(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">New Password (Optional)</label>
-              <input
-                type="password"
-                placeholder="Leave blank to keep current"
-                value={adminNewPassword}
-                onChange={(e) => setAdminNewPassword(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Confirm New Password</label>
-              <input
-                type="password"
-                placeholder="Confirm password"
-                value={adminConfirmPassword}
-                onChange={(e) => setAdminConfirmPassword(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-          </div>
+          <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <Mail className="w-5 h-5 text-indigo-400" />
+            Where should student enquiries be emailed?
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-400">
+            Leave empty to use the public contact email. The first enquiry to a new address sends a one-time
+            confirmation email from FormSubmit. Click &ldquo;Activate&rdquo; in it.
+          </p>
+          <input
+            type="email"
+            placeholder={settings.email}
+            value={settings.enquiryEmail || ''}
+            onChange={(e) => setSettings({ ...settings, enquiryEmail: e.target.value })}
+            className="w-full sm:max-w-md px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white"
+          />
         </div>
 
         {/* Submit Bar */}

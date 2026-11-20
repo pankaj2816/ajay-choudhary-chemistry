@@ -106,7 +106,7 @@ export default function AdminUpdatesPage() {
       if (Array.isArray(data)) setUpdates(data);
     } catch (err) {
       console.error(err);
-      showToast('Failed to load notices', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to load notices', 'error');
     } finally {
       setLoading(false);
     }
@@ -165,7 +165,7 @@ export default function AdminUpdatesPage() {
         attachmentSize: `${(file.size / 1024).toFixed(0)} KB`,
         attachmentUrl: dataUrl
       }));
-      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+      showToast(`"${file.name}" attached. It uploads when you save.`, 'info');
     };
     reader.readAsDataURL(file);
   };
@@ -185,7 +185,7 @@ export default function AdminUpdatesPage() {
       fetchUpdates();
     } catch (err) {
       console.error(err);
-      showToast('Failed to save update', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to save update', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -199,7 +199,7 @@ export default function AdminUpdatesPage() {
       fetchUpdates();
     } catch (err) {
       console.error(err);
-      showToast('Error deleting notice', 'error');
+      showToast(err instanceof Error ? err.message : 'Error deleting notice', 'error');
     }
   };
 

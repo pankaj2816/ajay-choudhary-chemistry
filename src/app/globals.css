@@ -1,105 +1,226 @@
 @import "tailwindcss";
 
+/* =====================================================================
+   Design system — "Ink & Ivory"
+   A restrained, editorial palette: warm ivory paper, deep ink, and a
+   single oxblood accent (picked up from Ajay Sir's blazer in the photos).
+   The Tailwind colour scales used across the older inner pages
+   (slate / cyan / teal / sky / indigo / blue / purple) are remapped here
+   so every page follows the same palette without a rewrite.
+   ===================================================================== */
+
+@theme {
+  /* Fonts (CSS variables are set by next/font in layout.tsx) */
+  --font-sans: var(--font-body), var(--font-deva), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-serif), var(--font-deva), Georgia, serif;
+
+  /* Core tokens */
+  --color-ink: #141a26;
+  --color-ink-soft: #232b3a;
+  --color-paper: #f7f4ee;
+  --color-paper-deep: #efe9df;
+  --color-line: #ddd5c7;
+  --color-muted: #5f5a52;
+  --color-accent: #7b2234;
+  --color-accent-deep: #5f1a28;
+  --color-accent-soft: #f2e5e2;
+  --color-brass: #b3925f;
+
+  /* Neutral scale: warm, ink-leaning greys */
+  --color-slate-50: #f7f4ee;
+  --color-slate-100: #efe9df;
+  --color-slate-200: #e2dbcf;
+  --color-slate-300: #cdc5b8;
+  --color-slate-400: #9d968b;
+  --color-slate-500: #77716a;
+  --color-slate-600: #5f5a52;
+  --color-slate-700: #3f4350;
+  --color-slate-800: #2a3140;
+  --color-slate-900: #1b2230;
+  --color-slate-950: #141a26;
+
+  /* Accent scale (oxblood) — replaces cyan / teal / sky / indigo / blue / purple */
+  --color-cyan-50: #faf3f1;  --color-cyan-100: #f2e5e2; --color-cyan-200: #e5c9c4;
+  --color-cyan-300: #d6a9a2; --color-cyan-400: #c98f88; --color-cyan-500: #a3404f;
+  --color-cyan-600: #7b2234; --color-cyan-700: #6a1d2d; --color-cyan-800: #5a1826;
+  --color-cyan-900: #3d1019; --color-cyan-950: #2a0b11;
+
+  --color-teal-50: #faf3f1;  --color-teal-100: #f2e5e2; --color-teal-200: #e5c9c4;
+  --color-teal-300: #d6a9a2; --color-teal-400: #c98f88; --color-teal-500: #a3404f;
+  --color-teal-600: #7b2234; --color-teal-700: #6a1d2d; --color-teal-800: #5a1826;
+  --color-teal-900: #3d1019; --color-teal-950: #2a0b11;
+
+  --color-sky-50: #faf3f1;  --color-sky-100: #f2e5e2; --color-sky-200: #e5c9c4;
+  --color-sky-300: #d6a9a2; --color-sky-400: #c98f88; --color-sky-500: #a3404f;
+  --color-sky-600: #7b2234; --color-sky-700: #6a1d2d; --color-sky-800: #5a1826;
+  --color-sky-900: #3d1019; --color-sky-950: #2a0b11;
+
+  --color-blue-50: #faf3f1;  --color-blue-100: #f2e5e2; --color-blue-200: #e5c9c4;
+  --color-blue-300: #d6a9a2; --color-blue-400: #c98f88; --color-blue-500: #a3404f;
+  --color-blue-600: #7b2234; --color-blue-700: #6a1d2d; --color-blue-800: #5a1826;
+  --color-blue-900: #3d1019; --color-blue-950: #2a0b11;
+
+  /* Secondary scale (brass) — replaces indigo / purple */
+  --color-indigo-50: #f8f3ea;  --color-indigo-100: #f0e6d4; --color-indigo-200: #e2cfae;
+  --color-indigo-300: #d2b88a; --color-indigo-400: #c4a574; --color-indigo-500: #b3925f;
+  --color-indigo-600: #8f734a; --color-indigo-700: #74603f; --color-indigo-800: #5b4b33;
+  --color-indigo-900: #3f3424; --color-indigo-950: #2a2318;
+
+  --color-purple-50: #f8f3ea;  --color-purple-100: #f0e6d4; --color-purple-200: #e2cfae;
+  --color-purple-300: #d2b88a; --color-purple-400: #c4a574; --color-purple-500: #b3925f;
+  --color-purple-600: #8f734a; --color-purple-700: #74603f; --color-purple-800: #5b4b33;
+  --color-purple-900: #3f3424; --color-purple-950: #2a2318;
+
+  /* Positive state: muted forest instead of neon emerald */
+  --color-emerald-50: #eef4ef;  --color-emerald-100: #dbe8de; --color-emerald-200: #b9d2bf;
+  --color-emerald-300: #92b79b; --color-emerald-400: #6f9c7a; --color-emerald-500: #4f8060;
+  --color-emerald-600: #3b6a4b; --color-emerald-700: #2f563d; --color-emerald-800: #254431;
+  --color-emerald-900: #1a3023; --color-emerald-950: #0f1f16;
+
+  /* Calmer geometry: smaller radii, softer shadows, slightly larger small text */
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.875rem;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.55;
+  --shadow-lg: 0 6px 20px -8px rgb(20 26 38 / 0.18);
+  --shadow-xl: 0 12px 30px -12px rgb(20 26 38 / 0.22);
+  --shadow-2xl: 0 24px 48px -20px rgb(20 26 38 / 0.28);
+}
+
 @layer base {
-  :root {
-    --color-primary-dark: #0a192f;
-    --color-primary-navy: #0f172a;
-    --color-primary-blue: #1e293b;
-    --color-cyan-glow: #06b6d4;
-    --color-teal-accent: #0ea5e9;
-    --color-emerald-accent: #10b981;
-    --color-amber-accent: #f59e0b;
-    --color-bg-light: #f8fafc;
-    --color-card-light: #ffffff;
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   body {
-    background-color: #f8fafc;
-    color: #0f172a;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     overflow-x: hidden;
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
   }
 
-  ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--color-paper-deep); }
+  ::-webkit-scrollbar-thumb { background: #c9c0b1; border-radius: 6px; border: 2px solid var(--color-paper-deep); }
 }
 
-/* Chemistry Molecular Grid & Background Patterns */
+/* ---------------------------------------------------------------------
+   Typography — headings in the display serif everywhere (unlayered so it
+   wins over legacy font-black utilities on inner pages).
+   --------------------------------------------------------------------- */
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 450 !important;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 96;
+}
+
+/* Legacy gradient-text highlights become an italic serif accent */
+.bg-clip-text.text-transparent {
+  background-image: none !important;
+  color: inherit !important;
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+/* Tiny legacy text sizes are bumped for readability on phones */
+.text-\[9px\], .text-\[10px\] { font-size: 11.5px !important; }
+.text-\[11px\] { font-size: 12.5px !important; }
+
+/* Remove decorative effects that read as template-y */
+.animate-ping,
+.animate-pulse-glow,
+.pointer-events-none.blur-3xl,
+.pointer-events-none.blur-2xl {
+  display: none !important;
+}
+.animate-bounce { animation: none !important; }
+
+/* ---------------------------------------------------------------------
+   Utilities kept for legacy pages, restyled to the new system
+   --------------------------------------------------------------------- */
 .chem-grid-pattern {
-  background-image: radial-gradient(rgba(14, 165, 233, 0.12) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 .chem-hero-gradient {
-  background: radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.15), transparent 45%),
-              radial-gradient(circle at 10% 70%, rgba(14, 165, 233, 0.12), transparent 40%),
-              linear-gradient(135deg, #0a192f 0%, #0f172a 60%, #1e293b 100%);
+  background: var(--color-ink);
 }
 
 .chem-subtle-glow {
-  box-shadow: 0 0 50px -10px rgba(6, 182, 212, 0.25);
+  box-shadow: var(--shadow-xl);
 }
 
 .glass-card-light {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: #fff;
+  border: 1px solid var(--color-line);
 }
 
 .glass-card-dark {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.6);
+  background: var(--color-ink-soft);
+  border: 1px solid rgb(255 255 255 / 0.08);
 }
 
-/* Subtle animation keyframes */
+/* ---------------------------------------------------------------------
+   New editorial helpers
+   --------------------------------------------------------------------- */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hairline {
+  border-color: var(--color-line);
+}
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.3s ease;
+}
+.link-underline:hover {
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+}
+
+/* Gentle entrance motion, respects reduced-motion */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.rise-in { animation: riseIn 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.rise-in-delay-1 { animation-delay: 0.08s; }
+.rise-in-delay-2 { animation-delay: 0.16s; }
+.rise-in-delay-3 { animation-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in { animation: none; }
+}
+
+/* Kept for any legacy usage */
 @keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(2deg);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
+.animate-float-slow { animation: none; }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.animate-float-slow {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 4s ease-in-out infinite;
-}
-
-/* Print utilities */
 @media print {
-  .no-print {
-    display: none !important;
-  }
+  .no-print { display: none !important; }
 }

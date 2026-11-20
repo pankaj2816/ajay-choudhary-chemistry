@@ -1,24 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  FlaskConical, 
-  Search, 
-  Menu, 
-  X, 
-  ShieldCheck, 
-  Bell, 
-  BookOpen, 
-  FileText, 
-  CheckCircle, 
-  User, 
-  PhoneCall,
-  Sparkles
-} from 'lucide-react';
+import { Search, Menu, X, ChevronDown, ArrowUpRight } from 'lucide-react';
 import SearchModal from '@/components/ui/SearchModal';
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher';
+import ElementTile from '@/components/ui/ElementTile';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Navbar() {
@@ -26,167 +14,217 @@ export default function Navbar() {
   const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const resourcesRef = useRef<HTMLDivElement>(null);
 
-  const navLinks = [
-    { label: t.nav.home, href: '/' },
-    { label: t.nav.about, href: '/about' },
-    { label: t.nav.subjects, href: '/subjects' },
-    { label: t.nav.updates, href: '/updates', hasBadge: true },
+  const resourceLinks = [
     { label: t.nav.studyMaterials, href: '/study-materials' },
     { label: t.nav.questionPapers, href: '/question-papers' },
     { label: t.nav.solutions, href: '/solutions' },
+  ];
+
+  const primaryLinks = [
+    { label: t.nav.about, href: '/about' },
+    { label: t.nav.subjects, href: '/subjects' },
+  ];
+
+  const trailingLinks = [
+    { label: t.nav.updates, href: '/updates' },
     { label: t.nav.contact, href: '/contact' },
   ];
 
+  const isActive = (href: string) =>
+    pathname === href || (href !== '/' && !!pathname?.startsWith(href));
+  const resourcesActive = resourceLinks.some((l) => isActive(l.href));
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Keyboard shortcut Ctrl+K / Cmd+K for search
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setSearchOpen(true);
       }
+      if (e.key === 'Escape') {
+        setResourcesOpen(false);
+        setMobileMenuOpen(false);
+      }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    const onClick = (e: MouseEvent) => {
+      if (resourcesRef.current && !resourcesRef.current.contains(e.target as Node)) {
+        setResourcesOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClick);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClick);
+    };
   }, []);
 
-  // Close mobile menu on route change
+  // Lock page scroll while the mobile menu is open
   useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname]);
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
-  const isAdminRoute = pathname?.startsWith('/admin');
+  // The admin panel has its own layout
+  if (pathname?.startsWith('/admin')) return null;
+
+  const linkClass = (active: boolean) =>
+    `relative py-2 text-[0.9rem] transition-colors ${
+      active ? 'text-ink' : 'text-muted hover:text-ink'
+    } after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-px after:bg-accent after:transition-transform after:origin-left ${
+      active ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+    }`;
 
   return (
     <>
-      <header 
-        className={`sticky top-0 z-40 transition-all duration-300 ${
-          scrolled 
-            ? 'bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-slate-800/80 py-2.5' 
-            : 'bg-slate-950 border-b border-slate-800/50 py-3.5'
+      <header
+        className={`sticky top-0 z-40 transition-colors duration-300 ${
+          scrolled ? 'bg-paper/92 backdrop-blur-md border-b border-line' : 'bg-paper border-b border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
-          {/* Logo & Teacher Brand */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-teal-500 to-indigo-600 p-0.5 shadow-md group-hover:shadow-cyan-500/20 transition-all duration-300">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-white text-sm sm:text-base lg:text-lg tracking-tight group-hover:text-cyan-400 transition-colors">
-                  Ajay Choudhary Sir
-                </span>
-                <span className="text-[9px] sm:text-[10px] uppercase font-bold px-1.5 py-0.2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded">
-                  8+ Yrs
-                </span>
-              </div>
-              <span className="text-[10px] sm:text-[11px] text-slate-400 font-medium hidden xs:inline">
-                Chemistry Educator • Organic | Inorganic | Practical
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-6">
+          {/* Brand */}
+          <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Ajay Choudhary Sir — Home">
+            <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
+            <span className="flex flex-col leading-tight">
+              <span className="font-display text-[1.15rem] text-ink" style={{ fontVariationSettings: '"opsz" 36' }}>
+                Ajay Choudhary
               </span>
-            </div>
+              <span className="eyebrow !text-[0.62rem] !tracking-[0.22em] text-muted">Chemistry</span>
+            </span>
           </Link>
 
-          {/* Desktop Nav Items */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href));
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`relative px-2.5 xl:px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all ${
-                    isActive
-                      ? 'text-cyan-400 bg-cyan-950/60 shadow-sm border border-cyan-500/30'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                  }`}
-                >
-                  {link.label}
-                  {link.hasBadge && (
-                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
-                    </span>
-                  )}
-                </Link>
-              );
-            })}
+          {/* Desktop navigation */}
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Main">
+            {primaryLinks.map((l) => (
+              <Link key={l.href} href={l.href} className={linkClass(isActive(l.href))}>
+                {l.label}
+              </Link>
+            ))}
+
+            <div className="relative" ref={resourcesRef}>
+              <button
+                type="button"
+                onClick={() => setResourcesOpen((o) => !o)}
+                aria-expanded={resourcesOpen}
+                className={`${linkClass(resourcesActive)} inline-flex items-center gap-1`}
+              >
+                {t.home.resources}
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {resourcesOpen && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-60 bg-white border border-line shadow-xl py-2">
+                  {resourceLinks.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setResourcesOpen(false)}
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${
+                        isActive(l.href) ? 'text-accent' : 'text-ink hover:bg-paper'
+                      }`}
+                    >
+                      {l.label}
+                      <ArrowUpRight className="w-3.5 h-3.5 opacity-40" />
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {trailingLinks.map((l) => (
+              <Link key={l.href} href={l.href} className={linkClass(isActive(l.href))}>
+                {l.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Header Action Tools */}
-          <div className="flex items-center gap-2">
-            {/* Language Selector */}
-            <LanguageSwitcher />
-
-            {/* Search Trigger Button */}
+          {/* Actions */}
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-1.5 sm:gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-slate-400 hover:text-slate-200 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs transition-all shadow-inner group"
-              title="Search website (Ctrl + K)"
+              className="p-2.5 text-muted hover:text-ink transition-colors"
+              aria-label={t.nav.search}
+              title={`${t.nav.search} (Ctrl + K)`}
             >
-              <Search className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-              <span className="hidden md:inline">{t.nav.search}</span>
-              <kbd className="hidden md:inline-block bg-slate-800 text-slate-400 text-[10px] px-1.5 py-0.5 rounded border border-slate-700 font-mono">
-                ⌘K
-              </kbd>
+              <Search className="w-[18px] h-[18px]" />
             </button>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-              aria-label="Toggle navigation menu"
+            <div className="hidden sm:block">
+              <LanguageSwitcher />
+            </div>
+
+            <Link
+              href="/contact"
+              className="hidden md:inline-flex items-center ml-2 px-5 py-2.5 bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {t.home.enquire}
+            </Link>
+
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="lg:hidden p-2.5 -mr-2 text-ink"
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-slate-950/95 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
-            <div className="grid grid-cols-2 gap-2">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center justify-between p-2.5 rounded-xl text-xs font-semibold ${
-                      isActive
-                        ? 'bg-cyan-950 text-cyan-400 border border-cyan-500/30'
-                        : 'bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-800/80'
-                    }`}
-                  >
-                    <span>{link.label}</span>
-                    {link.hasBadge && (
-                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div className="pt-2 flex items-center justify-between gap-2">
-              <LanguageSwitcher />
-            </div>
-          </div>
-        )}
       </header>
 
-      {/* Global Search Modal */}
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-paper flex flex-col lg:hidden">
+          <div className="h-[72px] px-5 sm:px-8 flex items-center justify-between border-b border-line">
+            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3">
+              <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
+              <span className="font-display text-[1.15rem]">Ajay Choudhary</span>
+            </Link>
+            <button onClick={() => setMobileMenuOpen(false)} className="p-2.5 -mr-2" aria-label="Close menu">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto px-5 sm:px-8 py-6" aria-label="Mobile">
+            {[{ label: t.nav.home, href: '/' }, ...primaryLinks, ...resourceLinks, ...trailingLinks].map((l, i) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-baseline gap-4 py-3.5 border-b border-line"
+              >
+                <span className="text-xs text-muted tabular-nums w-5">{String(i + 1).padStart(2, '0')}</span>
+                <span className={`font-display text-2xl ${isActive(l.href) && l.href !== '/' ? 'text-accent' : 'text-ink'}`}>
+                  {l.label}
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="px-5 sm:px-8 py-5 border-t border-line flex items-center justify-between gap-4">
+            <LanguageSwitcher up />
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex-1 text-center px-5 py-3 bg-accent text-paper text-sm font-medium"
+            >
+              {t.home.enquire}
+            </Link>
+          </div>
+        </div>
+      )}
+
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );

@@ -55,7 +55,7 @@ export default function AdminSolutionsPage() {
       if (Array.isArray(qpData)) setPapers(qpData);
     } catch (err) {
       console.error(err);
-      showToast('Error loading solutions', 'error');
+      showToast(err instanceof Error ? err.message : 'Error loading solutions', 'error');
     } finally {
       setLoading(false);
     }
@@ -160,7 +160,7 @@ export default function AdminSolutionsPage() {
         solutionPdfSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
         solutionPdfUrl: dataUrl
       }));
-      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+      showToast(`"${file.name}" attached. It uploads when you save.`, 'info');
     };
     reader.readAsDataURL(file);
   };
@@ -180,7 +180,7 @@ export default function AdminSolutionsPage() {
       fetchData();
     } catch (err) {
       console.error(err);
-      showToast('Failed to save solution', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to save solution', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -194,7 +194,7 @@ export default function AdminSolutionsPage() {
       fetchData();
     } catch (err) {
       console.error(err);
-      showToast('Error deleting solution', 'error');
+      showToast(err instanceof Error ? err.message : 'Error deleting solution', 'error');
     }
   };
 

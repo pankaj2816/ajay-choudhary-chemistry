@@ -157,9 +157,9 @@ export default function AdminDashboardOverview() {
               <Mail className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-white">{stats.messagesCount}</div>
+          <div className="text-base font-bold text-white">Arrive by email</div>
           <span className="text-[11px] text-purple-400 font-semibold mt-1 block">
-            {stats.unreadMessages} New Unread Inquiries
+            See how enquiries reach you
           </span>
         </Link>
 
@@ -238,36 +238,18 @@ export default function AdminDashboardOverview() {
           </div>
         </div>
 
-        {/* Recent Inquiries */}
-        <div className="p-6 rounded-3xl bg-slate-950/80 border border-slate-800 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Mail className="w-4 h-4 text-purple-400" />
-              Recent Student Inquiries
-            </h3>
-            <Link href="/admin/messages" className="text-xs text-purple-400 hover:underline">
-              Open Inbox →
-            </Link>
-          </div>
-
-          <div className="space-y-3">
-            {recentMessages.map((item) => (
-              <div
-                key={item.id}
-                className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-start justify-between gap-3 text-xs"
-              >
-                <div className="space-y-1">
-                  <div className="font-bold text-slate-100">{item.name} ({item.studentClass})</div>
-                  <div className="text-[11px] text-slate-400 line-clamp-1">{item.message}</div>
-                </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded font-bold shrink-0 ${
-                  item.isRead ? 'bg-slate-800 text-slate-400' : 'bg-rose-950 text-rose-400 border border-rose-500/30'
-                }`}>
-                  {item.isRead ? 'Read' : 'New'}
-                </span>
-              </div>
-            ))}
-          </div>
+        {/* Enquiries */}
+        <div className="p-6 rounded-3xl bg-slate-950/80 border border-slate-800 space-y-3">
+          <h3 className="text-sm font-bold text-white flex items-center gap-2">
+            <Mail className="w-4 h-4 text-purple-400" />
+            Student enquiries
+          </h3>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            Contact-form enquiries are emailed to you, so you can reply straight from your inbox.
+          </p>
+          <Link href="/admin/messages" className="text-xs text-purple-400 hover:underline">
+            How it works →
+          </Link>
         </div>
 
       </div>

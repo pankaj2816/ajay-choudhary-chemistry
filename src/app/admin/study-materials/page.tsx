@@ -75,7 +75,7 @@ export default function AdminStudyMaterialsPage() {
       if (Array.isArray(data)) setMaterials(data);
     } catch (err) {
       console.error(err);
-      showToast('Error loading study materials', 'error');
+      showToast(err instanceof Error ? err.message : 'Error loading study materials', 'error');
     } finally {
       setLoading(false);
     }
@@ -134,7 +134,7 @@ export default function AdminStudyMaterialsPage() {
         fileSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
         fileUrl: dataUrl
       }));
-      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+      showToast(`"${file.name}" attached. It uploads when you save.`, 'info');
     };
     reader.readAsDataURL(file);
   };
@@ -154,7 +154,7 @@ export default function AdminStudyMaterialsPage() {
       fetchMaterials();
     } catch (err) {
       console.error(err);
-      showToast('Failed to save', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to save', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -168,7 +168,7 @@ export default function AdminStudyMaterialsPage() {
       fetchMaterials();
     } catch (err) {
       console.error(err);
-      showToast('Error deleting material', 'error');
+      showToast(err instanceof Error ? err.message : 'Error deleting material', 'error');
     }
   };
 

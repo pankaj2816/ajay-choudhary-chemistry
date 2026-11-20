@@ -150,6 +150,8 @@ export interface SiteSettings {
   email: string;
   phone: string;
   whatsapp: string;
+  /** Where contact-form enquiries are emailed. Falls back to `email`. */
+  enquiryEmail?: string;
   bannerActive: boolean;
   bannerAlert: string;
   bannerLink?: string;

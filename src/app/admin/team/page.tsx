@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
-import { getTeam, saveTeamMember } from '@/lib/dataService';
+import { getTeam, saveTeamMember, deleteTeamMember } from '@/lib/dataService';
 
 export default function AdminTeamPage() {
   const { showToast } = useToast();
@@ -48,7 +48,7 @@ export default function AdminTeamPage() {
       if (Array.isArray(data)) setTeam(data);
     } catch (err) {
       console.error(err);
-      showToast('Error loading team portfolio', 'error');
+      showToast(err instanceof Error ? err.message : 'Error loading team portfolio', 'error');
     } finally {
       setLoading(false);
     }
@@ -115,15 +115,22 @@ export default function AdminTeamPage() {
       fetchTeam();
     } catch (err) {
       console.error(err);
-      showToast('Failed to save team member', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to save team member', 'error');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    showToast('Admin faculty profile updated', 'info');
-    setDeleteConfirmId(null);
+    try {
+      await deleteTeamMember(id);
+      showToast('Team member removed', 'success');
+      fetchTeam();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to remove team member', 'error');
+    } finally {
+      setDeleteConfirmId(null);
+    }
   };
 
   return (

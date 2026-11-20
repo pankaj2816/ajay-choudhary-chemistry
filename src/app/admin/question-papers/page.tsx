@@ -79,7 +79,7 @@ export default function AdminQuestionPapersPage() {
       if (Array.isArray(data)) setPapers(data);
     } catch (err) {
       console.error(err);
-      showToast('Error loading question papers', 'error');
+      showToast(err instanceof Error ? err.message : 'Error loading question papers', 'error');
     } finally {
       setLoading(false);
     }
@@ -145,7 +145,7 @@ export default function AdminQuestionPapersPage() {
         fileSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
         fileUrl: dataUrl
       }));
-      showToast(`File "${file.name}" uploaded successfully!`, 'success');
+      showToast(`"${file.name}" attached. It uploads when you save.`, 'info');
     };
     reader.readAsDataURL(file);
   };
@@ -165,7 +165,7 @@ export default function AdminQuestionPapersPage() {
       fetchPapers();
     } catch (err) {
       console.error(err);
-      showToast('Failed to save paper', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to save paper', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -179,7 +179,7 @@ export default function AdminQuestionPapersPage() {
       fetchPapers();
     } catch (err) {
       console.error(err);
-      showToast('Error deleting paper', 'error');
+      showToast(err instanceof Error ? err.message : 'Error deleting paper', 'error');
     }
   };
 

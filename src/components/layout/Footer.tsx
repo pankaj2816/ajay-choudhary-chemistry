@@ -1,183 +1,124 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { 
-  FlaskConical, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Calendar, 
-  ShieldCheck, 
-  ArrowRight, 
-  Sparkles,
-  BookOpen,
-  GraduationCap
-} from 'lucide-react';
-
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
+import { initialDatabase } from '@/data/initialData';
+import { getSettings } from '@/lib/dataService';
+import { SiteSettings } from '@/lib/types';
+import ElementTile from '@/components/ui/ElementTile';
 
 export default function Footer() {
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const [settings, setSettings] = useState<SiteSettings>(initialDatabase.settings);
+
+  useEffect(() => {
+    getSettings()
+      .then((data) => {
+        if (data && data.teacherName) setSettings(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  if (pathname?.startsWith('/admin')) return null;
+
+  const columns = [
+    {
+      title: t.footer.resourcesTitle,
+      links: [
+        { label: t.nav.studyMaterials, href: '/study-materials' },
+        { label: t.nav.questionPapers, href: '/question-papers' },
+        { label: t.nav.solutions, href: '/solutions' },
+        { label: t.nav.updates, href: '/updates' },
+      ],
+    },
+    {
+      title: t.footer.specializationsTitle,
+      links: [
+        { label: t.subjects.organicName, href: '/subjects#organic' },
+        { label: t.subjects.inorganicName, href: '/subjects#inorganic' },
+        { label: t.subjects.practicalName, href: '/subjects#practical' },
+        { label: t.nav.about, href: '/about' },
+      ],
+    },
+  ];
 
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 text-sm relative overflow-hidden">
-      {/* Subtle Background Glow */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/80">
-          
-          {/* Brand & Educator Identity (2 cols) */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-indigo-600 p-0.5 shadow-md">
-                <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                  <FlaskConical className="w-5 h-5 text-cyan-400" />
-                </div>
-              </div>
-              <div>
-                <h3 className="font-extrabold text-white text-lg tracking-tight">Ajay Choudhary Sir</h3>
-                <p className="text-xs text-cyan-400 font-medium">Senior Chemistry Educator (8+ Years Exp)</p>
-              </div>
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
-              {t.footer.tagline}
-            </p>
-
-            <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-1.5 max-w-sm">
-              <div className="flex items-center gap-2 font-semibold text-cyan-400">
-                <Sparkles className="w-3.5 h-3.5" />
-                Teaching Motto
-              </div>
-              <p className="italic text-slate-300">
-                &ldquo;Chemistry becomes effortless when concepts are understood, not just memorized.&rdquo;
+    <footer className="bg-ink text-paper/70 no-print">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-20 pb-10">
+        {/* Statement */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 pb-14 border-b border-paper/10">
+          <div className="flex items-start gap-5">
+            <ElementTile symbol="Ac" number={89} name="Chemistry" size="lg" tone="dark" />
+            <div>
+              <p className="font-display text-4xl sm:text-5xl text-paper leading-[1.05]" style={{ fontVariationSettings: '"opsz" 120' }}>
+                {t.home.footerLine}
               </p>
+              <p className="mt-3 max-w-md text-[0.95rem] leading-relaxed">{t.footer.tagline}</p>
             </div>
           </div>
-
-          {/* Quick Navigation Links */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.resourcesTitle}</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link href="/about" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.about}
-                </Link>
-              </li>
-              <li>
-                <Link href="/subjects" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.subjects}
-                </Link>
-              </li>
-              <li>
-                <Link href="/updates" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.updates}
-                </Link>
-              </li>
-              <li>
-                <Link href="/study-materials" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.studyMaterials}
-                </Link>
-              </li>
-              <li>
-                <Link href="/question-papers" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.questionPapers}
-                </Link>
-              </li>
-              <li>
-                <Link href="/solutions" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.solutions}
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="w-3 h-3 text-cyan-500/60" /> {t.nav.contact}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Chemistry Domains */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.specializationsTitle}</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link href="/subjects#organic" className="hover:text-cyan-400 transition-colors block">
-                  <strong className="text-slate-300 block">{t.subjects.organicName}</strong>
-                  <span className="text-[11px] text-slate-500">Mechanisms, Named Reactions & Conversions</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/subjects#inorganic" className="hover:text-cyan-400 transition-colors block">
-                  <strong className="text-slate-300 block">{t.subjects.inorganicName}</strong>
-                  <span className="text-[11px] text-slate-500">Coordination, Bonding & Periodic Trends</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/subjects#practical" className="hover:text-cyan-400 transition-colors block">
-                  <strong className="text-slate-300 block">{t.subjects.practicalName}</strong>
-                  <span className="text-[11px] text-slate-500">Qualitative Salt Analysis & Titrations</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Coaching Centers Summary */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.centersTitle}</h4>
-            <ul className="space-y-2 text-xs">
-              <li className="p-2 rounded-lg bg-slate-900/60 border border-slate-800">
-                <strong className="text-slate-200 block text-xs">Catalyst Career Institute</strong>
-                <span className="text-[11px] text-slate-400">Class 12 & JEE/NEET Target</span>
-              </li>
-              <li className="p-2 rounded-lg bg-slate-900/60 border border-slate-800">
-                <strong className="text-slate-200 block text-xs">Apex Science Academy</strong>
-                <span className="text-[11px] text-slate-400">Class 11 Foundation & GOC</span>
-              </li>
-              <li className="p-2 rounded-lg bg-slate-900/60 border border-slate-800">
-                <strong className="text-slate-200 block text-xs">Prerana Learning Hub</strong>
-                <span className="text-[11px] text-slate-400">NEET & Practical Lab Workshops</span>
-              </li>
-            </ul>
-          </div>
-
+          <Link
+            href="/contact"
+            className="self-start lg:self-auto inline-flex items-center px-6 py-3.5 bg-paper text-ink text-sm font-medium hover:bg-accent hover:text-paper transition-colors"
+          >
+            {t.home.enquire}
+          </Link>
         </div>
 
-        {/* Bottom Bar with Admin Login Link */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex flex-col sm:flex-row items-center gap-2">
-            <p>© {new Date().getFullYear()} {t.footer.rightsReserved}</p>
-            <span className="hidden sm:inline opacity-50">•</span>
-            <p>
-              Designed &amp; Developed by{' '}
-              <a
-                href="https://pixeltocloud.com?utm_source=chemistry_classes&utm_medium=footer_credit&utm_campaign=client_referral"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cyan-400/90 hover:text-cyan-300 underline underline-offset-2 transition-colors"
-              >
-                PixelToCloud
-              </a>
-            </p>
+        {/* Columns */}
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-10 py-14">
+          {columns.map((col) => (
+            <div key={col.title} className="lg:col-span-3">
+              <h4 className="eyebrow text-paper/40 mb-5">{col.title}</h4>
+              <ul className="space-y-3">
+                {col.links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="text-[0.95rem] text-paper/80 hover:text-paper transition-colors">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div className="col-span-2 lg:col-span-6">
+            <h4 className="eyebrow text-paper/40 mb-5">{t.footer.centersTitle}</h4>
+            <ul className="divide-y divide-paper/10 border-y border-paper/10">
+              {settings.coachingCenters.map((c) => (
+                <li key={c.id} className="py-3.5 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                  <span className="text-paper">{c.name}</span>
+                  <span className="text-sm text-paper/50">{c.location}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 flex flex-wrap gap-x-8 gap-y-2 text-sm">
+              <a href={`mailto:${settings.email}`} className="text-paper/80 hover:text-paper">{settings.email}</a>
+              <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="text-paper/80 hover:text-paper">{settings.phone}</a>
+            </div>
           </div>
-          <div className="flex items-center gap-6">
-            <Link href="/contact" className="hover:text-slate-300 transition-colors">
-              Student Helpdesk
-            </Link>
-            <Link href="/about" className="hover:text-slate-300 transition-colors">
-              Faculty Profile
-            </Link>
-            <Link 
-              href="/admin/login" 
-              className="inline-flex items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors font-medium"
+        </div>
+
+        {/* Bottom bar */}
+        <div className="pt-8 border-t border-paper/10 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs text-paper/40">
+          <p>
+            © {new Date().getFullYear()} {t.footer.rightsReserved}
+            <span className="mx-2">·</span>
+            Designed &amp; developed by{' '}
+            <a
+              href="https://pixeltocloud.com?utm_source=chemistry_classes&utm_medium=footer_credit&utm_campaign=client_referral"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-paper/70 hover:text-paper underline underline-offset-4 decoration-paper/30"
             >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Teacher Admin Login
-            </Link>
-          </div>
+              PixelToCloud
+            </a>
+          </p>
+          <Link href="/admin/login" className="hover:text-paper/80 transition-colors">
+            Teacher login
+          </Link>
         </div>
       </div>
     </footer>

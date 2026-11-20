@@ -31,7 +31,7 @@ export default function AdminCategoriesPage() {
       setTaxonomies(data);
     } catch (err) {
       console.error(err);
-      showToast('Error loading taxonomies', 'error');
+      showToast(err instanceof Error ? err.message : 'Error loading taxonomies', 'error');
     } finally {
       setLoading(false);
     }
@@ -48,7 +48,7 @@ export default function AdminCategoriesPage() {
       showToast('Categories updated successfully', 'success');
     } catch (err) {
       console.error(err);
-      showToast('Error updating categories', 'error');
+      showToast(err instanceof Error ? err.message : 'Error updating categories', 'error');
     }
   };
 

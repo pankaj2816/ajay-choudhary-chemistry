@@ -1,527 +1,392 @@
 'use client';
 
-import { 
-  DatabaseSchema, 
-  NoticeUpdate, 
-  QuestionPaper, 
-  SolutionItem, 
-  StudyMaterial, 
-  TeamMember, 
-  SiteSettings, 
-  TaxonomyData, 
-  ContactMessage 
+import {
+  DatabaseSchema,
+  NoticeUpdate,
+  QuestionPaper,
+  SolutionItem,
+  StudyMaterial,
+  TeamMember,
+  SiteSettings,
+  TaxonomyData,
+  ContactMessage,
 } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
-
-const STORAGE_KEY = 'ajay_chemistry_db_v3';
+import {
+  CONTENT_PATH,
+  GitHubError,
+  getSignedInLogin,
+  hasAdminSession,
+  readJsonFile,
+  uploadDataUrl,
+  writeJsonFile,
+} from '@/lib/github';
 
 /**
- * Retrieves the active database from localStorage or initialDatabase
+ * Data layer
+ * ----------
+ * - Visitors: content comes from site-content.json, baked into the build.
+ * - Admin (signed in with a GitHub token): content is read live from the
+ *   repository, and every save commits the updated JSON back to GitHub.
+ *   The GitHub Pages workflow then redeploys the site (about 1–2 minutes).
  */
+
+type Content = Omit<DatabaseSchema, 'contactMessages'>;
+
+let liveCache: Content | null = null;
+
+const today = () => new Date().toISOString().split('T')[0];
+
+/** Synchronous snapshot, used by search. */
 export function getLocalDatabase(): DatabaseSchema {
-  if (typeof window === 'undefined') {
-    return initialDatabase;
-  }
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialDatabase));
-      return initialDatabase;
-    }
-    const parsed = JSON.parse(raw);
+  return liveCache ? { ...liveCache, contactMessages: [] } : initialDatabase;
+}
 
-    // Merge default seeded items so newly added curriculum items appear automatically
-    const existingMatIds = new Set((parsed.studyMaterials || []).map((m: StudyMaterial) => m.id));
-    const mergedMaterials = [
-      ...(parsed.studyMaterials || []),
-      ...initialDatabase.studyMaterials.filter(m => !existingMatIds.has(m.id))
-    ];
+async function load(): Promise<Content> {
+  if (!hasAdminSession()) return initialDatabase;
+  if (liveCache) return liveCache;
+  const { data } = await readJsonFile<Content>(CONTENT_PATH);
+  liveCache = data;
+  return data;
+}
 
-    const existingQpIds = new Set((parsed.questionPapers || []).map((q: QuestionPaper) => q.id));
-    const mergedQPs = [
-      ...(parsed.questionPapers || []),
-      ...initialDatabase.questionPapers.filter(q => !existingQpIds.has(q.id))
-    ];
-
-    const existingSolIds = new Set((parsed.solutions || []).map((s: SolutionItem) => s.id));
-    const mergedSols = [
-      ...(parsed.solutions || []),
-      ...initialDatabase.solutions.filter(s => !existingSolIds.has(s.id))
-    ];
-
-    const existingUpdateIds = new Set((parsed.updates || []).map((u: NoticeUpdate) => u.id));
-    const mergedUpdates = [
-      ...(parsed.updates || []),
-      ...initialDatabase.updates.filter(u => !existingUpdateIds.has(u.id))
-    ];
-
-    return {
-      settings: parsed.settings || initialDatabase.settings,
-      taxonomies: parsed.taxonomies || initialDatabase.taxonomies,
-      teamMembers: parsed.teamMembers || initialDatabase.teamMembers,
-      updates: mergedUpdates,
-      questionPapers: mergedQPs,
-      solutions: mergedSols,
-      studyMaterials: mergedMaterials,
-      contactMessages: parsed.contactMessages || initialDatabase.contactMessages || [],
-    };
-  } catch (err) {
-    console.error('Error reading localStorage DB:', err);
-    return initialDatabase;
-  }
+/** Re-reads the content file from GitHub on the next request (admin only). */
+export function refreshAdminData(): void {
+  liveCache = null;
 }
 
 /**
- * Saves updated database to localStorage
+ * Applies a change to the latest content and commits it to GitHub.
+ * Retries once if someone else saved in the meantime.
  */
-export function saveLocalDatabase(db: DatabaseSchema): void {
-  if (typeof window === 'undefined') return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-  } catch (err) {
-    console.error('Error writing to localStorage DB:', err);
+async function commit<T>(summary: string, change: (db: Content) => T): Promise<T> {
+  if (!hasAdminSession()) {
+    throw new GitHubError('Please sign in to the admin panel to make changes.', 401);
   }
+  const who = getSignedInLogin();
+  const message = `Admin: ${summary}${who ? ` (via ${who})` : ''}`;
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const { data, sha } = await readJsonFile<Content>(CONTENT_PATH);
+    const result = change(data);
+    try {
+      await writeJsonFile(CONTENT_PATH, data, sha, message);
+      liveCache = data;
+      return result;
+    } catch (err) {
+      if (err instanceof GitHubError && (err.status === 409 || err.status === 422) && attempt === 0) continue;
+      throw err;
+    }
+  }
+  throw new GitHubError('Could not save the change. Please try again.', 409);
+}
+
+/** If a field holds a freshly picked file (data: URL), upload it and return the site path. */
+async function persistFile(url: string | undefined, fileName: string | undefined): Promise<string | undefined> {
+  if (url && url.startsWith('data:')) {
+    return uploadDataUrl(url, fileName || 'document.pdf');
+  }
+  return url;
+}
+
+/** Drop undefined values so a partial update never blanks existing fields. */
+function defined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as Partial<T>;
+}
+
+/**
+ * Builds the record to save: existing record (if editing) or defaults,
+ * overlaid with the fields the admin actually changed.
+ */
+function mergeRecord<T extends { id: string }>(list: T[], item: Partial<T>, defaults: T): T {
+  const existing = item.id ? list.find((x) => x.id === item.id) : undefined;
+  return { ...(existing ?? defaults), ...defined(item), id: existing?.id ?? item.id ?? defaults.id } as T;
+}
+
+function upsert<T extends { id: string }>(list: T[], item: T, position: 'start' | 'end' = 'start'): T {
+  const index = list.findIndex((x) => x.id === item.id);
+  if (index >= 0) {
+    list[index] = { ...list[index], ...item };
+    return list[index];
+  }
+  if (position === 'start') list.unshift(item);
+  else list.push(item);
+  return item;
 }
 
 // ---------------- Study Materials ----------------
 export async function getStudyMaterials(): Promise<StudyMaterial[]> {
-  try {
-    const res = await fetch('/api/study-materials');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
-    }
-  } catch {
-    // fallback to local
-  }
-  return getLocalDatabase().studyMaterials;
+  return (await load()).studyMaterials;
 }
 
 export async function saveStudyMaterial(item: Partial<StudyMaterial>): Promise<StudyMaterial> {
-  const db = getLocalDatabase();
-  let savedItem: StudyMaterial;
-  
-  if (item.id) {
-    const index = db.studyMaterials.findIndex(m => m.id === item.id);
-    if (index >= 0) {
-      savedItem = { ...db.studyMaterials[index], ...item } as StudyMaterial;
-      db.studyMaterials[index] = savedItem;
-    } else {
-      savedItem = {
-        id: item.id,
-        title: item.title || 'Untitled Material',
-        subject: item.subject || 'Organic Chemistry',
-        className: item.className || 'Class 12',
-        chapter: item.chapter || '',
-        resourceType: item.resourceType || 'Chapter Notes',
-        description: item.description || '',
-        fileUrl: item.fileUrl || '/uploads/sample_chemistry_notes.pdf',
-        fileName: item.fileName || 'Chemistry_Notes.pdf',
-        fileSize: item.fileSize || '2.5 MB',
-        downloadsCount: item.downloadsCount || 0,
-        uploadDate: item.uploadDate || new Date().toISOString().split('T')[0],
-        isFeatured: item.isFeatured || false
-      };
-      db.studyMaterials.unshift(savedItem);
-    }
-  } else {
-    savedItem = {
-      id: `mat-${Date.now()}`,
-      title: item.title || 'Untitled Material',
-      subject: item.subject || 'Organic Chemistry',
-      className: item.className || 'Class 12',
-      chapter: item.chapter || '',
-      resourceType: item.resourceType || 'Chapter Notes',
-      description: item.description || '',
-      fileUrl: item.fileUrl || '/uploads/sample_chemistry_notes.pdf',
-      fileName: item.fileName || 'Chemistry_Notes.pdf',
-      fileSize: item.fileSize || '2.5 MB',
-      downloadsCount: 0,
-      uploadDate: new Date().toISOString().split('T')[0],
-      isFeatured: item.isFeatured || false
-    };
-    db.studyMaterials.unshift(savedItem);
-  }
-
-  saveLocalDatabase(db);
-  return savedItem;
+  const fileUrl = await persistFile(item.fileUrl, item.fileName);
+  const defaults: StudyMaterial = {
+    id: item.id || `mat-${Date.now()}`,
+    title: item.title || 'Untitled Material',
+    subject: item.subject || 'Organic Chemistry',
+    className: item.className || 'Class 12',
+    chapter: item.chapter || '',
+    resourceType: item.resourceType || 'Chapter Notes',
+    description: item.description || '',
+    fileUrl: fileUrl || '',
+    fileName: item.fileName || 'Chemistry_Notes.pdf',
+    fileSize: item.fileSize || '',
+    downloadsCount: item.downloadsCount || 0,
+    uploadDate: item.uploadDate || today(),
+    isFeatured: item.isFeatured || false,
+  };
+  return commit(`${item.id ? 'update' : 'add'} study material "${(item.title ?? 'item')}"`, (db) =>
+    upsert(db.studyMaterials, mergeRecord(db.studyMaterials, { ...item, fileUrl }, defaults))
+  );
 }
 
 export async function deleteStudyMaterial(id: string): Promise<boolean> {
-  const db = getLocalDatabase();
-  db.studyMaterials = db.studyMaterials.filter(m => m.id !== id);
-  saveLocalDatabase(db);
+  await commit(`delete study material ${id}`, (db) => {
+    db.studyMaterials = db.studyMaterials.filter((m) => m.id !== id);
+  });
   return true;
 }
 
 // ---------------- Question Papers ----------------
 export async function getQuestionPapers(): Promise<QuestionPaper[]> {
-  try {
-    const res = await fetch('/api/question-papers');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().questionPapers;
+  return (await load()).questionPapers;
 }
 
 export async function saveQuestionPaper(item: Partial<QuestionPaper>): Promise<QuestionPaper> {
-  const db = getLocalDatabase();
-  let savedItem: QuestionPaper;
-
-  if (item.id) {
-    const index = db.questionPapers.findIndex(p => p.id === item.id);
-    if (index >= 0) {
-      savedItem = { ...db.questionPapers[index], ...item } as QuestionPaper;
-      db.questionPapers[index] = savedItem;
-    } else {
-      savedItem = {
-        id: item.id,
-        title: item.title || 'Untitled Question Paper',
-        subject: item.subject || 'Organic Chemistry',
-        className: item.className || 'Class 12',
-        chapter: item.chapter || '',
-        testType: item.testType || 'Unit Test',
-        year: item.year || '2026',
-        uploadDate: item.uploadDate || new Date().toISOString().split('T')[0],
-        totalMarks: item.totalMarks || 50,
-        duration: item.duration || '90 Mins',
-        description: item.description || '',
-        fileUrl: item.fileUrl || '/uploads/sample_question_paper.pdf',
-        fileName: item.fileName || 'Question_Paper.pdf',
-        fileSize: item.fileSize || '1.8 MB',
-        hasSolution: item.hasSolution || false,
-        solutionId: item.solutionId
-      };
-      db.questionPapers.unshift(savedItem);
-    }
-  } else {
-    savedItem = {
-      id: `qp-${Date.now()}`,
-      title: item.title || 'Untitled Question Paper',
-      subject: item.subject || 'Organic Chemistry',
-      className: item.className || 'Class 12',
-      chapter: item.chapter || '',
-      testType: item.testType || 'Unit Test',
-      year: item.year || '2026',
-      uploadDate: new Date().toISOString().split('T')[0],
-      totalMarks: item.totalMarks || 50,
-      duration: item.duration || '90 Mins',
-      description: item.description || '',
-      fileUrl: item.fileUrl || '/uploads/sample_question_paper.pdf',
-      fileName: item.fileName || 'Question_Paper.pdf',
-      fileSize: item.fileSize || '1.8 MB',
-      hasSolution: item.hasSolution || false,
-      solutionId: item.solutionId
-    };
-    db.questionPapers.unshift(savedItem);
-  }
-
-  saveLocalDatabase(db);
-  return savedItem;
+  const fileUrl = await persistFile(item.fileUrl, item.fileName);
+  const defaults: QuestionPaper = {
+    id: item.id || `qp-${Date.now()}`,
+    title: item.title || 'Untitled Question Paper',
+    subject: item.subject || 'Organic Chemistry',
+    className: item.className || 'Class 12',
+    chapter: item.chapter || '',
+    testType: item.testType || 'Unit Test',
+    year: item.year || String(new Date().getFullYear()),
+    uploadDate: item.uploadDate || today(),
+    totalMarks: item.totalMarks || 50,
+    duration: item.duration || '90 Mins',
+    description: item.description || '',
+    fileUrl: fileUrl || '',
+    fileName: item.fileName || 'Question_Paper.pdf',
+    fileSize: item.fileSize || '',
+    hasSolution: item.hasSolution || false,
+    solutionId: item.solutionId,
+  };
+  return commit(`${item.id ? 'update' : 'add'} question paper "${(item.title ?? 'item')}"`, (db) =>
+    upsert(db.questionPapers, mergeRecord(db.questionPapers, { ...item, fileUrl }, defaults))
+  );
 }
 
 export async function deleteQuestionPaper(id: string): Promise<boolean> {
-  const db = getLocalDatabase();
-  db.questionPapers = db.questionPapers.filter(p => p.id !== id);
-  saveLocalDatabase(db);
+  await commit(`delete question paper ${id}`, (db) => {
+    db.questionPapers = db.questionPapers.filter((p) => p.id !== id);
+  });
   return true;
 }
 
 // ---------------- Solutions ----------------
 export async function getSolutions(): Promise<SolutionItem[]> {
-  try {
-    const res = await fetch('/api/solutions');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().solutions;
+  return (await load()).solutions;
 }
 
 export async function saveSolution(item: Partial<SolutionItem>): Promise<SolutionItem> {
-  const db = getLocalDatabase();
-  let savedItem: SolutionItem;
-
-  if (item.id) {
-    const index = db.solutions.findIndex(s => s.id === item.id);
-    if (index >= 0) {
-      savedItem = { ...db.solutions[index], ...item } as SolutionItem;
-      db.solutions[index] = savedItem;
-    } else {
-      savedItem = {
-        id: item.id,
-        title: item.title || 'Solution',
-        questionPaperId: item.questionPaperId || '',
-        questionPaperTitle: item.questionPaperTitle || '',
-        subject: item.subject || 'Organic Chemistry',
-        chapter: item.chapter || '',
-        className: item.className || 'Class 12',
-        uploadDate: item.uploadDate || new Date().toISOString().split('T')[0],
-        description: item.description || '',
-        solutionPdfUrl: item.solutionPdfUrl || '/uploads/sample_chemistry_notes.pdf',
-        solutionPdfName: item.solutionPdfName || 'Solution.pdf',
-        solutionPdfSize: item.solutionPdfSize || '2.0 MB',
-        stepByStepContent: item.stepByStepContent || '',
-        answerKey: item.answerKey,
-        verifiedBy: item.verifiedBy || 'Ajay Choudhary Sir'
-      };
-      db.solutions.unshift(savedItem);
+  const solutionPdfUrl = await persistFile(item.solutionPdfUrl, item.solutionPdfName);
+  const defaults: SolutionItem = {
+    id: item.id || `sol-${Date.now()}`,
+    title: item.title || 'Solution',
+    questionPaperId: item.questionPaperId || '',
+    questionPaperTitle: item.questionPaperTitle || '',
+    subject: item.subject || 'Organic Chemistry',
+    chapter: item.chapter || '',
+    className: item.className || 'Class 12',
+    uploadDate: item.uploadDate || today(),
+    description: item.description || '',
+    solutionPdfUrl,
+    solutionPdfName: item.solutionPdfName,
+    solutionPdfSize: item.solutionPdfSize,
+    stepByStepContent: item.stepByStepContent || '',
+    answerKey: item.answerKey,
+    verifiedBy: item.verifiedBy || 'Ajay Choudhary Sir',
+  };
+  return commit(`${item.id ? 'update' : 'add'} solution "${item.title ?? 'item'}"`, (db) => {
+    const saved = upsert(db.solutions, mergeRecord(db.solutions, { ...item, solutionPdfUrl }, defaults));
+    // Keep the linked question paper in sync so "View solution" works
+    if (saved.questionPaperId) {
+      const paper = db.questionPapers.find((p) => p.id === saved.questionPaperId);
+      if (paper) {
+        paper.hasSolution = true;
+        paper.solutionId = saved.id;
+      }
     }
-  } else {
-    savedItem = {
-      id: `sol-${Date.now()}`,
-      title: item.title || 'Solution',
-      questionPaperId: item.questionPaperId || '',
-      questionPaperTitle: item.questionPaperTitle || '',
-      subject: item.subject || 'Organic Chemistry',
-      chapter: item.chapter || '',
-      className: item.className || 'Class 12',
-      uploadDate: new Date().toISOString().split('T')[0],
-      description: item.description || '',
-      solutionPdfUrl: item.solutionPdfUrl || '/uploads/sample_chemistry_notes.pdf',
-      solutionPdfName: item.solutionPdfName || 'Solution.pdf',
-      solutionPdfSize: item.solutionPdfSize || '2.0 MB',
-      stepByStepContent: item.stepByStepContent || '',
-      answerKey: item.answerKey,
-      verifiedBy: 'Ajay Choudhary Sir'
-    };
-    db.solutions.unshift(savedItem);
-  }
-
-  saveLocalDatabase(db);
-  return savedItem;
+    return saved;
+  });
 }
 
 export async function deleteSolution(id: string): Promise<boolean> {
-  const db = getLocalDatabase();
-  db.solutions = db.solutions.filter(s => s.id !== id);
-  saveLocalDatabase(db);
+  await commit(`delete solution ${id}`, (db) => {
+    db.solutions = db.solutions.filter((s) => s.id !== id);
+    db.questionPapers.forEach((p) => {
+      if (p.solutionId === id) {
+        p.solutionId = undefined;
+        p.hasSolution = false;
+      }
+    });
+  });
   return true;
 }
 
 // ---------------- Updates / Notices ----------------
 export async function getUpdates(): Promise<NoticeUpdate[]> {
-  try {
-    const res = await fetch('/api/updates');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().updates;
+  return (await load()).updates;
 }
 
 export async function saveUpdate(item: Partial<NoticeUpdate>): Promise<NoticeUpdate> {
-  const db = getLocalDatabase();
-  let savedItem: NoticeUpdate;
-
-  if (item.id) {
-    const index = db.updates.findIndex(u => u.id === item.id);
-    if (index >= 0) {
-      savedItem = { ...db.updates[index], ...item } as NoticeUpdate;
-      db.updates[index] = savedItem;
-    } else {
-      savedItem = {
-        id: item.id,
-        title: item.title || 'Notice',
-        category: item.category || 'Class Update',
-        description: item.description || '',
-        content: item.content || '',
-        date: item.date || new Date().toISOString().split('T')[0],
-        isPinned: item.isPinned || false,
-        isPublished: item.isPublished !== undefined ? item.isPublished : true,
-        attachmentName: item.attachmentName,
-        attachmentUrl: item.attachmentUrl,
-        attachmentSize: item.attachmentSize,
-        targetClass: item.targetClass || 'All Classes'
-      };
-      db.updates.unshift(savedItem);
-    }
-  } else {
-    savedItem = {
-      id: `notif-${Date.now()}`,
-      title: item.title || 'Notice',
-      category: item.category || 'Class Update',
-      description: item.description || '',
-      content: item.content || '',
-      date: new Date().toISOString().split('T')[0],
-      isPinned: item.isPinned || false,
-      isPublished: true,
-      attachmentName: item.attachmentName,
-      attachmentUrl: item.attachmentUrl,
-      attachmentSize: item.attachmentSize,
-      targetClass: item.targetClass || 'All Classes'
-    };
-    db.updates.unshift(savedItem);
-  }
-
-  saveLocalDatabase(db);
-  return savedItem;
+  const attachmentUrl = await persistFile(item.attachmentUrl, item.attachmentName);
+  const defaults: NoticeUpdate = {
+    id: item.id || `notif-${Date.now()}`,
+    title: item.title || 'Notice',
+    category: item.category || 'Class Update',
+    description: item.description || '',
+    content: item.content || '',
+    date: item.date || today(),
+    isPinned: item.isPinned || false,
+    isPublished: item.isPublished !== undefined ? item.isPublished : true,
+    attachmentName: item.attachmentName,
+    attachmentUrl,
+    attachmentSize: item.attachmentSize,
+    targetClass: item.targetClass || 'All Classes',
+  };
+  return commit(`${item.id ? 'update' : 'publish'} notice "${item.title ?? 'item'}"`, (db) =>
+    upsert(db.updates, mergeRecord(db.updates, { ...item, attachmentUrl }, defaults))
+  );
 }
 
 export async function deleteUpdate(id: string): Promise<boolean> {
-  const db = getLocalDatabase();
-  db.updates = db.updates.filter(u => u.id !== id);
-  saveLocalDatabase(db);
+  await commit(`delete notice ${id}`, (db) => {
+    db.updates = db.updates.filter((u) => u.id !== id);
+  });
   return true;
 }
 
 // ---------------- Taxonomies / Categories ----------------
 export async function getTaxonomies(): Promise<TaxonomyData> {
-  try {
-    const res = await fetch('/api/categories');
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.subjects) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().taxonomies;
+  return (await load()).taxonomies;
 }
 
 export async function saveTaxonomies(tax: TaxonomyData): Promise<TaxonomyData> {
-  const db = getLocalDatabase();
-  db.taxonomies = tax;
-  saveLocalDatabase(db);
-  return tax;
+  return commit('update subjects & chapters', (db) => {
+    db.taxonomies = tax;
+    return tax;
+  });
 }
 
 // ---------------- Site Settings ----------------
 export async function getSettings(): Promise<SiteSettings> {
-  try {
-    const res = await fetch('/api/settings');
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.teacherName) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().settings;
+  return (await load()).settings;
 }
 
 export async function saveSettings(settings: Partial<SiteSettings>): Promise<SiteSettings> {
-  const db = getLocalDatabase();
-  db.settings = { ...db.settings, ...settings };
-  saveLocalDatabase(db);
-  return db.settings;
+  return commit('update site settings', (db) => {
+    db.settings = { ...db.settings, ...settings };
+    return db.settings;
+  });
 }
 
 // ---------------- Team Members ----------------
 export async function getTeam(): Promise<TeamMember[]> {
-  try {
-    const res = await fetch('/api/team');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().teamMembers;
+  return (await load()).teamMembers;
 }
 
 export async function saveTeamMember(item: Partial<TeamMember>): Promise<TeamMember> {
-  const db = getLocalDatabase();
-  let savedItem: TeamMember;
-
-  if (item.id) {
-    const index = db.teamMembers.findIndex(t => t.id === item.id);
-    if (index >= 0) {
-      savedItem = { ...db.teamMembers[index], ...item } as TeamMember;
-      db.teamMembers[index] = savedItem;
-    } else {
-      savedItem = {
-        id: item.id,
-        name: item.name || 'Ajay Choudhary Sir',
-        role: item.role || 'Chemistry Educator',
-        designation: item.designation || 'M.Sc., B.Ed',
-        specialization: item.specialization || 'Chemistry',
-        experience: item.experience || '8+ Years',
-        centers: item.centers || 'Sector 14',
-        image: item.image || '/images/ajay-choudhary.jpg',
-        bio: item.bio || '',
-        email: item.email || 'contact@ajaychemistry.com'
-      };
-      db.teamMembers.push(savedItem);
-    }
-  } else {
-    savedItem = {
-      id: `team-${Date.now()}`,
-      name: item.name || 'Ajay Choudhary Sir',
-      role: item.role || 'Chemistry Educator',
-      designation: item.designation || 'M.Sc., B.Ed',
-      specialization: item.specialization || 'Chemistry',
-      experience: item.experience || '8+ Years',
-      centers: item.centers || 'Sector 14',
-      image: item.image || '/images/ajay-choudhary.jpg',
-      bio: item.bio || '',
-      email: item.email || 'contact@ajaychemistry.com'
-    };
-    db.teamMembers.push(savedItem);
-  }
-
-  saveLocalDatabase(db);
-  return savedItem;
-}
-
-// ---------------- Messages ----------------
-export async function getMessages(): Promise<ContactMessage[]> {
-  try {
-    const res = await fetch('/api/messages');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
-    }
-  } catch {
-    // fallback
-  }
-  return getLocalDatabase().contactMessages;
-}
-
-export async function saveMessage(item: Partial<ContactMessage>): Promise<ContactMessage> {
-  const db = getLocalDatabase();
-  const newMsg: ContactMessage = {
-    id: `msg-${Date.now()}`,
-    name: item.name || 'Student',
-    phone: item.phone || '',
-    email: item.email || '',
-    studentClass: item.studentClass || 'Class 12',
-    subject: item.subject || 'General Inquiry',
-    message: item.message || '',
-    date: new Date().toISOString().split('T')[0],
-    isRead: false,
-    isArchived: false,
-    replyStatus: 'Pending'
+  const ext = item.image?.match(/^data:image\/(\w+)/)?.[1]?.replace('jpeg', 'jpg') || 'jpg';
+  const image = await persistFile(item.image, `${(item.name || 'photo').replace(/\s+/g, '_')}.${ext}`);
+  const defaults: TeamMember = {
+    id: item.id || `team-${Date.now()}`,
+    name: item.name || 'Ajay Choudhary Sir',
+    role: item.role || 'Chemistry Educator',
+    designation: item.designation || '',
+    specialization: item.specialization || 'Chemistry',
+    experience: item.experience || '',
+    centers: item.centers || '',
+    image: image || '/images/ajay-classroom.jpg',
+    bio: item.bio || '',
+    email: item.email,
+    phone: item.phone,
   };
-  db.contactMessages.unshift(newMsg);
-  saveLocalDatabase(db);
-  return newMsg;
+  return commit(`${item.id ? 'update' : 'add'} team member "${(item.name ?? 'member')}"`, (db) =>
+    upsert(db.teamMembers, mergeRecord(db.teamMembers, { ...item, image }, defaults), 'end')
+  );
 }
 
-export async function markMessageRead(id: string): Promise<boolean> {
-  const db = getLocalDatabase();
-  const msg = db.contactMessages.find(m => m.id === id);
-  if (msg) {
-    msg.isRead = true;
-    saveLocalDatabase(db);
-  }
+export async function deleteTeamMember(id: string): Promise<boolean> {
+  await commit(`delete team member ${id}`, (db) => {
+    db.teamMembers = db.teamMembers.filter((t) => t.id !== id);
+  });
   return true;
 }
 
-export async function deleteMessage(id: string): Promise<boolean> {
-  const db = getLocalDatabase();
-  db.contactMessages = db.contactMessages.filter(m => m.id !== id);
-  saveLocalDatabase(db);
+// ---------------- Contact enquiries ----------------
+/**
+ * Enquiries are emailed (via FormSubmit, free, no account) to the contact
+ * email set in Settings. The very first enquiry sends a one-time activation
+ * email to that address; click "Activate" in it and all later enquiries
+ * arrive normally.
+ */
+export async function saveMessage(item: Partial<ContactMessage>): Promise<ContactMessage> {
+  const settings = await getSettings();
+  const to = (settings.enquiryEmail || settings.email || '').trim();
+  if (!to) throw new Error('No contact email is configured.');
+
+  const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      _subject: `New enquiry: ${item.subject || 'Chemistry batch'} — ${item.name || 'Student'}`,
+      _template: 'table',
+      _replyto: item.email || '',
+      Name: item.name || '',
+      Email: item.email || '',
+      Phone: item.phone || '',
+      Class: item.studentClass || '',
+      Topic: item.subject || '',
+      Message: item.message || '',
+    }),
+  });
+
+  let ok = res.ok;
+  try {
+    const body = await res.json();
+    if (body && (body.success === false || body.success === 'false')) ok = false;
+  } catch {
+    // ignore non-JSON
+  }
+  if (!ok) throw new Error('Enquiry could not be sent.');
+
+  return {
+    id: `msg-${Date.now()}`,
+    name: item.name || '',
+    phone: item.phone || '',
+    email: item.email || '',
+    studentClass: item.studentClass || '',
+    subject: item.subject || '',
+    message: item.message || '',
+    date: today(),
+    isRead: false,
+    isArchived: false,
+    replyStatus: 'Pending',
+  };
+}
+
+/** Enquiries now arrive by email, so there is no inbox to read here. */
+export async function getMessages(): Promise<ContactMessage[]> {
+  return [];
+}
+
+export async function markMessageRead(): Promise<boolean> {
+  return true;
+}
+
+export async function deleteMessage(): Promise<boolean> {
   return true;
 }

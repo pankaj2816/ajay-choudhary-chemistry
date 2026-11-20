@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Phone, 
   Mail, 
@@ -15,7 +15,9 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
-import { saveMessage } from '@/lib/dataService';
+import { saveMessage, getSettings } from '@/lib/dataService';
+import { initialDatabase } from '@/data/initialData';
+import { SiteSettings } from '@/lib/types';
 
 const FAQS = [
   {
@@ -48,6 +50,13 @@ export default function ContactPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings>(initialDatabase.settings);
+
+  useEffect(() => {
+    getSettings().then(setSettings).catch(() => {});
+  }, []);
+
+  const whatsappNumber = (settings.whatsapp || settings.phone || '').replace(/[^0-9]/g, '');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +96,7 @@ export default function ContactPage() {
       });
     } catch (err) {
       console.error(err);
-      showToast('Failed to send message. Please try again.', 'error');
+      showToast('Could not send right now. Please try again, or message on WhatsApp.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -133,58 +142,26 @@ export default function ContactPage() {
               </p>
             </div>
 
-            {/* 3 Centers List */}
+            {/* Centres (edited in Admin → Settings) */}
             <div className="space-y-4">
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-cyan-600" />
-                    Catalyst Career Institute
-                  </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-100 text-cyan-800">
-                    Sector 14
-                  </span>
+              {settings.coachingCenters.map((c) => (
+                <div key={c.id} className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <Building2 className="w-4 h-4 text-cyan-600" />
+                      {c.name}
+                    </h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-100 text-cyan-800 text-right">
+                      {c.location}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600">{c.address}</p>
+                  <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{c.schedule}</span>
+                  </div>
                 </div>
-                <p className="text-xs text-slate-600">Plot 42, Knowledge Park, Sector 14, Metro Pillar 128</p>
-                <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Mon, Wed, Fri (4:00 PM – 7:30 PM)</span>
-                </div>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-teal-600" />
-                    Apex Science Academy
-                  </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-teal-100 text-teal-800">
-                    Model Town
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600">B-Block Main Market, Opposite City Park, Model Town</p>
-                <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Tue, Thu, Sat (3:30 PM – 7:00 PM)</span>
-                </div>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-indigo-600" />
-                    Prerana Learning Hub
-                  </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">
-                    South Extension
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600">3rd Floor, Scholar Towers, Near Central Library</p>
-                <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-100 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Sunday Intensive (8:30 AM – 2:00 PM)</span>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Direct Contact Card */}
@@ -193,17 +170,25 @@ export default function ContactPage() {
                 Official Communication
               </h4>
               <div className="space-y-2.5 text-xs">
-                <div className="flex items-center gap-2 text-slate-200">
+                <a href={`mailto:${settings.email}`} className="flex items-center gap-2 text-slate-200 hover:text-white">
                   <Mail className="w-4 h-4 text-cyan-400 shrink-0" />
-                  <span className="font-semibold">contact@ajaychemistry.com</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-200">
-                  <Mail className="w-4 h-4 text-teal-400 shrink-0" />
-                  <span>ajay.choudhary.chemistry@gmail.com</span>
-                </div>
-                <p className="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-relaxed">
-                  * Note: Direct calling is disabled during active classroom hours. Please send your inquiries via email or this contact form for a prompt response.
-                </p>
+                  <span className="font-semibold">{settings.email}</span>
+                </a>
+                <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-slate-200 hover:text-white">
+                  <Phone className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span>{settings.phone}</span>
+                </a>
+                {whatsappNumber && (
+                  <a
+                    href={`https://wa.me/${whatsappNumber}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-slate-200 hover:text-white"
+                  >
+                    <MessageSquare className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <span>WhatsApp</span>
+                  </a>
+                )}
               </div>
             </div>
 
