@@ -2,345 +2,220 @@
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { 
-  CheckCircle2, 
-  Search, 
-  Download, 
-  Eye, 
-  FileText, 
-  CheckCircle, 
-  Calendar, 
-  Filter, 
-  X, 
-  BookOpen,
-  ArrowRight,
-  Sparkles,
-  ShieldCheck
-} from 'lucide-react';
-import { SolutionItem, QuestionPaper, SubjectType, ClassLevel } from '@/lib/types';
+import { ArrowDown, ArrowRight, FileText } from 'lucide-react';
+import { SolutionItem, QuestionPaper } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import { useToast } from '@/context/ToastContext';
 import { getSolutions, getQuestionPapers } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
+import {
+  PageHeader,
+  SearchField,
+  SelectField,
+  ResultCount,
+  EmptyState,
+  Meta,
+  TextAction,
+} from '@/components/ui/Editorial';
 
 function SolutionsContent() {
   const { t } = useLanguage();
+  const { showToast } = useToast();
   const searchParams = useSearchParams();
-  const initialSearch = searchParams.get('search') || searchParams.get('q') || '';
-  const initialSubject = searchParams.get('subject') || 'All';
-  const initialClass = searchParams.get('class') || 'All';
+  const tax = initialDatabase.taxonomies;
 
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
-  const [selectedSubject, setSelectedSubject] = useState<string>(initialSubject);
-  const [selectedClass, setSelectedClass] = useState<string>(initialClass);
-  const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [selectedSolution, setSelectedSolution] = useState<SolutionItem | null>(null);
-  const [selectedPaper, setSelectedPaper] = useState<QuestionPaper | null>(null);
-  const [loading, setLoading] = useState(false);
-  const { showToast } = useToast();
+  const [subject, setSubject] = useState(searchParams.get('subject') || 'All');
+  const [cls, setCls] = useState(searchParams.get('class') || 'All');
+  const [query, setQuery] = useState(searchParams.get('search') || searchParams.get('q') || '');
+  const [solution, setSolution] = useState<SolutionItem | null>(null);
+  const [paper, setPaper] = useState<QuestionPaper | null>(null);
 
   useEffect(() => {
-    if (initialSubject && initialSubject !== 'All') setSelectedSubject(initialSubject);
-    if (initialClass && initialClass !== 'All') setSelectedClass(initialClass);
-    if (initialSearch) setSearchQuery(initialSearch);
-  }, [initialSubject, initialClass, initialSearch]);
-
-  useEffect(() => {
-    Promise.all([
-      getSolutions(),
-      getQuestionPapers()
-    ]).then(([solData, qpData]) => {
-      if (Array.isArray(solData) && solData.length > 0) setSolutions(solData);
-      if (Array.isArray(qpData) && qpData.length > 0) setPapers(qpData);
-    }).catch(err => console.error(err))
-      .finally(() => setLoading(false));
+    Promise.all([getSolutions(), getQuestionPapers()])
+      .then(([s, q]) => {
+        if (Array.isArray(s) && s.length) setSolutions(s);
+        if (Array.isArray(q) && q.length) setPapers(q);
+      })
+      .catch(() => {});
   }, []);
 
-  const filteredSolutions = useMemo(() => {
-    return solutions.filter((sol) => {
-      const matchSubj = selectedSubject === 'All' || sol.subject.toLowerCase() === selectedSubject.toLowerCase();
-      const matchClass = selectedClass === 'All' || sol.className === selectedClass || sol.className === 'All Classes';
-      const matchSearch = 
-        sol.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sol.chapter.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sol.questionPaperTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sol.description.toLowerCase().includes(searchQuery.toLowerCase());
+  // Open a specific solution when linked as /solutions?id=...
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (!id) return;
+    const match = solutions.find((s) => s.id === id);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (match) setSolution(match);
+  }, [searchParams, solutions]);
 
-      return matchSubj && matchClass && matchSearch;
-    });
-  }, [solutions, selectedSubject, selectedClass, searchQuery]);
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return solutions
+      .filter((s) => {
+        const matchSubject = subject === 'All' || s.subject.toLowerCase() === subject.toLowerCase();
+        const matchClass = cls === 'All' || s.className === cls || s.className === 'All Classes';
+        const matchQuery =
+          !q ||
+          [s.title, s.chapter, s.questionPaperTitle, s.description].some((f) => (f || '').toLowerCase().includes(q));
+        return matchSubject && matchClass && matchQuery;
+      })
+      .sort((a, b) => b.uploadDate.localeCompare(a.uploadDate));
+  }, [solutions, subject, cls, query]);
 
-  const handleDownloadSolution = (sol: SolutionItem, e: React.MouseEvent) => {
-    e.stopPropagation();
-    showToast(`Downloading solution: ${sol.title}`, 'info');
-    triggerDownload(sol.solutionPdfUrl || '/uploads/sample_chemistry_notes.pdf', sol.solutionPdfName || `${sol.title.replace(/\s+/g, '_')}.pdf`);
+  const reset = () => {
+    setSubject('All');
+    setCls('All');
+    setQuery('');
   };
 
-  const openRelatedPaper = (qpId: string) => {
-    const paper = papers.find(p => p.id === qpId);
-    if (paper) {
-      setSelectedPaper(paper);
+  const download = (s: SolutionItem) => {
+    if (!s.solutionPdfUrl) {
+      showToast('This solution is available to read online only.', 'info');
+      return;
     }
+    showToast(`Downloading: ${s.title}`, 'info');
+    triggerDownload(s.solutionPdfUrl, s.solutionPdfName || `${s.title.replace(/\s+/g, '_')}.pdf`);
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-      
-      {/* Top Banner */}
-      <section className="bg-slate-950 text-white chem-hero-gradient py-16 sm:py-20 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-300 font-bold text-xs">
-              <CheckCircle className="w-3.5 h-3.5" />
-              {t.papersSolutions.solutionReady}
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              {t.papersSolutions.allSolutionsBtn}
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed">
-              {t.papersSolutions.officialKey}
-            </p>
+    <>
+      <PageHeader label={t.nav.solutions} title={t.papersSolutions.allSolutionsBtn} intro={t.papersSolutions.subtitle} />
+
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end">
+          <div className="lg:col-span-6">
+            <SearchField value={query} onChange={setQuery} placeholder={t.pages.searchPlaceholder} />
+          </div>
+          <div className="lg:col-span-3">
+            <SelectField
+              label="Subject"
+              value={subject}
+              onChange={setSubject}
+              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: s }))]}
+            />
+          </div>
+          <div className="lg:col-span-3">
+            <SelectField
+              label="Class"
+              value={cls}
+              onChange={setCls}
+              options={[
+                { value: 'All', label: t.pages.allClasses },
+                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: c })),
+              ]}
+            />
           </div>
         </div>
+
+        <div className="mt-12 flex items-baseline justify-between border-b border-ink pb-4">
+          <ResultCount shown={filtered.length} total={solutions.length} noun="solutions" />
+        </div>
+
+        {filtered.length === 0 ? (
+          <EmptyState title={t.pages.noResults} body={t.pages.noResultsSub} onReset={reset} />
+        ) : (
+          <ul>
+            {filtered.map((s) => {
+              const linked = papers.find((p) => p.id === s.questionPaperId);
+              return (
+                <li
+                  key={s.id}
+                  className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-x-10 gap-y-4 py-8 border-b border-line"
+                >
+                  <div className="min-w-0">
+                    <Meta>
+                      {s.subject} · {s.className}
+                      {s.answerKey?.length ? ` · ${s.answerKey.length}-question answer key` : ''}
+                    </Meta>
+                    <h2
+                      className="mt-2 font-display !text-[1.5rem] sm:!text-[1.7rem] leading-snug text-ink"
+                      style={{ fontVariationSettings: '"opsz" 48' }}
+                    >
+                      {s.title}
+                    </h2>
+                    {s.questionPaperTitle && (
+                      <p className="mt-1 text-sm text-muted">
+                        For: <span className="text-ink">{s.questionPaperTitle}</span>
+                      </p>
+                    )}
+                    <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{s.description}</p>
+                    <Meta className="mt-3">
+                      Checked by {s.verifiedBy || 'Ajay Choudhary Sir'} · {s.uploadDate}
+                    </Meta>
+                  </div>
+                  <div className="flex flex-wrap md:flex-col md:items-end gap-x-6 gap-y-3 md:pt-6">
+                    <TextAction onClick={() => setSolution(s)} tone="accent" icon={<ArrowRight className="w-4 h-4" />}>
+                      Read solution
+                    </TextAction>
+                    {s.solutionPdfUrl && (
+                      <TextAction onClick={() => download(s)} icon={<ArrowDown className="w-4 h-4" />}>
+                        {t.pages.downloadBtn}
+                      </TextAction>
+                    )}
+                    {linked && (
+                      <TextAction onClick={() => setPaper(linked)} icon={<FileText className="w-4 h-4" />}>
+                        {t.pages.viewPaperBtn}
+                      </TextAction>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </section>
 
-      {/* Filter & Solutions Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8">
-        
-        {/* Filters Box */}
-        <div className="bg-white p-5 sm:p-7 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-          
-          <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search solutions by test name, chapter, or reaction (e.g. Hydrocarbons, Coordination Compounds, Aldehydes)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-10 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            <div>
-              <label className="block text-[11px] font-bold text-slate-500 mb-1">Subject</label>
-              <select
-                value={selectedSubject}
-                onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                <option value="All">All Subjects</option>
-                <option value="Organic Chemistry">Organic Chemistry</option>
-                <option value="Inorganic Chemistry">Inorganic Chemistry</option>
-                <option value="Practical Chemistry">Practical Chemistry</option>
-                <option value="Physical Chemistry">Physical Chemistry</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-500 mb-1">Class / Batch</label>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                <option value="All">All Classes</option>
-                <option value="Class 11">Class 11</option>
-                <option value="Class 12">Class 12</option>
-                <option value="Dropper / JEE / NEET">Dropper / JEE / NEET</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Counter */}
-        <div className="flex items-center justify-between text-xs text-slate-500 px-1">
-          <span>Showing {filteredSolutions.length} of {solutions.length} verified solutions</span>
-          {(selectedSubject !== 'All' || selectedClass !== 'All' || searchQuery) && (
-            <button
-              onClick={() => {
-                setSelectedSubject('All');
-                setSelectedClass('All');
-                setSearchQuery('');
-              }}
-              className="text-emerald-700 font-bold hover:underline"
-            >
-              Reset Filters
-            </button>
-          )}
-        </div>
-
-        {/* Empty State */}
-        {filteredSolutions.length === 0 && !loading && (
-          <div className="py-16 text-center bg-white rounded-3xl border border-slate-200 p-8 space-y-3">
-            <CheckCircle className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="text-base font-bold text-slate-900">No solutions found</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              No solutions matched your search. Check back soon as new solutions are posted regularly.
-            </p>
-          </div>
-        )}
-
-        {/* Solutions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSolutions.map((sol) => (
-            <div
-              key={sol.id}
-              className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5"
-            >
-              <div className="space-y-3.5">
-                
-                {/* Top Badges */}
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3" />
-                    Verified Solution
-                  </span>
-                  <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                    {sol.className}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 
-                  onClick={() => setSelectedSolution(sol)}
-                  className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 cursor-pointer leading-snug"
-                >
-                  {sol.title}
-                </h3>
-
-                {/* Related Question Paper Link */}
-                <div className="p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs">
-                  <span className="text-[10px] font-bold uppercase text-slate-400 block mb-0.5">
-                    Paired Question Paper:
-                  </span>
-                  <div className="font-semibold text-slate-800 line-clamp-1">
-                    {sol.questionPaperTitle}
-                  </div>
-                </div>
-
-                {/* Subject & Chapter */}
-                <div className="text-xs text-slate-500 font-medium">
-                  <span className="text-slate-800 font-bold">{sol.subject}</span> • {sol.chapter}
-                </div>
-
-                {/* Description */}
-                <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                  {sol.description}
-                </p>
-
-                {/* Verified By Pill */}
-                <div className="flex items-center justify-between text-[11px] pt-1 text-slate-500">
-                  <span className="flex items-center gap-1 font-semibold text-emerald-700">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    {sol.verifiedBy}
-                  </span>
-                  <span className="flex items-center gap-1 text-slate-400">
-                    <Calendar className="w-3 h-3" />
-                    {sol.uploadDate}
-                  </span>
-                </div>
-
-              </div>
-
-              {/* Bottom Actions */}
-              <div className="pt-5 mt-5 border-t border-slate-100 grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => setSelectedSolution(sol)}
-                  className="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>View Solution</span>
-                </button>
-
-                {sol.questionPaperId ? (
-                  <button
-                    onClick={() => openRelatedPaper(sol.questionPaperId)}
-                    className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>View Paper</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={(e) => handleDownloadSolution(sol, e)}
-                    className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>PDF</span>
-                  </button>
-                )}
-              </div>
-
-            </div>
-          ))}
-        </div>
-
-      </div>
-
-      {/* Solution Preview Modal */}
-      {selectedSolution && (
+      {solution && (
         <PDFPreviewModal
-          isOpen={!!selectedSolution}
-          onClose={() => setSelectedSolution(null)}
-          title={selectedSolution.title}
-          subject={selectedSolution.subject}
-          chapter={selectedSolution.chapter}
-          className={selectedSolution.className}
+          isOpen
+          onClose={() => setSolution(null)}
+          title={solution.title}
+          subject={solution.subject}
+          chapter={solution.chapter}
+          className={solution.className}
           testType="Verified Solution"
-          description={selectedSolution.description}
-          fileUrl={selectedSolution.solutionPdfUrl}
-          fileName={selectedSolution.solutionPdfName}
-          fileSize={selectedSolution.solutionPdfSize}
-          uploadDate={selectedSolution.uploadDate}
-          stepByStepContent={selectedSolution.stepByStepContent}
-          answerKey={selectedSolution.answerKey}
-          isSolutionView={true}
-          verifiedBy={selectedSolution.verifiedBy}
+          description={solution.description}
+          fileUrl={solution.solutionPdfUrl}
+          fileName={solution.solutionPdfName}
+          fileSize={solution.solutionPdfSize}
+          uploadDate={solution.uploadDate}
+          stepByStepContent={solution.stepByStepContent}
+          answerKey={solution.answerKey}
+          isSolutionView
+          verifiedBy={solution.verifiedBy}
         />
       )}
 
-      {/* Paper Preview Modal */}
-      {selectedPaper && (
+      {paper && (
         <PDFPreviewModal
-          isOpen={!!selectedPaper}
-          onClose={() => setSelectedPaper(null)}
-          title={selectedPaper.title}
-          subject={selectedPaper.subject}
-          chapter={selectedPaper.chapter}
-          className={selectedPaper.className}
-          testType={selectedPaper.testType}
-          totalMarks={selectedPaper.totalMarks}
-          duration={selectedPaper.duration}
-          description={selectedPaper.description}
-          fileUrl={selectedPaper.fileUrl}
-          fileName={selectedPaper.fileName}
-          fileSize={selectedPaper.fileSize}
-          uploadDate={selectedPaper.uploadDate}
-          solutionId={selectedPaper.solutionId}
+          isOpen
+          onClose={() => setPaper(null)}
+          title={paper.title}
+          subject={paper.subject}
+          chapter={paper.chapter}
+          className={paper.className}
+          testType={paper.testType}
+          totalMarks={paper.totalMarks}
+          duration={paper.duration}
+          description={paper.description}
+          fileUrl={paper.fileUrl}
+          fileName={paper.fileName}
+          fileSize={paper.fileSize}
+          uploadDate={paper.uploadDate}
+          solutionId={paper.solutionId}
         />
       )}
-
-    </div>
+    </>
   );
 }
 
 export default function SolutionsPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading Solutions Vault...</div>}>
+    <Suspense fallback={<div className="min-h-[60vh]" />}>
       <SolutionsContent />
     </Suspense>
   );

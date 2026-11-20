@@ -1,17 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Bell, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  Pin, 
-  Calendar, 
-  Upload, 
-  FileText, 
-  Check, 
-  X, 
+import {
+  Bell,
+  Plus,
+  Edit3,
+  Trash2,
+  Pin,
+  X,
   Loader2,
   CheckCircle2,
   AlertCircle,
@@ -20,13 +16,11 @@ import {
   Heading,
   List,
   ListOrdered,
-  Sparkles,
   FlaskConical,
   Highlighter,
   Eye,
   PenTool,
-  Search,
-  Filter
+  Search
 } from 'lucide-react';
 import { NoticeUpdate, NoticeCategory, ClassLevel } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -113,6 +107,8 @@ export default function AdminUpdatesPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchUpdates();
   }, []);
 

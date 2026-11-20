@@ -10,6 +10,7 @@ import {
   SiteSettings,
   TaxonomyData,
   ContactMessage,
+  Testimonial,
 } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import {
@@ -322,6 +323,32 @@ export async function saveTeamMember(item: Partial<TeamMember>): Promise<TeamMem
 export async function deleteTeamMember(id: string): Promise<boolean> {
   await commit(`delete team member ${id}`, (db) => {
     db.teamMembers = db.teamMembers.filter((t) => t.id !== id);
+  });
+  return true;
+}
+
+// ---------------- Testimonials ----------------
+export async function getTestimonials(): Promise<Testimonial[]> {
+  return (await load()).testimonials || [];
+}
+
+export async function saveTestimonial(item: Partial<Testimonial>): Promise<Testimonial> {
+  const defaults: Testimonial = {
+    id: item.id || `tm-${Date.now()}`,
+    name: item.name || '',
+    detail: item.detail || '',
+    quote: item.quote || '',
+    isPublished: item.isPublished !== undefined ? item.isPublished : true,
+  };
+  return commit(`${item.id ? 'update' : 'add'} testimonial from "${item.name ?? 'student'}"`, (db) => {
+    db.testimonials = db.testimonials || [];
+    return upsert(db.testimonials, mergeRecord(db.testimonials, item, defaults), 'end');
+  });
+}
+
+export async function deleteTestimonial(id: string): Promise<boolean> {
+  await commit(`delete testimonial ${id}`, (db) => {
+    db.testimonials = (db.testimonials || []).filter((t) => t.id !== id);
   });
   return true;
 }

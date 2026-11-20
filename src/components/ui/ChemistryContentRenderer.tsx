@@ -13,7 +13,7 @@ interface ChemistryContentRendererProps {
 function cleanChemistryText(text: string): string {
   if (!text) return '';
 
-  let cleaned = text
+  const cleaned = text
     // Replace LaTeX arrows
     .replace(/\\xrightarrow\{([^}]*)\}/g, ' ──[$1]──➔ ')
     .replace(/\\xrightarrow\{\}/g, ' ➔ ')

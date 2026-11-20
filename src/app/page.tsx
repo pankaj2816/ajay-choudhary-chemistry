@@ -5,6 +5,7 @@ import MethodSection from '@/components/home/premium/MethodSection';
 import ResourcesSection from '@/components/home/premium/ResourcesSection';
 import NoticesSection from '@/components/home/premium/NoticesSection';
 import VisitSection from '@/components/home/premium/VisitSection';
+import TestimonialsSection from '@/components/home/premium/TestimonialsSection';
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
       <AboutSection />
       <SubjectsSection />
       <MethodSection />
+      <TestimonialsSection />
       <ResourcesSection />
       <NoticesSection />
       <VisitSection />

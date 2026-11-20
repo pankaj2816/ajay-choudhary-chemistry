@@ -54,7 +54,7 @@ export default function NoticesSection() {
               const { day, rest } = splitDate(n.date);
               return (
                 <li key={n.id} className="border-b border-line">
-                  <Link href="/updates" className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[6rem_1fr_auto] gap-x-6 gap-y-2 py-7">
+                  <Link href={`/updates?id=${n.id}`} className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[6rem_1fr_auto] gap-x-6 gap-y-2 py-7">
                     <div className="row-span-2 sm:row-span-1">
                       <span className="block font-display text-4xl leading-none text-ink" style={{ fontVariationSettings: '"opsz" 96' }}>
                         {day}

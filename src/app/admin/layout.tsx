@@ -18,6 +18,7 @@ import {
   Menu,
   X,
   Clock,
+  Quote,
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import { getSignedInLogin, hasAdminSession, signOut } from '@/lib/github';
@@ -32,6 +33,7 @@ const ADMIN_NAV_ITEMS = [
   { label: 'Study Materials', href: '/admin/study-materials', icon: BookOpen },
   { label: 'Subjects & Chapters', href: '/admin/categories', icon: Layers },
   { label: 'Team Portfolio', href: '/admin/team', icon: Users },
+  { label: 'Testimonials', href: '/admin/testimonials', icon: Quote },
   { label: 'Student Enquiries', href: '/admin/messages', icon: Mail },
   { label: 'Settings & Banner', href: '/admin/settings', icon: Settings },
 ];

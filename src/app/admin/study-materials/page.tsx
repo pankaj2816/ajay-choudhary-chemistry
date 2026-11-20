@@ -1,20 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  BookOpen, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  Download, 
-  Star, 
-  X, 
-  Loader2, 
-  Upload, 
+import {
+  BookOpen,
+  Plus,
+  Edit3,
+  Trash2,
+  Star,
+  X,
+  Loader2,
   AlertCircle,
   CheckCircle2,
-  Search,
-  Filter
+  Search
 } from 'lucide-react';
 import { StudyMaterial, SubjectType, ClassLevel, ResourceType } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -82,6 +79,8 @@ export default function AdminStudyMaterialsPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMaterials();
   }, []);
 

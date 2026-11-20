@@ -1085,6 +1085,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const saved = localStorage.getItem('ajay_chem_lang') as Language;
     if (saved && (saved === 'en' || saved === 'hi' || saved === 'hinglish')) {
+      // Loads data once on mount; state updates are intentional.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguageState(saved);
     }
   }, []);

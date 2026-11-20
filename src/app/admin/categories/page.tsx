@@ -1,16 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Layers, 
-  Plus, 
-  Trash2, 
-  X, 
-  Check, 
-  BookOpen, 
-  GraduationCap, 
-  FileText,
-  Sparkles
+import {
+  Layers,
+  Plus,
+  Trash2,
+  BookOpen,
+  GraduationCap,
+  FileText
 } from 'lucide-react';
 import { TaxonomyData } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -38,6 +35,8 @@ export default function AdminCategoriesPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTaxonomies();
   }, []);
 
@@ -144,7 +143,7 @@ export default function AdminCategoriesPage() {
           <form onSubmit={handleAddChapter} className="flex items-center gap-2 w-full sm:w-auto">
             <select
               value={newChapterSubject}
-              onChange={(e) => setNewChapterSubject(e.target.value as any)}
+              onChange={(e) => setNewChapterSubject(e.target.value as typeof newChapterSubject)}
               className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="Organic Chemistry">Organic Chemistry</option>

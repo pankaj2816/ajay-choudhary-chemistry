@@ -2,16 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  Atom, 
-  Sparkles, 
-  TestTubes, 
-  Layers, 
-  ArrowRight, 
-  BookOpen, 
-  CheckCircle,
-  HelpCircle,
-  Calculator
+import {
+  Atom,
+  ArrowRight,
+  BookOpen,
+  CheckCircle
 } from 'lucide-react';
 
 interface ChemistryTopic {

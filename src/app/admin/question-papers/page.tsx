@@ -2,21 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  FileText, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  Download, 
-  CheckCircle2, 
-  X, 
-  Loader2, 
-  Upload, 
+import {
+  FileText,
+  Plus,
+  Edit3,
+  Trash2,
+  CheckCircle2,
+  X,
+  Loader2,
   AlertCircle,
-  Eye,
   CheckCircle,
-  Search,
-  Filter
+  Search
 } from 'lucide-react';
 import { QuestionPaper, SubjectType, ClassLevel, TestType } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -86,6 +82,8 @@ export default function AdminQuestionPapersPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPapers();
   }, []);
 

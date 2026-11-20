@@ -1,18 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Settings, 
-  Megaphone, 
-  User, 
-  Building2, 
-  Phone, 
-  Mail, 
-  ShieldCheck, 
-  Save, 
-  Loader2, 
-  CheckCircle2,
-  Sparkles
+import {
+  Settings,
+  Megaphone,
+  User,
+  Building2,
+  Phone,
+  Mail,
+  Save,
+  Loader2
 } from 'lucide-react';
 import { SiteSettings, CoachingCenter } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -37,6 +34,8 @@ export default function AdminSettingsPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSettings();
   }, []);
 

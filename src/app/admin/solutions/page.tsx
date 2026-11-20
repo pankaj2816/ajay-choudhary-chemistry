@@ -1,18 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  CheckCircle, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  FileText, 
-  X, 
-  Loader2, 
-  Upload, 
+import {
+  CheckCircle,
+  Plus,
+  Edit3,
+  Trash2,
+  X,
+  Loader2,
   AlertCircle,
-  CheckCircle2,
-  ListPlus
+  CheckCircle2
 } from 'lucide-react';
 import { SolutionItem, QuestionPaper, AnswerKeyItem } from '@/lib/types';
 import { useToast } from '@/context/ToastContext';
@@ -62,6 +59,8 @@ export default function AdminSolutionsPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, []);
 

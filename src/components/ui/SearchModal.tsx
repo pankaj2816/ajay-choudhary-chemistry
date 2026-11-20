@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Search, X, FileText, BookOpen, CheckCircle, Bell, ArrowRight, Loader2, Sparkles } from 'lucide-react';
-import { NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
 import { searchClientDatabase, SearchResults } from '@/lib/searchUtils';
 
 interface SearchModalProps {
@@ -57,6 +56,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   useEffect(() => {
     if (!query.trim()) {
+      // Loads data once on mount; state updates are intentional.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults({ updates: [], questionPapers: [], solutions: [], studyMaterials: [] });
       setTotalCount(0);
       return;

@@ -2,22 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  Bell, 
-  FileText, 
-  CheckCircle, 
-  BookOpen, 
-  Mail, 
-  Plus, 
-  ArrowRight, 
-  TrendingUp, 
-  Users, 
-  Clock, 
-  Sparkles,
-  ExternalLink,
-  ShieldCheck
+import {
+  Bell,
+  FileText,
+  CheckCircle,
+  BookOpen,
+  Mail,
+  Plus,
+  Sparkles
 } from 'lucide-react';
-import { DatabaseSchema } from '@/lib/types';
+import { NoticeUpdate, ContactMessage } from '@/lib/types';
 import { getUpdates, getQuestionPapers, getSolutions, getStudyMaterials, getMessages, getTeam } from '@/lib/dataService';
 
 export default function AdminDashboardOverview() {
@@ -30,8 +24,8 @@ export default function AdminDashboardOverview() {
     unreadMessages: 0,
     teamCount: 0
   });
-  const [recentUpdates, setRecentUpdates] = useState<any[]>([]);
-  const [recentMessages, setRecentMessages] = useState<any[]>([]);
+  const [recentUpdates, setRecentUpdates] = useState<NoticeUpdate[]>([]);
+  const [recentMessages, setRecentMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -56,7 +50,7 @@ export default function AdminDashboardOverview() {
         solutionsCount: solsArr.length,
         studyMaterialsCount: matsArr.length,
         messagesCount: msgsArr.length,
-        unreadMessages: msgsArr.filter((m: any) => !m.isRead).length,
+        unreadMessages: msgsArr.filter((m) => !m.isRead).length,
         teamCount: teamArr.length
       });
 

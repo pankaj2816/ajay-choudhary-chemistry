@@ -2,18 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import SafeImage from '@/components/ui/SafeImage';
-import { 
-  Users, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  X, 
-  Loader2, 
-  Upload, 
+import {
+  Users,
+  Plus,
+  Edit3,
+  Trash2,
+  X,
+  Loader2,
   AlertCircle,
-  Sparkles,
-  Building2,
-  Mail,
   CheckCircle2
 } from 'lucide-react';
 import { TeamMember } from '@/lib/types';
@@ -55,6 +51,8 @@ export default function AdminTeamPage() {
   };
 
   useEffect(() => {
+    // Loads data once on mount; state updates are intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTeam();
   }, []);
 

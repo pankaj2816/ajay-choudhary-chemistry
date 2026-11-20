@@ -172,6 +172,16 @@ export interface TaxonomyData {
   noticeCategories: string[];
 }
 
+export interface Testimonial {
+  id: string;
+  /** Student or parent name, as they agreed to be shown (e.g. "Riya S."). */
+  name: string;
+  /** Short context, e.g. "Class 12, 2025 · 95% in Boards". */
+  detail: string;
+  quote: string;
+  isPublished: boolean;
+}
+
 export interface DatabaseSchema {
   updates: NoticeUpdate[];
   questionPapers: QuestionPaper[];
@@ -179,6 +189,7 @@ export interface DatabaseSchema {
   studyMaterials: StudyMaterial[];
   teamMembers: TeamMember[];
   contactMessages: ContactMessage[];
+  testimonials?: Testimonial[];
   settings: SiteSettings;
   taxonomies: TaxonomyData;
 }
