@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 interface ChemistryContentRendererProps {
   content: string;
@@ -70,7 +70,7 @@ function renderFormattedLine(text: string): React.ReactNode {
     // Bold: **text**
     if (token.startsWith('**') && token.endsWith('**') && token.length > 4) {
       return (
-        <strong key={i} className="font-extrabold text-slate-950 dark:text-white bg-amber-500/10 dark:bg-white/10 px-1 py-0.5 rounded">
+        <strong key={i} className="font-semibold text-ink">
           {token.slice(2, -2)}
         </strong>
       );
@@ -83,7 +83,7 @@ function renderFormattedLine(text: string): React.ReactNode {
     ) {
       const inner = token.startsWith('==') ? token.slice(2, -2) : token.replace(/\[\/?highlight\]/g, '');
       return (
-        <mark key={i} className="bg-amber-200 dark:bg-amber-500/30 text-amber-950 dark:text-amber-200 font-bold px-1.5 py-0.5 rounded border border-amber-300 dark:border-amber-500/40">
+        <mark key={i} className="bg-yellow-100 text-ink font-medium px-1 rounded">
           {inner}
         </mark>
       );
@@ -95,14 +95,14 @@ function renderFormattedLine(text: string): React.ReactNode {
       const color = colorMatch[1];
       const inner = colorMatch[2];
       const colorMap: Record<string, string> = {
-        cyan: 'bg-cyan-100 dark:bg-cyan-950/80 text-cyan-900 dark:text-cyan-200 border-cyan-300 dark:border-cyan-700',
-        emerald: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700',
-        amber: 'bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700',
-        rose: 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-200 border-rose-300 dark:border-rose-700',
-        purple: 'bg-purple-100 dark:bg-purple-950/80 text-purple-900 dark:text-purple-200 border-purple-300 dark:border-purple-700',
+        cyan: 'bg-accent-soft text-accent-deep border-blue-200',
+        emerald: 'bg-green-50 text-green-800 border-green-200',
+        amber: 'bg-yellow-50 text-yellow-900 border-yellow-200',
+        rose: 'bg-red-50 text-red-800 border-red-200',
+        purple: 'bg-violet-50 text-violet-800 border-violet-200',
       };
       return (
-        <span key={i} className={`inline-block px-2 py-0.5 rounded-md font-bold text-xs border ${colorMap[color] || ''}`}>
+        <span key={i} className={`inline-block px-2 py-0.5 rounded-md font-medium text-[0.85em] border ${colorMap[color] || ''}`}>
           {inner}
         </span>
       );
@@ -111,7 +111,7 @@ function renderFormattedLine(text: string): React.ReactNode {
     // Italic: *text*
     if (token.startsWith('*') && token.endsWith('*') && token.length > 2 && !token.startsWith('**')) {
       return (
-        <em key={i} className="italic text-slate-800 dark:text-slate-200 font-semibold">
+        <em key={i} className="italic text-ink">
           {token.slice(1, -1)}
         </em>
       );
@@ -142,20 +142,16 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
       elements.push(
         <div 
           key={`reaction-${idx}`} 
-          className="my-3.5 p-4 rounded-2xl bg-slate-950 border-2 border-cyan-500/40 shadow-lg overflow-x-auto"
+          className="my-3 p-4 rounded-xl bg-paper-deep border border-line overflow-x-auto"
         >
-          <div className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1.5 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Chemical Equation & Reaction Pathway</span>
-          </div>
-          <div className="font-mono text-xs sm:text-sm md:text-base font-bold text-cyan-200 tracking-wide whitespace-pre-wrap leading-relaxed">
+          <div className="font-mono text-sm sm:text-[0.95rem] text-ink whitespace-pre-wrap leading-relaxed">
             {cleanChemistryText(text)}
           </div>
         </div>
       );
     } else {
       elements.push(
-        <div key={`text-${idx}`} className="space-y-2.5 text-xs sm:text-sm text-slate-800 dark:text-slate-100 font-medium leading-relaxed">
+        <div key={`text-${idx}`} className="space-y-2 text-[0.98rem] text-ink leading-relaxed">
           {currentBlock.map((line, lIdx) => {
             const cleanLine = cleanChemistryText(line);
             
@@ -166,11 +162,11 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
               const stepText = stepMatch[2];
 
               return (
-                <div key={lIdx} className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 flex items-start gap-3 my-1.5 shadow-sm">
-                  <span className="w-6 h-6 rounded-full bg-cyan-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow">
+                <div key={lIdx} className="flex items-start gap-3 my-1.5">
+                  <span className="w-6 h-6 rounded-full bg-accent-soft text-accent font-semibold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     {stepNum}
                   </span>
-                  <div className="flex-1 text-slate-900 dark:text-slate-100 font-medium">
+                  <div className="flex-1">
                     {renderFormattedLine(stepText)}
                   </div>
                 </div>
@@ -182,8 +178,8 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
               const bulletText = cleanLine.replace(/^[-*>•]\s+/, '');
               return (
                 <div key={lIdx} className="flex items-start gap-2 pl-2 my-1">
-                  <ChevronRight className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5 font-bold" />
-                  <div className="flex-1 text-slate-900 dark:text-slate-100 font-medium">
+                  <ChevronRight className="w-4 h-4 text-accent shrink-0 mt-1" />
+                  <div className="flex-1">
                     {renderFormattedLine(bulletText)}
                   </div>
                 </div>
@@ -191,7 +187,7 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
             }
 
             return (
-              <p key={lIdx} className="leading-relaxed text-slate-900 dark:text-slate-100 font-medium">
+              <p key={lIdx} className="leading-relaxed">
                 {renderFormattedLine(cleanLine)}
               </p>
             );
@@ -210,21 +206,10 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
     if (trimmed.startsWith('### ') || trimmed.startsWith('#### ')) {
       flushBlock(index);
       const headerText = cleanChemistryText(trimmed.replace(/^#{3,4}\s+/, ''));
-      const isQuestion = headerText.toLowerCase().includes('question') || headerText.toLowerCase().includes('q1') || headerText.toLowerCase().includes('q2');
-
       elements.push(
-        <div key={`header-${index}`} className="pt-4 pb-2 first:pt-0">
-          <div className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 shadow-sm ${
-            isQuestion 
-              ? 'bg-cyan-950 border-cyan-500/50 text-cyan-200' 
-              : 'bg-slate-900 dark:bg-slate-950 border-slate-800 text-white'
-          }`}>
-            <div className="flex items-center gap-2 font-black text-sm sm:text-base tracking-tight text-white">
-              <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-              <span>{headerText}</span>
-            </div>
-          </div>
-        </div>
+        <h3 key={`header-${index}`} className="pt-5 first:pt-0 text-xl font-semibold leading-snug text-ink">
+          {headerText}
+        </h3>
       );
       return;
     }
@@ -260,7 +245,7 @@ export default function ChemistryContentRenderer({ content }: ChemistryContentRe
   flushBlock(lines.length);
 
   return (
-    <div className="space-y-3.5 text-slate-900 dark:text-slate-100">
+    <div className="space-y-3 text-ink">
       {elements}
     </div>
   );

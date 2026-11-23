@@ -621,8 +621,8 @@ export default function AdminUpdatesPage() {
                     ></textarea>
                   </div>
                 ) : (
-                  <div className="p-4 rounded-2xl border border-slate-700 bg-slate-900 max-h-60 overflow-y-auto space-y-2">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block border-b border-slate-800 pb-1">
+                  <div className="p-4 rounded-2xl border border-slate-700 bg-white max-h-72 overflow-y-auto space-y-2">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block border-b border-slate-200 pb-1">
                       Student View Preview:
                     </span>
                     {formData.content ? (

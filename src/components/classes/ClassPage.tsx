@@ -166,7 +166,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
             <div className="lg:col-span-4 flex flex-wrap lg:justify-end gap-3">
               <button
                 onClick={share}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#25D366] hover:bg-[#1ebe5b] text-white text-sm font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#16803c] hover:bg-[#126b32] text-white text-sm font-medium transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 {c.share}

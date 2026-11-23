@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* The site has one light theme. dark: classes only apply inside a .dark parent,
+   never because the visitor's phone or computer is in dark mode. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* =====================================================================
    Design system — "Clean white + blue"
    White pages, navy text and one friendly blue for buttons and links,
@@ -235,4 +239,8 @@ input.border, select.border, textarea.border {
 html[lang='hi'] .eyebrow,
 html[lang='hi'] [class*='tracking-'] {
   letter-spacing: 0 !important;
+}
+
+:root {
+  color-scheme: light;
 }
