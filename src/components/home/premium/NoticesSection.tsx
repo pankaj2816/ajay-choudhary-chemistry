@@ -40,7 +40,7 @@ export default function NoticesSection() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           <div className="lg:col-span-4">
-            <SectionLabel index="05" label={t.home.secNotices} />
+            <SectionLabel index="06" label={t.home.secNotices} />
             <h2 className="mt-6 text-4xl sm:text-[2.6rem] leading-[1.1] text-ink">{t.notices.title}</h2>
             <p className="mt-6 text-[1.02rem] leading-relaxed text-muted">{t.notices.subtitle}</p>
             <Link href="/updates" className="group mt-8 inline-flex items-center gap-2 text-[0.95rem] font-medium text-ink">

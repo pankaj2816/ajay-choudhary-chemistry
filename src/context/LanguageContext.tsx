@@ -273,6 +273,29 @@ export interface Translations {
     footerLine: string;
     resources: string;
   };
+  // Class pages
+  classes: {
+    navLabel: string;
+    chooseLabel: string;
+    chooseTitle: string;
+    chooseSub: string;
+    pageLabel: string;
+    everything: string;
+    notesBooks: string;
+    papers: string;
+    solutions: string;
+    notices: string;
+    chapters: string;
+    share: string;
+    copyLink: string;
+    copied: string;
+    emptyTitle: string;
+    emptyBody: string;
+    item: string;
+    items: string;
+    open: string;
+    searchPlaceholder: string;
+  };
   // Footer
   footer: {
     tagline: string;
@@ -537,6 +560,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       footerLine: 'Chemistry, understood.',
       resources: 'Resources'
     },
+    classes: {
+      navLabel: 'Classes',
+      chooseLabel: 'Your class',
+      chooseTitle: 'Choose your class',
+      chooseSub: 'Everything for your class in one place: notes, books, test papers, solutions and notices.',
+      pageLabel: 'Class',
+      everything: 'Everything',
+      notesBooks: 'Notes & books',
+      papers: 'Question papers',
+      solutions: 'Solutions',
+      notices: 'Notices',
+      chapters: 'Chapters',
+      share: 'Share on WhatsApp',
+      copyLink: 'Copy link',
+      copied: 'Link copied',
+      emptyTitle: 'Nothing here yet',
+      emptyBody: 'Ajay Sir will add material for this class soon. Please check back later.',
+      item: 'item',
+      items: 'items',
+      open: 'Open',
+      searchPlaceholder: 'Search this class…'
+    },
     footer: {
       tagline: 'Empowering students to master Organic, Inorganic, and Practical Chemistry with 8+ years of academic excellence across 3 coaching centers.',
       specializationsTitle: 'Specializations',
@@ -799,6 +844,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       footerLine: 'केमिस्ट्री, समझ के साथ।',
       resources: 'अध्ययन सामग्री'
     },
+    classes: {
+      navLabel: 'कक्षाएँ',
+      chooseLabel: 'आपकी कक्षा',
+      chooseTitle: 'अपनी कक्षा चुनें',
+      chooseSub: 'आपकी कक्षा की हर चीज़ एक जगह: नोट्स, किताबें, टेस्ट पेपर, हल और नोटिस।',
+      pageLabel: 'कक्षा',
+      everything: 'सब कुछ',
+      notesBooks: 'नोट्स और किताबें',
+      papers: 'प्रश्न पत्र',
+      solutions: 'हल',
+      notices: 'नोटिस',
+      chapters: 'अध्याय',
+      share: 'व्हाट्सऐप पर भेजें',
+      copyLink: 'लिंक कॉपी करें',
+      copied: 'लिंक कॉपी हो गया',
+      emptyTitle: 'अभी यहाँ कुछ नहीं है',
+      emptyBody: 'अजय सर जल्द ही इस कक्षा की सामग्री जोड़ेंगे। कृपया बाद में देखें।',
+      item: 'सामग्री',
+      items: 'सामग्री',
+      open: 'खोलें',
+      searchPlaceholder: 'इस कक्षा में खोजें…'
+    },
     footer: {
       tagline: '3 प्रमुख कोचिंग केंद्रों में 8+ वर्षों के अनुभव के साथ कार्बनिक, अकार्बनिक एवं प्रायोगिक रसायन में विद्यार्थियों का मार्गदर्शन।',
       specializationsTitle: 'विशेषज्ञता',
@@ -1060,6 +1127,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       call: 'Call karein',
       footerLine: 'Chemistry, samajh ke saath.',
       resources: 'Resources'
+    },
+    classes: {
+      navLabel: 'Classes',
+      chooseLabel: 'Aapki class',
+      chooseTitle: 'Apni class chunein',
+      chooseSub: 'Aapki class ki har cheez ek jagah: notes, books, test papers, solutions aur notices.',
+      pageLabel: 'Class',
+      everything: 'Sab kuch',
+      notesBooks: 'Notes & books',
+      papers: 'Question papers',
+      solutions: 'Solutions',
+      notices: 'Notices',
+      chapters: 'Chapters',
+      share: 'WhatsApp par bhejein',
+      copyLink: 'Link copy karein',
+      copied: 'Link copy ho gaya',
+      emptyTitle: 'Abhi yahan kuch nahi hai',
+      emptyBody: 'Ajay Sir jaldi hi is class ka material add karenge. Thodi der baad dekhein.',
+      item: 'item',
+      items: 'items',
+      open: 'Kholein',
+      searchPlaceholder: 'Is class mein search karein…'
     },
     footer: {
       tagline: '8+ years ke experience ke sath Organic, Inorganic aur Practical Chemistry mein students ko empower karna across 3 coaching centers.',

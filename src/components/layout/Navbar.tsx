@@ -8,6 +8,7 @@ import SearchModal from '@/components/ui/SearchModal';
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher';
 import ElementTile from '@/components/ui/ElementTile';
 import { useLanguage } from '@/context/LanguageContext';
+import { CLASS_LIST } from '@/lib/classes';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -15,6 +16,8 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
+  const [classesOpen, setClassesOpen] = useState(false);
+  const classesRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const resourcesRef = useRef<HTMLDivElement>(null);
 
@@ -23,6 +26,8 @@ export default function Navbar() {
     { label: t.nav.questionPapers, href: '/question-papers' },
     { label: t.nav.solutions, href: '/solutions' },
   ];
+
+  const classLinks = CLASS_LIST.map((c) => ({ label: c.level, href: c.href }));
 
   const primaryLinks = [
     { label: t.nav.about, href: '/about' },
@@ -37,6 +42,7 @@ export default function Navbar() {
   const isActive = (href: string) =>
     pathname === href || (href !== '/' && !!pathname?.startsWith(href));
   const resourcesActive = resourceLinks.some((l) => isActive(l.href));
+  const classesActive = classLinks.some((l) => isActive(l.href));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -53,12 +59,16 @@ export default function Navbar() {
       }
       if (e.key === 'Escape') {
         setResourcesOpen(false);
+        setClassesOpen(false);
         setMobileMenuOpen(false);
       }
     };
     const onClick = (e: MouseEvent) => {
       if (resourcesRef.current && !resourcesRef.current.contains(e.target as Node)) {
         setResourcesOpen(false);
+      }
+      if (classesRef.current && !classesRef.current.contains(e.target as Node)) {
+        setClassesOpen(false);
       }
     };
     window.addEventListener('keydown', onKey);
@@ -108,6 +118,35 @@ export default function Navbar() {
 
           {/* Desktop navigation */}
           <nav className="hidden lg:flex items-center gap-5 xl:gap-8" aria-label="Main">
+            <div className="relative" ref={classesRef}>
+              <button
+                type="button"
+                onClick={() => setClassesOpen((o) => !o)}
+                aria-expanded={classesOpen}
+                className={`${linkClass(classesActive)} inline-flex items-center gap-1`}
+              >
+                {t.classes.navLabel}
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${classesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {classesOpen && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-52 bg-white border border-line rounded-lg shadow-xl py-2">
+                  {classLinks.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setClassesOpen(false)}
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${
+                        isActive(l.href) ? 'text-accent' : 'text-ink hover:bg-paper-deep'
+                      }`}
+                    >
+                      {l.label}
+                      <ArrowUpRight className="w-3.5 h-3.5 opacity-40" />
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {primaryLinks.map((l) => (
               <Link key={l.href} href={l.href} className={linkClass(isActive(l.href))}>
                 {l.label}
@@ -125,14 +164,14 @@ export default function Navbar() {
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
               </button>
               {resourcesOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-60 bg-white border border-line shadow-xl py-2">
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-60 bg-white border border-line rounded-lg shadow-xl py-2">
                   {resourceLinks.map((l) => (
                     <Link
                       key={l.href}
                       href={l.href}
                       onClick={() => setResourcesOpen(false)}
                       className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${
-                        isActive(l.href) ? 'text-accent' : 'text-ink hover:bg-paper'
+                        isActive(l.href) ? 'text-accent' : 'text-ink hover:bg-paper-deep'
                       }`}
                     >
                       {l.label}
@@ -197,6 +236,22 @@ export default function Navbar() {
           </div>
 
           <nav className="flex-1 overflow-y-auto px-5 sm:px-8 py-6" aria-label="Mobile">
+            <p className="eyebrow !text-[0.66rem] text-muted">{t.classes.chooseTitle}</p>
+            <div className="mt-3 mb-6 grid grid-cols-4 gap-2">
+              {CLASS_LIST.map((c) => (
+                <Link
+                  key={c.href}
+                  href={c.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`py-3 rounded-lg text-center border text-lg font-semibold ${
+                    isActive(c.href) ? 'bg-accent border-accent text-white' : 'border-line text-ink'
+                  }`}
+                >
+                  {c.grade}
+                  <span className="block text-[0.65rem] font-normal opacity-70">{t.classes.pageLabel}</span>
+                </Link>
+              ))}
+            </div>
             {[{ label: t.nav.home, href: '/' }, ...primaryLinks, ...resourceLinks, ...trailingLinks].map((l, i) => (
               <Link
                 key={l.href}
@@ -205,7 +260,7 @@ export default function Navbar() {
                 className="flex items-baseline gap-4 py-3.5 border-b border-line"
               >
                 <span className="text-xs text-muted tabular-nums w-5">{String(i + 1).padStart(2, '0')}</span>
-                <span className={`font-display text-2xl ${isActive(l.href) && l.href !== '/' ? 'text-accent' : 'text-ink'}`}>
+                <span className={`text-xl font-semibold ${isActive(l.href) && l.href !== '/' ? 'text-accent' : 'text-ink'}`}>
                   {l.label}
                 </span>
               </Link>

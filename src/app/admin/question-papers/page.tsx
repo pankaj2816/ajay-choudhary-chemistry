@@ -22,10 +22,13 @@ const SUBJECTS: SubjectType[] = [
   'Organic Chemistry',
   'Inorganic Chemistry',
   'Practical Chemistry',
-  'Physical Chemistry'
+  'Physical Chemistry',
+  'Science'
 ];
 
 const CLASSES: ClassLevel[] = [
+  'Class 9',
+  'Class 10',
   'Class 11',
   'Class 12',
   'Dropper / JEE / NEET',
@@ -63,9 +66,9 @@ export default function AdminQuestionPapersPage() {
     totalMarks: 50,
     duration: '90 Minutes',
     description: '',
-    fileUrl: '/uploads/sample_question_paper.pdf',
-    fileName: 'Chemistry_Paper.pdf',
-    fileSize: '1.5 MB',
+    fileUrl: '',
+    fileName: '',
+    fileSize: '',
     hasSolution: false
   });
 
@@ -100,9 +103,9 @@ export default function AdminQuestionPapersPage() {
       totalMarks: 50,
       duration: '90 Minutes',
       description: '',
-      fileUrl: '/uploads/sample_question_paper.pdf',
-      fileName: 'Chemistry_Paper.pdf',
-      fileSize: '1.5 MB',
+      fileUrl: '',
+      fileName: '',
+      fileSize: '',
       hasSolution: false
     });
     setIsModalOpen(true);
@@ -133,6 +136,11 @@ export default function AdminQuestionPapersPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 40 * 1024 * 1024) {
+      showToast('This file is larger than 40 MB. Please compress it and try again.', 'error');
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -150,6 +158,10 @@ export default function AdminQuestionPapersPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.fileUrl) {
+      showToast('Please choose the question paper file to upload', 'error');
+      return;
+    }
     if (!formData.title || !formData.chapter) {
       showToast('Please fill out Title and Chapter', 'error');
       return;
@@ -395,11 +407,15 @@ export default function AdminQuestionPapersPage() {
                   <label className="block text-xs font-bold text-slate-300 mb-1">Class / Target *</label>
                   <select
                     value={formData.className}
-                    onChange={(e) => setFormData({ ...formData, className: e.target.value as ClassLevel })}
+                    onChange={(e) => {
+                      const cls = e.target.value as ClassLevel;
+                      setFormData({ ...formData, className: cls, subject: cls === 'Class 9' || cls === 'Class 10' ? 'Science' : formData.subject === 'Science' ? 'Organic Chemistry' : formData.subject });
+                    }}
                     className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
+                  <p className="mt-1 text-[11px] text-slate-500">Shows on the {formData.className === 'All Classes' ? 'page of every class' : `${formData.className} page`}.</p>
                 </div>
 
                 <div>
@@ -465,11 +481,11 @@ export default function AdminQuestionPapersPage() {
               {/* Upload PDF */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
                 <label className="block text-xs font-bold text-slate-300">
-                  Question Paper PDF File *
+                  Question paper file: PDF, Word or image *
                 </label>
                 <input
                   type="file"
-                  accept=".pdf"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
                   onChange={handleFileUpload}
                   className="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-950 file:text-blue-300 hover:file:bg-blue-900"
                 />

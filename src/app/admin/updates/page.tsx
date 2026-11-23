@@ -39,6 +39,8 @@ const CATEGORIES: NoticeCategory[] = [
 
 const CLASSES: ClassLevel[] = [
   'All Classes',
+  'Class 9',
+  'Class 10',
   'Class 11',
   'Class 12',
   'Dropper / JEE / NEET'
@@ -151,6 +153,11 @@ export default function AdminUpdatesPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 40 * 1024 * 1024) {
+      showToast('This file is larger than 40 MB. Please compress it and try again.', 'error');
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -436,6 +443,8 @@ export default function AdminUpdatesPage() {
                     className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   >
                     <option value="All Classes">All Classes / Centers</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
                     <option value="Class 11">Class 11</option>
                     <option value="Class 12">Class 12</option>
                     <option value="Dropper / JEE / NEET">Dropper / JEE / NEET</option>
@@ -623,7 +632,7 @@ export default function AdminUpdatesPage() {
                 <div className="flex items-center gap-3">
                   <input
                     type="file"
-                    accept=".pdf,.doc,.docx,.jpg,.png"
+                    accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
                     onChange={handleFileUpload}
                     className="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900"
                   />

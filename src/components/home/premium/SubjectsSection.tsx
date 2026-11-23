@@ -60,7 +60,7 @@ export default function SubjectsSection() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20 items-end">
           <div className="lg:col-span-7">
-            <SectionLabel index="02" label={t.home.secSubjects} />
+            <SectionLabel index="03" label={t.home.secSubjects} />
             <h2 className="mt-6 text-4xl sm:text-5xl leading-[1.08] text-ink">{t.subjects.title}</h2>
           </div>
           <p className="lg:col-span-5 text-[1.02rem] leading-relaxed text-muted">{t.subjects.subtitle}</p>

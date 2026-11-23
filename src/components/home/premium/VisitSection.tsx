@@ -29,7 +29,7 @@ export default function VisitSection() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-end">
           <div className="lg:col-span-8">
-            <SectionLabel index="06" label={t.home.secVisit} />
+            <SectionLabel index="07" label={t.home.secVisit} />
             <h2 className="mt-6 text-[2.6rem] sm:text-6xl leading-[1.04] text-ink" style={{ fontVariationSettings: '"opsz" 144' }}>
               {t.home.visitTitle}
             </h2>

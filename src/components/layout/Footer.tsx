@@ -8,6 +8,7 @@ import { initialDatabase } from '@/data/initialData';
 import { getSettings } from '@/lib/dataService';
 import { SiteSettings } from '@/lib/types';
 import ElementTile from '@/components/ui/ElementTile';
+import { CLASS_LIST } from '@/lib/classes';
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -25,6 +26,10 @@ export default function Footer() {
   if (pathname?.startsWith('/admin')) return null;
 
   const columns = [
+    {
+      title: t.classes.navLabel,
+      links: CLASS_LIST.map((c) => ({ label: c.level, href: c.href })),
+    },
     {
       title: t.footer.resourcesTitle,
       links: [
@@ -68,9 +73,9 @@ export default function Footer() {
         </div>
 
         {/* Columns */}
-        <div className="grid grid-cols-2 lg:grid-cols-12 gap-10 py-14">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-10 py-14">
           {columns.map((col) => (
-            <div key={col.title} className="lg:col-span-3">
+            <div key={col.title} className="lg:col-span-2">
               <h4 className="eyebrow text-paper/40 mb-5">{col.title}</h4>
               <ul className="space-y-3">
                 {col.links.map((l) => (
@@ -84,7 +89,7 @@ export default function Footer() {
             </div>
           ))}
 
-          <div className="col-span-2 lg:col-span-6">
+          <div className="col-span-2 md:col-span-3 lg:col-span-6">
             <h4 className="eyebrow text-paper/40 mb-5">{t.footer.centersTitle}</h4>
             <ul className="divide-y divide-paper/10 border-y border-paper/10">
               {settings.coachingCenters.map((c) => (

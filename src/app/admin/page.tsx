@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import ClassLinksPanel from '@/components/admin/ClassLinksPanel';
 import {
   Bell,
   FileText,
@@ -95,6 +96,8 @@ export default function AdminDashboardOverview() {
           </Link>
         </div>
       </div>
+
+      <ClassLinksPanel />
 
       {/* Overview Stat Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

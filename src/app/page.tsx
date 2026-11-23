@@ -1,4 +1,5 @@
 import HeroSection from '@/components/home/premium/HeroSection';
+import ClassesSection from '@/components/home/premium/ClassesSection';
 import AboutSection from '@/components/home/premium/AboutSection';
 import SubjectsSection from '@/components/home/premium/SubjectsSection';
 import MethodSection from '@/components/home/premium/MethodSection';
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <ClassesSection />
       <AboutSection />
       <SubjectsSection />
       <MethodSection />

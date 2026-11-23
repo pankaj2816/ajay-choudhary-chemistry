@@ -47,9 +47,12 @@
       "Organic Chemistry",
       "Inorganic Chemistry",
       "Practical Chemistry",
-      "Physical Chemistry"
+      "Physical Chemistry",
+      "Science"
     ],
     "classes": [
+      "Class 9",
+      "Class 10",
       "Class 11",
       "Class 12",
       "Dropper / JEE / NEET",
@@ -99,7 +102,9 @@
       "Important Questions",
       "Practice Worksheet",
       "Practical Manual",
-      "Revision Material"
+      "Revision Material",
+      "Book",
+      "Other"
     ],
     "testTypes": [
       "Unit Test",

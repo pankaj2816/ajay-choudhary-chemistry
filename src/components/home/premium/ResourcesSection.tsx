@@ -49,7 +49,7 @@ export default function ResourcesSection() {
   return (
     <section className="bg-paper border-t border-line">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
-        <SectionLabel index="04" label={t.home.secResources} />
+        <SectionLabel index="05" label={t.home.secResources} />
         <h2 className="mt-6 text-4xl sm:text-5xl leading-[1.08] text-ink max-w-3xl">{t.home.resourcesTitle}</h2>
 
         <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">

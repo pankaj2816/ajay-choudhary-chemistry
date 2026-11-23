@@ -21,10 +21,13 @@ const SUBJECTS: SubjectType[] = [
   'Organic Chemistry',
   'Inorganic Chemistry',
   'Practical Chemistry',
-  'Physical Chemistry'
+  'Physical Chemistry',
+  'Science'
 ];
 
 const CLASSES: ClassLevel[] = [
+  'Class 9',
+  'Class 10',
   'Class 11',
   'Class 12',
   'Dropper / JEE / NEET',
@@ -38,7 +41,9 @@ const RESOURCE_TYPES: ResourceType[] = [
   'Important Questions',
   'Practice Worksheet',
   'Practical Manual',
-  'Revision Material'
+  'Revision Material',
+  'Book',
+  'Other'
 ];
 
 export default function AdminStudyMaterialsPage() {
@@ -59,9 +64,9 @@ export default function AdminStudyMaterialsPage() {
     chapter: '',
     resourceType: 'Chapter Notes',
     description: '',
-    fileUrl: '/uploads/sample_chemistry_notes.pdf',
-    fileName: 'Chemistry_Notes.pdf',
-    fileSize: '2.5 MB',
+    fileUrl: '',
+    fileName: '',
+    fileSize: '',
     uploadDate: new Date().toISOString().split('T')[0],
     isFeatured: false
   });
@@ -93,9 +98,9 @@ export default function AdminStudyMaterialsPage() {
       chapter: '',
       resourceType: 'Chapter Notes',
       description: '',
-      fileUrl: '/uploads/sample_chemistry_notes.pdf',
-      fileName: 'Chemistry_Notes.pdf',
-      fileSize: '2.5 MB',
+      fileUrl: '',
+      fileName: '',
+      fileSize: '',
       uploadDate: new Date().toISOString().split('T')[0],
       isFeatured: false
     });
@@ -123,6 +128,11 @@ export default function AdminStudyMaterialsPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 40 * 1024 * 1024) {
+      showToast('This file is larger than 40 MB. Please compress it and try again.', 'error');
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -140,8 +150,12 @@ export default function AdminStudyMaterialsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.chapter) {
-      showToast('Title and Chapter are required', 'error');
+    if (!formData.fileUrl) {
+      showToast('Please choose the file to upload', 'error');
+      return;
+    }
+    if (!formData.title.trim()) {
+      showToast('Please add a title', 'error');
       return;
     }
 
@@ -389,11 +403,15 @@ export default function AdminStudyMaterialsPage() {
                   <label className="block text-xs font-bold text-slate-300 mb-1">Class / Target *</label>
                   <select
                     value={formData.className}
-                    onChange={(e) => setFormData({ ...formData, className: e.target.value as ClassLevel })}
+                    onChange={(e) => {
+                      const cls = e.target.value as ClassLevel;
+                      setFormData({ ...formData, className: cls, subject: cls === 'Class 9' || cls === 'Class 10' ? 'Science' : formData.subject === 'Science' ? 'Organic Chemistry' : formData.subject });
+                    }}
                     className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   >
                     {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
+                  <p className="mt-1 text-[11px] text-slate-500">Shows on the {formData.className === 'All Classes' ? 'page of every class' : `${formData.className} page`}.</p>
                 </div>
 
                 <div>
@@ -410,12 +428,11 @@ export default function AdminStudyMaterialsPage() {
 
               <div>
                 <label className="block text-xs font-bold text-slate-300 mb-1">
-                  Chapter or Unit *
+                  Chapter or Unit (optional)
                 </label>
                 <input
                   type="text"
-                  required
-                  placeholder="e.g. General Organic Chemistry (GOC)"
+                  placeholder="e.g. Atoms and Molecules, or leave empty for a full book"
                   value={formData.chapter}
                   onChange={(e) => setFormData({ ...formData, chapter: e.target.value })}
                   className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -436,11 +453,11 @@ export default function AdminStudyMaterialsPage() {
               {/* Upload PDF */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
                 <label className="block text-xs font-bold text-slate-300">
-                  Notes PDF Document *
+                  File: PDF, Word, PowerPoint or image *
                 </label>
                 <input
                   type="file"
-                  accept=".pdf"
+                  accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
                   onChange={handleFileUpload}
                   className="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-950 file:text-purple-300 hover:file:bg-purple-900"
                 />

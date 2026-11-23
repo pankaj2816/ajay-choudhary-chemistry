@@ -41,6 +41,19 @@ If a device is lost or the token leaks, delete the token on GitHub and create a 
 
 ---
 
+## Class pages
+
+Each class has its own page that collects everything tagged for it (notes, books, papers, solutions and notices):
+
+| Class | Link to share |
+| :-- | :-- |
+| Class 9 | https://pankaj2816.github.io/ajay-choudhary-chemistry/class-9 |
+| Class 10 | https://pankaj2816.github.io/ajay-choudhary-chemistry/class-10 |
+| Class 11 | https://pankaj2816.github.io/ajay-choudhary-chemistry/class-11 |
+| Class 12 | https://pankaj2816.github.io/ajay-choudhary-chemistry/class-12 |
+
+When uploading in the admin panel, choose the class in **Class / Target**. Items set to *All Classes* appear on every class page. The admin overview has copy and WhatsApp buttons for these links.
+
 ## Student enquiries
 
 The contact form emails each enquiry (free, via [FormSubmit](https://formsubmit.co)) to the address set in **Admin → Settings → Where should student enquiries be emailed?** (falls back to the public contact email).
@@ -66,4 +79,4 @@ Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the static s
 
 ## Design system
 
-"Ink & Ivory": warm ivory paper (`paper`), deep ink (`ink`) and a single oxblood accent (`accent`), with Fraunces for headings, Instrument Sans for text and Noto Sans Devanagari for Hindi. Tokens are in `src/app/globals.css`; older Tailwind colour classes on inner pages are remapped there to the same palette.
+Clean white + blue: white pages (`paper`), navy text (`ink`) and one friendly blue (`accent`), with Instrument Sans for all text and Noto Sans Devanagari for Hindi. Tokens are in `src/app/globals.css`; older Tailwind colour classes on inner pages are remapped there to the same palette.

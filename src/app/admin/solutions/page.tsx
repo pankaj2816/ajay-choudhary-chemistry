@@ -34,9 +34,9 @@ export default function AdminSolutionsPage() {
     className: 'Class 12',
     uploadDate: new Date().toISOString().split('T')[0],
     description: '',
-    solutionPdfUrl: '/uploads/sample_solution.pdf',
-    solutionPdfName: 'Solution.pdf',
-    solutionPdfSize: '2.0 MB',
+    solutionPdfUrl: '',
+    solutionPdfName: '',
+    solutionPdfSize: '',
     stepByStepContent: '',
     answerKey: [{ questionNo: 'Q1', answer: '', explanation: '' }],
     verifiedBy: 'Ajay Choudhary Sir'
@@ -90,9 +90,9 @@ export default function AdminSolutionsPage() {
       className: papers[0]?.className || 'Class 12',
       uploadDate: new Date().toISOString().split('T')[0],
       description: '',
-      solutionPdfUrl: '/uploads/sample_solution.pdf',
-      solutionPdfName: 'Solution.pdf',
-      solutionPdfSize: '2.0 MB',
+      solutionPdfUrl: '',
+      solutionPdfName: '',
+      solutionPdfSize: '',
       stepByStepContent: '### Step-by-Step Solution Breakdown\n\n#### Question 1:\n- Explanation of reaction pathway\n- Balanced equation',
       answerKey: [{ questionNo: 'Q1', answer: '', explanation: '' }],
       verifiedBy: 'Ajay Choudhary (Head Chemistry Educator)'
@@ -149,6 +149,11 @@ export default function AdminSolutionsPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 40 * 1024 * 1024) {
+      showToast('This file is larger than 40 MB. Please compress it and try again.', 'error');
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -424,11 +429,11 @@ export default function AdminSolutionsPage() {
               {/* Upload PDF */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
                 <label className="block text-xs font-bold text-slate-300">
-                  Optional Solution PDF File
+                  Solution file (optional): PDF, Word or image
                 </label>
                 <input
                   type="file"
-                  accept=".pdf"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
                   onChange={handleFileUpload}
                   className="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-950 file:text-emerald-300 hover:file:bg-emerald-900"
                 />

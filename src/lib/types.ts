@@ -1,6 +1,6 @@
-export type SubjectType = 'Organic Chemistry' | 'Inorganic Chemistry' | 'Practical Chemistry' | 'Physical Chemistry';
+export type SubjectType = 'Organic Chemistry' | 'Inorganic Chemistry' | 'Practical Chemistry' | 'Physical Chemistry' | 'Science';
 
-export type ClassLevel = 'Class 11' | 'Class 12' | 'Dropper / JEE / NEET' | 'All Classes';
+export type ClassLevel = 'Class 9' | 'Class 10' | 'Class 11' | 'Class 12' | 'Dropper / JEE / NEET' | 'All Classes';
 
 export type NoticeCategory = 
   | 'Important Notice' 
@@ -18,7 +18,9 @@ export type ResourceType =
   | 'Important Questions' 
   | 'Practice Worksheet' 
   | 'Practical Manual' 
-  | 'Revision Material';
+  | 'Revision Material'
+  | 'Book'
+  | 'Other';
 
 export type TestType = 
   | 'Unit Test' 

@@ -12,7 +12,7 @@ export default function AboutSection() {
   const quote = t.about.philosophyQuote.replace(/^[“"]|[”"]$/g, '');
 
   return (
-    <section className="bg-paper-deep border-y border-line">
+    <section className="bg-paper">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-20 items-center">
           <div className="lg:col-span-5 order-2 lg:order-1">
@@ -29,7 +29,7 @@ export default function AboutSection() {
           </div>
 
           <div className="lg:col-span-7 order-1 lg:order-2">
-            <SectionLabel index="01" label={t.home.secAbout} />
+            <SectionLabel index="02" label={t.home.secAbout} />
             <h2 className="mt-6 text-4xl sm:text-5xl leading-[1.08] text-ink">{t.home.aboutTitle}</h2>
 
             <blockquote className="mt-10 pl-6 border-l-2 border-accent">
