@@ -36,6 +36,8 @@ export default function Footer() {
         { label: t.nav.studyMaterials, href: '/study-materials' },
         { label: t.nav.questionPapers, href: '/question-papers' },
         { label: t.nav.solutions, href: '/solutions' },
+        { label: t.home.notesNav, href: '/notes' },
+        { label: t.home.articlesNav, href: '/articles' },
         { label: t.nav.updates, href: '/updates' },
       ],
     },

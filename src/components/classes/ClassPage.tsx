@@ -3,9 +3,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, Eye, Link2, MessageCircle, Paperclip } from 'lucide-react';
-import { NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
+import { ConceptNote, NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
-import { getQuestionPapers, getSolutions, getStudyMaterials, getUpdates } from '@/lib/dataService';
+import { getConceptNotes, getQuestionPapers, getSolutions, getStudyMaterials, getUpdates } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
@@ -38,6 +38,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [notices, setNotices] = useState<NoticeUpdate[]>(initialDatabase.updates);
+  const [conceptNotes, setConceptNotes] = useState<ConceptNote[]>(initialDatabase.conceptNotes || []);
   const [tab, setTab] = useState<Tab>('all');
   const [query, setQuery] = useState('');
   const [preview, setPreview] = useState<StudyMaterial | null>(null);
@@ -54,7 +55,12 @@ export default function ClassPage({ grade }: { grade: Grade }) {
         if (Array.isArray(u)) setNotices(u);
       })
       .catch(() => {});
+    getConceptNotes()
+      .then((n) => Array.isArray(n) && setConceptNotes(n))
+      .catch(() => {});
   }, []);
+
+  const classNotes = conceptNotes.filter((n) => n.grade === grade && n.isPublished).sort((a, b) => a.chapter - b.chapter);
 
   const q = query.trim().toLowerCase();
 
@@ -103,7 +109,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
 
   const show = (k: Tab) => tab === 'all' || tab === k;
 
-  const Empty = () => (
+  const renderEmpty = () => (
     <div className="py-20 text-center">
       <p className="text-2xl font-semibold text-ink">{c.emptyTitle}</p>
       <p className="mt-2 text-muted max-w-md mx-auto">{q ? t.pages.noResultsSub : c.emptyBody}</p>
@@ -163,6 +169,32 @@ export default function ClassPage({ grade }: { grade: Grade }) {
         </div>
       </header>
 
+      {classNotes.length > 0 && (
+        <section className="bg-accent-soft border-b border-line">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-8">
+            <div className="flex items-baseline justify-between gap-4">
+              <h2 className="!text-lg sm:!text-xl text-ink">{t.home.notesForClass}</h2>
+              <Link href={`/notes?class=${grade}`} className="text-sm font-medium text-accent hover:text-accent-deep whitespace-nowrap">
+                {t.home.allNotes} →
+              </Link>
+            </div>
+            <ul className="mt-4 -mx-5 px-5 sm:mx-0 sm:px-0 flex gap-3 overflow-x-auto pb-2">
+              {classNotes.map((n) => (
+                <li key={n.id} className="shrink-0">
+                  <Link
+                    href={`/notes/${n.slug}`}
+                    className="block w-60 h-full p-4 rounded-xl bg-white border border-line hover:border-accent transition-colors"
+                  >
+                    <span className="text-xs text-accent font-medium">Chapter {n.chapter}</span>
+                    <span className="mt-1 block text-[0.95rem] font-semibold leading-snug text-ink">{n.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
         {/* Search + chapter shortcuts */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -220,7 +252,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
         </div>
 
         <div className="mt-10">
-          {total === 0 && <Empty />}
+          {total === 0 && renderEmpty()}
 
           {/* Notes & books */}
           {show('notes') && lists.mats.length > 0 && (
@@ -344,7 +376,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
             ((tab === 'notes' && !lists.mats.length) ||
               (tab === 'papers' && !lists.pps.length) ||
               (tab === 'solutions' && !lists.sols.length) ||
-              (tab === 'notices' && !lists.nts.length)) && <Empty />}
+              (tab === 'notices' && !lists.nts.length)) && renderEmpty()}
         </div>
       </section>
 

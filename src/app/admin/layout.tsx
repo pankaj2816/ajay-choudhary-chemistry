@@ -19,6 +19,7 @@ import {
   X,
   Clock,
   Quote,
+  BookOpenText,
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import { hasAdminSession, signOut } from '@/lib/github';
@@ -31,6 +32,7 @@ const ADMIN_NAV_ITEMS = [
   { label: 'Question Papers', href: '/admin/question-papers', icon: FileText },
   { label: 'Verified Solutions', href: '/admin/solutions', icon: CheckCircle },
   { label: 'Study Materials', href: '/admin/study-materials', icon: BookOpen },
+  { label: 'Notes & Articles', href: '/admin/learn', icon: BookOpenText },
   { label: 'Subjects & Chapters', href: '/admin/categories', icon: Layers },
   { label: 'Team Portfolio', href: '/admin/team', icon: Users },
   { label: 'Testimonials', href: '/admin/testimonials', icon: Quote },

@@ -11,6 +11,8 @@ import {
   TaxonomyData,
   ContactMessage,
   Testimonial,
+  ConceptNote,
+  Article,
 } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import {
@@ -349,6 +351,81 @@ export async function saveTestimonial(item: Partial<Testimonial>): Promise<Testi
 export async function deleteTestimonial(id: string): Promise<boolean> {
   await commit(`delete testimonial ${id}`, (db) => {
     db.testimonials = (db.testimonials || []).filter((t) => t.id !== id);
+  });
+  return true;
+}
+
+// ---------------- Concept notes ----------------
+export const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || `item-${Date.now()}`;
+
+export async function getConceptNotes(): Promise<ConceptNote[]> {
+  return (await load()).conceptNotes || [];
+}
+
+export async function saveConceptNote(item: Partial<ConceptNote>): Promise<ConceptNote> {
+  const defaults: ConceptNote = {
+    id: item.id || `note-${Date.now()}`,
+    slug: item.slug || `class-${item.grade || '11'}-${slugify(item.title || 'note')}`,
+    grade: item.grade || '11',
+    chapter: item.chapter || 1,
+    title: item.title || 'Untitled note',
+    summary: item.summary || '',
+    body: item.body || '',
+    isPublished: item.isPublished !== undefined ? item.isPublished : true,
+    updatedDate: today(),
+  };
+  return commit(`${item.id ? 'update' : 'add'} concept note "${item.title ?? 'note'}"`, (db) => {
+    db.conceptNotes = db.conceptNotes || [];
+    const record = mergeRecord(db.conceptNotes, { ...item, updatedDate: today() }, defaults);
+    // Keep slugs unique
+    if (db.conceptNotes.some((n) => n.slug === record.slug && n.id !== record.id)) record.slug = `${record.slug}-${Date.now() % 10000}`;
+    return upsert(db.conceptNotes, record, 'end');
+  });
+}
+
+export async function deleteConceptNote(id: string): Promise<boolean> {
+  await commit(`delete concept note ${id}`, (db) => {
+    db.conceptNotes = (db.conceptNotes || []).filter((n) => n.id !== id);
+  });
+  return true;
+}
+
+// ---------------- Articles ----------------
+export async function getArticles(): Promise<Article[]> {
+  return (await load()).articles || [];
+}
+
+export async function saveArticle(item: Partial<Article>): Promise<Article> {
+  const ext = item.image?.match(/^data:image\/(\w+)/)?.[1]?.replace('jpeg', 'jpg').replace('svg+xml', 'svg') || 'jpg';
+  const image = await persistFile(item.image, `${slugify(item.title || 'article')}.${ext}`);
+  const defaults: Article = {
+    id: item.id || `art-${Date.now()}`,
+    slug: item.slug || slugify(item.title || 'article'),
+    title: item.title || 'Untitled article',
+    summary: item.summary || '',
+    image: image || '',
+    imageAlt: item.imageAlt || item.title || '',
+    tags: item.tags || [],
+    body: item.body || '',
+    date: item.date || today(),
+    isPublished: item.isPublished !== undefined ? item.isPublished : true,
+  };
+  return commit(`${item.id ? 'update' : 'add'} article "${item.title ?? 'article'}"`, (db) => {
+    db.articles = db.articles || [];
+    const record = mergeRecord(db.articles, { ...item, image }, defaults);
+    if (db.articles.some((a) => a.slug === record.slug && a.id !== record.id)) record.slug = `${record.slug}-${Date.now() % 10000}`;
+    return upsert(db.articles, record);
+  });
+}
+
+export async function deleteArticle(id: string): Promise<boolean> {
+  await commit(`delete article ${id}`, (db) => {
+    db.articles = (db.articles || []).filter((a) => a.id !== id);
   });
   return true;
 }

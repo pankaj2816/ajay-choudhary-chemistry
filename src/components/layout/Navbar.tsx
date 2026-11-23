@@ -25,6 +25,8 @@ export default function Navbar() {
     { label: t.nav.studyMaterials, href: '/study-materials' },
     { label: t.nav.questionPapers, href: '/question-papers' },
     { label: t.nav.solutions, href: '/solutions' },
+    { label: t.home.notesNav, href: '/notes' },
+    { label: t.home.articlesNav, href: '/articles' },
   ];
 
   const classLinks = CLASS_LIST.map((c) => ({ label: c.level, href: c.href }));

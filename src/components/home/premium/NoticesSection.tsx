@@ -36,7 +36,7 @@ export default function NoticesSection() {
     .slice(0, 4);
 
   return (
-    <section className="bg-paper-deep border-y border-line">
+    <section className="bg-paper">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           <div className="lg:col-span-4">

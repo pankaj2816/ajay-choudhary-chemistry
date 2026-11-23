@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { initialDatabase } from '@/data/initialData';
 
 export const dynamic = 'force-static';
 
@@ -18,6 +19,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/subjects',
     '/about',
     '/contact',
+    '/notes',
+    '/articles',
+    ...(initialDatabase.conceptNotes || []).filter((n) => n.isPublished).map((n) => `/notes/${n.slug}`),
+    ...(initialDatabase.articles || []).filter((a) => a.isPublished).map((a) => `/articles/${a.slug}`),
   ];
   return routes.map((r) => ({
     url: `${SITE}${r}`,

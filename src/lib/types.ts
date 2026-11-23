@@ -184,6 +184,33 @@ export interface Testimonial {
   isPublished: boolean;
 }
 
+export interface ConceptNote {
+  id: string;
+  slug: string;
+  /** '11' or '12' (also '9' / '10' if added later) */
+  grade: string;
+  chapter: number;
+  title: string;
+  summary: string;
+  /** Simple Markdown: ## headings, - lists, | tables |, > tips, **bold** */
+  body: string;
+  isPublished: boolean;
+  updatedDate: string;
+}
+
+export interface Article {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  image: string;
+  imageAlt: string;
+  tags: string[];
+  body: string;
+  date: string;
+  isPublished: boolean;
+}
+
 export interface DatabaseSchema {
   updates: NoticeUpdate[];
   questionPapers: QuestionPaper[];
@@ -192,6 +219,8 @@ export interface DatabaseSchema {
   teamMembers: TeamMember[];
   contactMessages: ContactMessage[];
   testimonials?: Testimonial[];
+  conceptNotes?: ConceptNote[];
+  articles?: Article[];
   settings: SiteSettings;
   taxonomies: TaxonomyData;
 }

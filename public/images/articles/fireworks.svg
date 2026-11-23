@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="Inter, Arial, sans-serif">
+  <rect width="1200" height="675" fill="#0F172A"/>
+  <g stroke-linecap="round" stroke-width="6">
+    <g transform="translate(220,250)" stroke="#EF4444"><path d="M0 0 L0 -120 M0 0 L85 -85 M0 0 L120 0 M0 0 L85 85 M0 0 L0 120 M0 0 L-85 85 M0 0 L-120 0 M0 0 L-85 -85"/></g>
+    <g transform="translate(470,200)" stroke="#22C55E"><path d="M0 0 L0 -100 M0 0 L70 -70 M0 0 L100 0 M0 0 L70 70 M0 0 L0 100 M0 0 L-70 70 M0 0 L-100 0 M0 0 L-70 -70"/></g>
+    <g transform="translate(730,260)" stroke="#FACC15"><path d="M0 0 L0 -115 M0 0 L81 -81 M0 0 L115 0 M0 0 L81 81 M0 0 L0 115 M0 0 L-81 81 M0 0 L-115 0 M0 0 L-81 -81"/></g>
+    <g transform="translate(980,200)" stroke="#38BDF8"><path d="M0 0 L0 -100 M0 0 L70 -70 M0 0 L100 0 M0 0 L70 70 M0 0 L0 100 M0 0 L-70 70 M0 0 L-100 0 M0 0 L-70 -70"/></g>
+  </g>
+  <g font-size="34" font-weight="700" text-anchor="middle" fill="#FFFFFF">
+    <text x="220" y="450">Strontium</text><text x="470" y="400">Barium</text><text x="730" y="460">Sodium</text><text x="980" y="400">Copper</text>
+  </g>
+  <g font-size="24" text-anchor="middle" fill="#CBD5E1">
+    <text x="220" y="488">red</text><text x="470" y="438">green</text><text x="730" y="498">yellow-orange</text><text x="980" y="438">blue-green</text>
+  </g>
+  <text x="600" y="620" text-anchor="middle" font-size="30" font-weight="700" fill="#FFFFFF">Each metal gives out its own colour when its electrons fall back</text>
+</svg>

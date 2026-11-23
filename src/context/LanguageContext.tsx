@@ -272,6 +272,14 @@ export interface Translations {
     call: string;
     footerLine: string;
     resources: string;
+    notesNav: string;
+    articlesNav: string;
+    learnLabel: string;
+    learnTitle: string;
+    learnSub: string;
+    notesForClass: string;
+    allNotes: string;
+    allArticles: string;
   };
   // Class pages
   classes: {
@@ -558,7 +566,15 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       whatsapp: 'WhatsApp',
       call: 'Call',
       footerLine: 'Chemistry, understood.',
-      resources: 'Resources'
+      resources: 'Resources',
+      notesNav: 'Concept notes',
+      articlesNav: 'Articles',
+      learnLabel: 'Read & learn',
+      learnTitle: 'Chemistry around you',
+      learnSub: 'Short illustrated articles and simple chapter notes that make concepts click.',
+      notesForClass: 'Concept notes for this class',
+      allNotes: 'All concept notes',
+      allArticles: 'All articles'
     },
     classes: {
       navLabel: 'Classes',
@@ -842,7 +858,15 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       whatsapp: 'व्हाट्सऐप',
       call: 'कॉल करें',
       footerLine: 'केमिस्ट्री, समझ के साथ।',
-      resources: 'अध्ययन सामग्री'
+      resources: 'अध्ययन सामग्री',
+      notesNav: 'आसान नोट्स',
+      articlesNav: 'लेख',
+      learnLabel: 'पढ़ें और सीखें',
+      learnTitle: 'हमारे आसपास की केमिस्ट्री',
+      learnSub: 'चित्रों वाले छोटे लेख और आसान अध्याय नोट्स, जिनसे कॉन्सेप्ट जल्दी समझ आएँ।',
+      notesForClass: 'इस कक्षा के आसान नोट्स',
+      allNotes: 'सभी नोट्स',
+      allArticles: 'सभी लेख'
     },
     classes: {
       navLabel: 'कक्षाएँ',
@@ -1126,7 +1150,15 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       whatsapp: 'WhatsApp',
       call: 'Call karein',
       footerLine: 'Chemistry, samajh ke saath.',
-      resources: 'Resources'
+      resources: 'Resources',
+      notesNav: 'Concept notes',
+      articlesNav: 'Articles',
+      learnLabel: 'Padhein aur seekhein',
+      learnTitle: 'Aas-paas ki Chemistry',
+      learnSub: 'Chitron wale chhote articles aur aasaan chapter notes, jinse concepts jaldi samajh aayein.',
+      notesForClass: 'Is class ke concept notes',
+      allNotes: 'Saare notes',
+      allArticles: 'Saare articles'
     },
     classes: {
       navLabel: 'Classes',
