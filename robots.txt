@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /ajay-choudhary-chemistry/admin
+
+Sitemap: https://pankaj2816.github.io/ajay-choudhary-chemistry/sitemap.xml

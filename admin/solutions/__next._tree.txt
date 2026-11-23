@@ -1,4 +1,4 @@
-:HL["/ajay-choudhary-chemistry/_next/static/chunks/00pkokfpbr2c7.css","style"]
+:HL["/ajay-choudhary-chemistry/_next/static/chunks/1mdc61yvv-3hw.css","style"]
 :HL["/ajay-choudhary-chemistry/_next/static/media/e92fa6abd9c612ef-s.p.2oqonvbxcl6a7.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/ajay-choudhary-chemistry/_next/static/media/f06bf9da926bae75-s.p.2874ccu1_u7jf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"admin","param":null,"prefetchHints":4192,"slots":{"children":{"name":"solutions","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"qdmBEJRyvOViY4Mz19AQX"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"admin","param":null,"prefetchHints":4192,"slots":{"children":{"name":"solutions","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"mfM1kpjtWMv0gWDKWwKU-"}
