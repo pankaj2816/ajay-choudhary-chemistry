@@ -10,6 +10,7 @@ import { useToast } from '@/context/ToastContext';
 import { getQuestionPapers, getSolutions } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
+import { term, duration as dur, formatDate } from '@/lib/terms';
 import {
   PageHeader,
   SearchField,
@@ -22,7 +23,7 @@ import {
 } from '@/components/ui/Editorial';
 
 function QuestionPapersContent() {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
   const { showToast } = useToast();
   const searchParams = useSearchParams();
   const tax = initialDatabase.taxonomies;
@@ -52,7 +53,7 @@ function QuestionPapersContent() {
         const matchSubject = subject === 'All' || p.subject.toLowerCase() === subject.toLowerCase();
         const matchClass = cls === 'All' || p.className === cls || p.className === 'All Classes';
         const matchType = testType === 'All' || p.testType === testType;
-        const matchQuery = !q || [p.title, p.chapter, p.description].some((f) => (f || '').toLowerCase().includes(q));
+        const matchQuery = !q || [p.title, p.titleHi, p.chapter, p.description, p.descriptionHi].some((f) => (f || '').toLowerCase().includes(q));
         return matchSubject && matchClass && matchType && matchQuery;
       })
       .sort((a, b) => b.uploadDate.localeCompare(a.uploadDate));
@@ -69,7 +70,7 @@ function QuestionPapersContent() {
   };
 
   const download = (p: QuestionPaper) => {
-    showToast(`Downloading: ${p.title}`, 'info');
+    showToast(`${L('Downloading', 'डाउनलोड हो रहा है')}: ${p.title}`, 'info');
     triggerDownload(p.fileUrl, p.fileName || `${p.title.replace(/\s+/g, '_')}.pdf`);
   };
 
@@ -84,20 +85,20 @@ function QuestionPapersContent() {
           </div>
           <div className="lg:col-span-3">
             <SelectField
-              label="Subject"
+              label={L('Subject', 'विषय')}
               value={subject}
               onChange={setSubject}
-              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: s }))]}
+              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: term(s, isHi) }))]}
             />
           </div>
           <div className="lg:col-span-3">
             <SelectField
-              label="Class"
+              label={L('Class', 'कक्षा')}
               value={cls}
               onChange={setCls}
               options={[
                 { value: 'All', label: t.pages.allClasses },
-                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: c })),
+                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: term(c, isHi) })),
               ]}
             />
           </div>
@@ -105,15 +106,15 @@ function QuestionPapersContent() {
 
         <div className="mt-6">
           <ChipGroup
-            label="Test type"
+            label={L('Test type', 'टेस्ट का प्रकार')}
             value={testType}
             onChange={setTestType}
-            options={[{ value: 'All', label: t.pages.allTypes }, ...tax.testTypes.map((x) => ({ value: x, label: x }))]}
+            options={[{ value: 'All', label: t.pages.allTypes }, ...tax.testTypes.map((x) => ({ value: x, label: term(x, isHi) }))]}
           />
         </div>
 
         <div className="mt-12 flex items-baseline justify-between border-b border-ink pb-4">
-          <ResultCount shown={filtered.length} total={papers.length} noun="papers" />
+          <ResultCount shown={filtered.length} total={papers.length} noun={L('papers', 'प्रश्न पत्र')} />
         </div>
 
         {filtered.length === 0 ? (
@@ -131,22 +132,23 @@ function QuestionPapersContent() {
                     <span className="font-display text-3xl md:text-4xl leading-none text-ink" style={{ fontVariationSettings: '"opsz" 96' }}>
                       {p.totalMarks}
                     </span>
-                    <span className="text-xs text-muted self-end md:self-auto">marks · {p.duration}</span>
+                    <span className="text-xs text-muted self-end md:self-auto">{L('marks', 'अंक')} · {dur(p.duration, isHi)}</span>
                   </div>
                   <div className="min-w-0">
                     <Meta>
-                      {p.testType} · {p.subject} · {p.className}
+                      {term(p.testType, isHi)} · {term(p.subject, isHi)} · {term(p.className, isHi)}
                     </Meta>
                     <h2
                       className="mt-2 font-display !text-[1.5rem] sm:!text-[1.7rem] leading-snug text-ink"
                       style={{ fontVariationSettings: '"opsz" 48' }}
                     >
-                      {p.title}
+                      {pick(p.title, p.titleHi)}
                     </h2>
-                    {p.chapter && <p className="mt-1 text-sm text-accent">{p.chapter}</p>}
-                    <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{p.description}</p>
+                    {p.chapter && <p className="mt-1 text-sm text-accent">{term(p.chapter, isHi)}</p>}
+                    <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{pick(p.description, p.descriptionHi)}</p>
                     <Meta className="mt-3">
-                      {sol ? 'Worked solution available' : 'Solution coming soon'} · Added {p.uploadDate}
+                      {sol ? L('Worked solution available', 'हल उपलब्ध है') : L('Solution coming soon', 'हल जल्द आएगा')} · {L('Added', 'जोड़ा गया')}{' '}
+                      {formatDate(p.uploadDate, isHi)}
                     </Meta>
                   </div>
                   <div className="flex flex-wrap md:flex-col md:items-end gap-x-6 gap-y-3 md:pt-6">
@@ -173,14 +175,14 @@ function QuestionPapersContent() {
         <PDFPreviewModal
           isOpen
           onClose={() => setPaper(null)}
-          title={paper.title}
+          title={pick(paper.title, paper.titleHi)}
           subject={paper.subject}
           chapter={paper.chapter}
           className={paper.className}
           testType={paper.testType}
           totalMarks={paper.totalMarks}
           duration={paper.duration}
-          description={paper.description}
+          description={pick(paper.description, paper.descriptionHi)}
           fileUrl={paper.fileUrl}
           fileName={paper.fileName}
           fileSize={paper.fileSize}
@@ -193,12 +195,12 @@ function QuestionPapersContent() {
         <PDFPreviewModal
           isOpen
           onClose={() => setSolution(null)}
-          title={solution.title}
+          title={pick(solution.title, solution.titleHi)}
           subject={solution.subject}
           chapter={solution.chapter}
           className={solution.className}
-          testType="Verified Solution"
-          description={solution.description}
+          testType={L('Verified solution', 'जाँचा हुआ हल')}
+          description={pick(solution.description, solution.descriptionHi)}
           fileUrl={solution.solutionPdfUrl}
           fileName={solution.solutionPdfName}
           fileSize={solution.solutionPdfSize}

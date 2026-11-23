@@ -11,7 +11,7 @@ import { CLASS_LIST, belongsToClass } from '@/lib/classes';
 import SectionLabel from './SectionLabel';
 
 export default function ClassesSection() {
-  const { t } = useLanguage();
+  const { t, L } = useLanguage();
   const [materials, setMaterials] = useState<StudyMaterial[]>(initialDatabase.studyMaterials);
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
@@ -37,7 +37,7 @@ export default function ClassesSection() {
           <p className="lg:col-span-5 text-[1.02rem] leading-relaxed text-muted">{t.classes.chooseSub}</p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="mt-12 grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           {CLASS_LIST.map((c) => {
             const count =
               materials.filter((m) => belongsToClass(m.className, c.level)).length +
@@ -57,7 +57,7 @@ export default function ClassesSection() {
                 </div>
                 <div className="mt-6 flex items-end justify-between gap-3">
                   <div>
-                    <p className="text-sm font-medium text-ink">{c.course}</p>
+                    <p className="text-sm font-medium text-ink">{L(c.course, c.courseHi)}</p>
                     <p className="text-xs text-muted mt-0.5">
                       {count} {count === 1 ? t.classes.item : t.classes.items}
                     </p>
@@ -69,6 +69,21 @@ export default function ClassesSection() {
               </Link>
             );
           })}
+          <Link
+            href="/practicals"
+            className="group relative col-span-2 lg:col-span-1 flex flex-col justify-between min-h-[150px] sm:min-h-[220px] p-5 sm:p-7 bg-accent border border-accent rounded-xl text-white hover:bg-accent-deep hover:shadow-xl transition-all"
+          >
+            <div>
+              <p className="text-sm text-white/80">{L('Lab work', 'लैब कार्य')}</p>
+              <p className="mt-1 text-3xl sm:text-4xl font-semibold leading-tight tracking-tight">{L('Practicals', 'प्रैक्टिकल')}</p>
+            </div>
+            <div className="mt-6 flex items-end justify-between gap-3">
+              <p className="text-sm text-white/90">{L('Experiment videos with explanations', 'समझाने के साथ प्रयोगों के वीडियो')}</p>
+              <span className="w-9 h-9 shrink-0 rounded-full bg-white text-accent flex items-center justify-center">
+                <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </Link>
         </div>
       </div>
     </section>

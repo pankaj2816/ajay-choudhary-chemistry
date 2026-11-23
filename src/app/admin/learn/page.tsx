@@ -1,5 +1,6 @@
 'use client';
 
+import HindiFields from '@/components/admin/HindiFields';
 import React, { useEffect, useState } from 'react';
 import { BookOpenText, Newspaper, Plus, Pencil, Trash2, Eye, EyeOff, Loader2, X, ExternalLink } from 'lucide-react';
 import { Article, ConceptNote } from '@/lib/types';
@@ -350,6 +351,17 @@ export default function AdminLearnPage() {
               )}
               <p className="mt-1.5 text-xs text-slate-500">{HELP}</p>
             </div>
+
+            <HindiFields
+              fields={[
+                { key: 'titleHi', label: 'Title in Hindi' },
+                { key: 'summaryHi', label: 'One-line summary in Hindi' },
+                ...(article ? [{ key: 'imageAltHi', label: 'Picture description in Hindi' }] : []),
+                { key: 'bodyHi', label: 'Full text in Hindi (same format as above)', rows: 14 },
+              ]}
+              values={(editing || {}) as unknown as Record<string, string | undefined>}
+              onChange={(k, v) => (note ? setNote({ ...note, [k]: v }) : setArticle({ ...article, [k]: v }))}
+            />
 
             <label className="flex items-center gap-2 text-sm text-slate-300">
               <input

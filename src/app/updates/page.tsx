@@ -9,6 +9,7 @@ import { useToast } from '@/context/ToastContext';
 import { getUpdates } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
+import { term, duration as dur, formatDate } from '@/lib/terms';
 import NoticeModal from '@/components/ui/NoticeModal';
 import {
   PageHeader,
@@ -19,17 +20,18 @@ import {
   EmptyState,
 } from '@/components/ui/Editorial';
 
-function splitDate(iso: string) {
+function splitDate(iso: string, isHi: boolean) {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return { day: '', rest: iso };
+  const loc = isHi ? 'hi-IN' : 'en-IN';
   return {
-    day: d.toLocaleDateString('en-IN', { day: '2-digit' }),
-    rest: d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+    day: d.toLocaleDateString(loc, { day: '2-digit' }),
+    rest: d.toLocaleDateString(loc, { month: 'short', year: 'numeric' }),
   };
 }
 
 function UpdatesContent() {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
   const { showToast } = useToast();
   const searchParams = useSearchParams();
   const tax = initialDatabase.taxonomies;
@@ -80,7 +82,7 @@ function UpdatesContent() {
 
   const download = (n: NoticeUpdate) => {
     if (!n.attachmentUrl) return;
-    showToast(`Downloading: ${n.attachmentName || 'attachment'}`, 'info');
+    showToast(`${L('Downloading', 'डाउनलोड हो रहा है')}: ${n.attachmentName || L('attachment', 'फ़ाइल')}`, 'info');
     triggerDownload(n.attachmentUrl, n.attachmentName);
   };
 
@@ -95,12 +97,12 @@ function UpdatesContent() {
           </div>
           <div className="lg:col-span-4">
             <SelectField
-              label="Class"
+              label={L('Class', 'कक्षा')}
               value={cls}
               onChange={setCls}
               options={[
                 { value: 'All', label: t.notices.allBatches },
-                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: c })),
+                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: term(c, isHi) })),
               ]}
             />
           </div>
@@ -108,26 +110,26 @@ function UpdatesContent() {
 
         <div className="mt-6">
           <ChipGroup
-            label="Category"
+            label={L('Category', 'श्रेणी')}
             value={category}
             onChange={setCategory}
             options={[
               { value: 'All', label: t.pages.allCategories },
-              ...tax.noticeCategories.map((c) => ({ value: c, label: c })),
+              ...tax.noticeCategories.map((c) => ({ value: c, label: term(c, isHi) })),
             ]}
           />
         </div>
 
         <div className="mt-12 flex items-baseline justify-between border-b border-ink pb-4">
-          <ResultCount shown={filtered.length} total={total} noun="notices" />
+          <ResultCount shown={filtered.length} total={total} noun={L('notices', 'सूचनाएँ')} />
         </div>
 
         {filtered.length === 0 ? (
-          <EmptyState title="No notices found." body={t.pages.noResultsSub} onReset={reset} />
+          <EmptyState title={L('No notices found.', 'कोई सूचना नहीं मिली।')} body={t.pages.noResultsSub} onReset={reset} />
         ) : (
           <ul>
             {filtered.map((n) => {
-              const { day, rest } = splitDate(n.date);
+              const { day, rest } = splitDate(n.date, isHi);
               return (
                 <li key={n.id} className="border-b border-line">
                   <button
@@ -144,21 +146,21 @@ function UpdatesContent() {
                     <div className="min-w-0">
                       <p className="eyebrow !text-[0.68rem] text-accent">
                         {n.isPinned ? `${t.notices.pinned} · ` : ''}
-                        {n.category}
+                        {term(n.category, isHi)}
                       </p>
                       <h2
                         className="mt-2 font-display !text-[1.45rem] sm:!text-[1.7rem] leading-snug text-ink group-hover:text-accent transition-colors"
                         style={{ fontVariationSettings: '"opsz" 48' }}
                       >
-                        {n.title}
+                        {pick(n.title, n.titleHi)}
                       </h2>
-                      <p className="mt-2 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{n.description}</p>
+                      <p className="mt-2 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{pick(n.description, n.descriptionHi)}</p>
                       <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.78rem] text-muted">
-                        {n.targetClass && <span>{n.targetClass}</span>}
+                        {n.targetClass && <span>{term(n.targetClass, isHi)}</span>}
                         {n.attachmentUrl && (
                           <span className="inline-flex items-center gap-1 min-w-0 max-w-full">
                             <Paperclip className="w-3.5 h-3.5 shrink-0" />
-                            <span className="truncate">{n.attachmentName || 'Attachment'}</span>
+                            <span className="truncate">{n.attachmentName || L('Attachment', 'संलग्न फ़ाइल')}</span>
                           </span>
                         )}
                       </p>

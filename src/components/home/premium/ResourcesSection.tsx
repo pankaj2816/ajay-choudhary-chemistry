@@ -11,9 +11,10 @@ import { getQuestionPapers, getSolutions, getStudyMaterials } from '@/lib/dataSe
 import { triggerDownload } from '@/lib/downloadUtils';
 import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import SectionLabel from './SectionLabel';
+import { term, duration as dur } from '@/lib/terms';
 
 export default function ResourcesSection() {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
   const { showToast } = useToast();
   const [materials, setMaterials] = useState<StudyMaterial[]>(initialDatabase.studyMaterials);
   const [papers, setPapers] = useState<QuestionPaper[]>(initialDatabase.questionPapers);
@@ -37,7 +38,7 @@ export default function ResourcesSection() {
   const topPapers = papers.slice(0, 4);
 
   const download = (m: StudyMaterial) => {
-    showToast(`Downloading: ${m.title}`, 'info');
+    showToast(`${L('Downloading', 'डाउनलोड हो रहा है')}: ${pick(m.title, m.titleHi)}`, 'info');
     triggerDownload(m.fileUrl, m.fileName);
   };
 
@@ -66,16 +67,16 @@ export default function ResourcesSection() {
                 <li key={m.id} className="group py-6 border-b border-line flex items-start justify-between gap-6">
                   <div className="min-w-0">
                     <p className="text-[0.78rem] text-muted">
-                      {m.subject} · {m.className} · {m.resourceType}
+                      {term(m.subject, isHi)} · {term(m.className, isHi)} · {term(m.resourceType, isHi)}
                     </p>
                     <p className="mt-1.5 font-display text-xl leading-snug text-ink" style={{ fontVariationSettings: '"opsz" 36' }}>
-                      {m.title}
+                      {pick(m.title, m.titleHi)}
                     </p>
                   </div>
                   <button
                     onClick={() => download(m)}
                     className="shrink-0 mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-accent transition-colors"
-                    aria-label={`${t.home.download} ${m.title}`}
+                    aria-label={`${t.home.download} ${pick(m.title, m.titleHi)}`}
                   >
                     <ArrowDown className="w-4 h-4" />
                     <span className="hidden sm:inline">{t.home.download}</span>
@@ -98,10 +99,10 @@ export default function ResourcesSection() {
                 <li key={p.id} className="py-6 border-b border-line flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-6">
                   <div className="min-w-0">
                     <p className="text-[0.78rem] text-muted">
-                      {p.testType} · {p.totalMarks} marks · {p.duration}
+                      {term(p.testType, isHi)} · {p.totalMarks} {L('marks', 'अंक')} · {dur(p.duration, isHi)}
                     </p>
                     <p className="mt-1.5 font-display text-xl leading-snug text-ink" style={{ fontVariationSettings: '"opsz" 36' }}>
-                      {p.title}
+                      {pick(p.title, p.titleHi)}
                     </p>
                   </div>
                   <div className="shrink-0 sm:mt-1 flex items-center gap-5 text-sm font-medium">
@@ -129,14 +130,14 @@ export default function ResourcesSection() {
         <PDFPreviewModal
           isOpen
           onClose={() => setPaper(null)}
-          title={paper.title}
+          title={pick(paper.title, paper.titleHi)}
           subject={paper.subject}
           chapter={paper.chapter}
           className={paper.className}
           testType={paper.testType}
           totalMarks={paper.totalMarks}
           duration={paper.duration}
-          description={paper.description}
+          description={pick(paper.description, paper.descriptionHi)}
           fileUrl={paper.fileUrl}
           fileName={paper.fileName}
           fileSize={paper.fileSize}
@@ -149,12 +150,12 @@ export default function ResourcesSection() {
         <PDFPreviewModal
           isOpen
           onClose={() => setSolution(null)}
-          title={solution.title}
+          title={pick(solution.title, solution.titleHi)}
           subject={solution.subject}
           chapter={solution.chapter}
           className={solution.className}
           testType="Verified Solution"
-          description={solution.description}
+          description={pick(solution.description, solution.descriptionHi)}
           fileUrl={solution.solutionPdfUrl}
           fileName={solution.solutionPdfName}
           fileSize={solution.solutionPdfSize}

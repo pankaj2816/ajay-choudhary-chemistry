@@ -2,235 +2,244 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import {
-  Atom,
-  ArrowRight,
-  BookOpen,
-  CheckCircle
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { term } from '@/lib/terms';
+import SectionLabel from '@/components/home/premium/SectionLabel';
+
+type Bi = { en: string; hi: string };
 
 interface ChemistryTopic {
   id: string;
-  title: string;
+  title: Bi;
   category: string;
-  summary: string;
+  summary: Bi;
   reaction: string;
-  mechanismSteps: string[];
-  keyTakeaway: string;
-  examRelevance: string;
+  steps: Bi[];
+  rule: Bi;
+  exam: Bi;
 }
 
 const TOPICS: ChemistryTopic[] = [
   {
     id: 'markovnikov',
-    title: 'Markovnikov Addition to Alkenes',
+    title: { en: 'Markovnikov addition to alkenes', hi: 'ऐल्कीन पर मार्कोवनिकॉफ़ योगज' },
     category: 'Organic Chemistry',
-    summary: 'Electrophilic addition of protic acids (HX) to asymmetrical alkenes proceeds via the most stable carbocation intermediate.',
-    reaction: 'CH₃–CH=CH₂ + HBr ⟶ CH₃–CH(Br)–CH₃ (Major Product)',
-    mechanismSteps: [
-      'Step 1: Double bond π-electrons attack H⁺ electrophile.',
-      'Step 2: Generation of more stable 2° carbocation (hyperconjugation + inductive stabilization).',
-      'Step 3: Rapid nucleophilic attack by Br⁻ giving 2-Bromopropane.'
+    summary: {
+      en: 'Adding HX to an unsymmetrical alkene goes through the most stable carbocation.',
+      hi: 'असममित ऐल्कीन पर HX का योग सबसे स्थायी कार्बधनायन से होकर होता है।',
+    },
+    reaction: 'CH₃–CH=CH₂ + HBr ⟶ CH₃–CH(Br)–CH₃ (major product)',
+    steps: [
+      { en: 'The π electrons of the double bond attack H⁺.', hi: 'द्वि-आबंध के π इलेक्ट्रॉन H⁺ पर आक्रमण करते हैं।' },
+      {
+        en: 'The more stable 2° carbocation forms (hyperconjugation and +I effect).',
+        hi: 'अधिक स्थायी 2° कार्बधनायन बनता है (अतिसंयुग्मन और +I प्रभाव)।',
+      },
+      { en: 'Br⁻ attacks quickly and gives 2-bromopropane.', hi: 'Br⁻ जल्दी आक्रमण करके 2-ब्रोमोप्रोपेन बनाता है।' },
     ],
-    keyTakeaway: 'The hydrogen atom bonds to the carbon with the greatest number of hydrogen atoms.',
-    examRelevance: 'Guaranteed 2-3 marks in CBSE Boards & NEET Organic questions.'
+    rule: {
+      en: 'Hydrogen goes to the carbon that already has more hydrogens.',
+      hi: 'हाइड्रोजन उस कार्बन पर जाता है जिस पर पहले से अधिक हाइड्रोजन हैं।',
+    },
+    exam: {
+      en: 'Asked often in CBSE boards and NEET organic questions.',
+      hi: 'CBSE बोर्ड और NEET के कार्बनिक प्रश्नों में अक्सर पूछा जाता है।',
+    },
   },
   {
     id: 'aldol',
-    title: 'Aldol Condensation & Enolate Chemistry',
+    title: { en: 'Aldol condensation', hi: 'ऐल्डोल संघनन' },
     category: 'Organic Chemistry',
-    summary: 'Carbonyl compounds possessing at least one α-hydrogen undergo base-catalyzed dimerisation to form β-hydroxy aldehydes/ketones.',
-    reaction: '2 CH₃–CHO ⟶ [CH₃–CH(OH)–CH₂–CHO] ⟶ CH₃–CH=CH–CHO + H₂O',
-    mechanismSteps: [
-      'Step 1: OH⁻ base abstracts acidic α-hydrogen forming resonance-stabilized enolate.',
-      'Step 2: Nucleophilic attack of enolate on carbonyl carbon of second aldehyde.',
-      'Step 3: Protonation yields aldol; subsequent heating eliminates H₂O to form conjugated α,β-unsaturated aldehyde.'
+    summary: {
+      en: 'Aldehydes and ketones with at least one α-hydrogen join in dilute base to give β-hydroxy compounds.',
+      hi: 'कम से कम एक α-हाइड्रोजन वाले ऐल्डिहाइड और कीटोन तनु क्षार में जुड़कर β-हाइड्रॉक्सी यौगिक बनाते हैं।',
+    },
+    reaction: '2 CH₃–CHO ⟶ CH₃–CH(OH)–CH₂–CHO ⟶ CH₃–CH=CH–CHO + H₂O',
+    steps: [
+      { en: 'OH⁻ removes an α-hydrogen and forms an enolate.', hi: 'OH⁻ एक α-हाइड्रोजन हटाकर ईनोलेट बनाता है।' },
+      {
+        en: 'The enolate attacks the carbonyl carbon of a second molecule.',
+        hi: 'ईनोलेट दूसरे अणु के कार्बोनिल कार्बन पर आक्रमण करता है।',
+      },
+      {
+        en: 'Protonation gives the aldol; heating removes water to give an α,β-unsaturated aldehyde.',
+        hi: 'प्रोटॉनीकरण से ऐल्डोल बनता है; गर्म करने पर जल निकलकर α,β-असंतृप्त ऐल्डिहाइड बनता है।',
+      },
     ],
-    keyTakeaway: 'Requires acidic α-hydrogen. Carbonyls with no α-hydrogen (e.g. HCHO, C₆H₅CHO) undergo Cannizzaro reaction instead.',
-    examRelevance: 'Frequently asked named reaction and multi-step synthesis conversion in JEE & Boards.'
+    rule: {
+      en: 'Needs an α-hydrogen. Without one (HCHO, C₆H₅CHO), Cannizzaro reaction happens instead.',
+      hi: 'α-हाइड्रोजन ज़रूरी है। उसके बिना (HCHO, C₆H₅CHO) कैनिज़ारो अभिक्रिया होती है।',
+    },
+    exam: {
+      en: 'A favourite named reaction in conversions for JEE and boards.',
+      hi: 'JEE और बोर्ड में रूपांतरण वाले प्रश्नों की पसंदीदा नामित अभिक्रिया।',
+    },
   },
   {
     id: 'cft',
-    title: 'Crystal Field Theory: Octahedral Splitting (Δₒ)',
+    title: { en: 'Crystal field splitting (octahedral)', hi: 'क्रिस्टल क्षेत्र विपाटन (अष्टफलकीय)' },
     category: 'Inorganic Chemistry',
-    summary: 'In an octahedral ligand field, the five degenerate d-orbitals split into lower energy t₂g and higher energy eg sets due to electrostatic repulsion.',
-    reaction: 'd-orbitals ⟶ 3 t₂g orbitals (dxy, dyz, dxz) [−0.4 Δₒ] + 2 eg orbitals (dx²−y², dz²) [+0.6 Δₒ]',
-    mechanismSteps: [
-      'Ligands approach central metal along the Cartesian axes (x, y, z).',
-      'Axial orbitals (dx²−y², dz²) experience maximum direct repulsion and rise in energy (eg).',
-      'Non-axial orbitals (dxy, dyz, dxz) lie between axes, experience less repulsion, and drop in energy (t₂g).'
+    summary: {
+      en: 'In an octahedral field the five d-orbitals split into a lower t₂g set and a higher e_g set.',
+      hi: 'अष्टफलकीय क्षेत्र में पाँच d-कक्षक निचले t₂g और ऊपरी e_g समूह में बँट जाते हैं।',
+    },
+    reaction: 'd ⟶ t₂g (dxy, dyz, dxz) [−0.4 Δₒ] + e_g (dx²−y², dz²) [+0.6 Δₒ]',
+    steps: [
+      { en: 'Ligands approach the metal along the x, y and z axes.', hi: 'लिगैंड x, y और z अक्षों के साथ धातु के पास आते हैं।' },
+      {
+        en: 'Orbitals on the axes (dx²−y², dz²) are repelled most and rise in energy.',
+        hi: 'अक्षों पर स्थित कक्षक (dx²−y², dz²) सबसे अधिक प्रतिकर्षित होकर ऊपर जाते हैं।',
+      },
+      {
+        en: 'Orbitals between the axes (dxy, dyz, dxz) are repelled less and drop in energy.',
+        hi: 'अक्षों के बीच के कक्षक (dxy, dyz, dxz) कम प्रतिकर्षित होकर नीचे आते हैं।',
+      },
     ],
-    keyTakeaway: 'Strong field ligands (CN⁻, CO) give large Δₒ (low spin, pairing), while weak field ligands (F⁻, Cl⁻, H₂O) give small Δₒ (high spin).',
-    examRelevance: 'Core concept for calculating magnetic moments (BM) and predicting complex geometry.'
+    rule: {
+      en: 'Strong-field ligands (CN⁻, CO) give a large Δₒ and low spin; weak-field ligands (F⁻, Cl⁻, H₂O) give high spin.',
+      hi: 'प्रबल क्षेत्र लिगैंड (CN⁻, CO) बड़ा Δₒ और निम्न चक्रण देते हैं; दुर्बल क्षेत्र लिगैंड (F⁻, Cl⁻, H₂O) उच्च चक्रण।',
+    },
+    exam: {
+      en: 'Needed for magnetic moment and colour questions.',
+      hi: 'चुंबकीय आघूर्ण और रंग वाले प्रश्नों के लिए ज़रूरी।',
+    },
   },
   {
     id: 'salt-analysis',
-    title: 'Brown Ring Test for Nitrate Radical (NO₃⁻)',
+    title: { en: 'Brown ring test for nitrate', hi: 'नाइट्रेट का भूरा वलय परीक्षण' },
     category: 'Practical Chemistry',
-    summary: 'Sensitive laboratory confirmatory test for nitrate anion in qualitative salt analysis.',
-    reaction: 'NO₃⁻ + 3Fe²⁺ + 4H⁺ ⟶ NO + 3Fe³⁺ + 2H₂O\n[Fe(H₂O)₆]²⁺ + NO ⟶ [Fe(H₂O)₅(NO)]²⁺ (Brown Ring) + H₂O',
-    mechanismSteps: [
-      'Step 1: Freshly prepared FeSO₄ solution is mixed with nitrate salt solution.',
-      'Step 2: Concentrated H₂SO₄ is slowly trickled along inner test-tube wall.',
-      'Step 3: A dense brown ring forms at junction of two liquid layers due to pentaaquanitrosyliron(II) complex.'
+    summary: {
+      en: 'The confirmatory test for the nitrate ion in salt analysis.',
+      hi: 'लवण विश्लेषण में नाइट्रेट आयन का पुष्टि परीक्षण।',
+    },
+    reaction: 'NO₃⁻ + 3Fe²⁺ + 4H⁺ ⟶ NO + 3Fe³⁺ + 2H₂O\n[Fe(H₂O)₆]²⁺ + NO ⟶ [Fe(H₂O)₅(NO)]²⁺ (brown ring) + H₂O',
+    steps: [
+      { en: 'Mix freshly made FeSO₄ solution with the salt solution.', hi: 'ताज़ा बना FeSO₄ विलयन लवण के विलयन में मिलाएँ।' },
+      {
+        en: 'Pour concentrated H₂SO₄ slowly down the side of the test tube.',
+        hi: 'सांद्र H₂SO₄ को परखनली की दीवार के सहारे धीरे-धीरे डालें।',
+      },
+      {
+        en: 'A brown ring appears where the two layers meet.',
+        hi: 'जहाँ दोनों परतें मिलती हैं, वहाँ भूरा वलय दिखता है।',
+      },
     ],
-    keyTakeaway: 'Test tube must not be shaken; always use freshly prepared FeSO₄ to prevent oxidation into Fe³⁺.',
-    examRelevance: 'Essential viva-voce question and practical examination mandatory experiment.'
+    rule: {
+      en: 'Do not shake the tube, and always use fresh FeSO₄.',
+      hi: 'परखनली को न हिलाएँ, और हमेशा ताज़ा FeSO₄ लें।',
+    },
+    exam: {
+      en: 'A common viva question and a must-do practical.',
+      hi: 'वाइवा का आम प्रश्न और ज़रूरी प्रैक्टिकल।',
+    },
   },
   {
     id: 'nernst',
-    title: 'Nernst Equation & Electrochemical Cells',
+    title: { en: 'Nernst equation', hi: 'नेर्न्स्ट समीकरण' },
     category: 'Physical Chemistry',
-    summary: 'Calculates the non-standard electromotive force (E_cell) of galvanic cells under varying ionic concentrations and temperatures.',
-    reaction: 'E_cell = E°_cell − (0.0591 / n) × log₁₀([Anode Oxidation Products] / [Cathode Reduction Reactants]) at 298 K',
-    mechanismSteps: [
-      'Step 1: Write individual oxidation half-cell (anode) and reduction half-cell (cathode) reactions.',
-      'Step 2: Determine standard cell potential: E°_cell = E°_cathode − E°_anode.',
-      'Step 3: Find the number of transferred electrons (n) to balance charge in net redox equation.',
-      'Step 4: Substitute reaction quotient (Q) into Nernst logarithmic term to calculate instantaneous voltage.'
+    summary: {
+      en: 'Gives the cell voltage when concentrations are not standard.',
+      hi: 'सांद्रता मानक न हो तब सेल का विभव बताता है।',
+    },
+    reaction: 'E_cell = E°_cell − (0.059 / n) log Q   (298 K)',
+    steps: [
+      { en: 'Write the anode and cathode half-reactions.', hi: 'ऐनोड और कैथोड की अर्ध-अभिक्रियाएँ लिखें।' },
+      { en: 'Find E°_cell = E°_cathode − E°_anode.', hi: 'E°_cell = E°_cathode − E°_anode निकालें।' },
+      { en: 'Count the electrons transferred (n).', hi: 'स्थानांतरित इलेक्ट्रॉन (n) गिनें।' },
+      { en: 'Put Q into the equation to get E_cell.', hi: 'Q को समीकरण में रखकर E_cell निकालें।' },
     ],
-    keyTakeaway: 'At equilibrium, E_cell = 0 and Q = K_c, enabling direct calculation of the equilibrium constant from E°_cell.',
-    examRelevance: 'Standard 5-mark numerical problem in Class 12 Boards and high-frequency question in JEE Main / NEET.'
-  }
+    rule: {
+      en: 'At equilibrium E_cell = 0 and Q = K, so K can be found from E°_cell.',
+      hi: 'साम्य पर E_cell = 0 और Q = K, इसलिए E°_cell से K निकाला जा सकता है।',
+    },
+    exam: {
+      en: 'A standard numerical in Class 12 boards, JEE Main and NEET.',
+      hi: 'कक्षा 12 बोर्ड, JEE मेन और NEET का मानक संख्यात्मक प्रश्न।',
+    },
+  },
 ];
 
-import { useLanguage } from '@/context/LanguageContext';
-
 export default function InteractiveChemistryTool() {
-  const { t } = useLanguage();
-  const [activeTopic, setActiveTopic] = useState<ChemistryTopic>(TOPICS[0]);
+  const { t, L, isHi } = useLanguage();
+  const [activeId, setActiveId] = useState(TOPICS[0].id);
+  const active = TOPICS.find((x) => x.id === activeId) || TOPICS[0];
+  const b = (x: Bi) => L(x.en, x.hi);
 
   return (
-    <section className="py-16 sm:py-24 bg-slate-900 text-white border-b border-slate-800 relative overflow-hidden">
-      {/* Subtle Glow */}
-      <div className="absolute top-1/2 left-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
-            <Atom className="w-3.5 h-3.5" />
-            {t.interactive.badge}
-          </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
-            {t.interactive.title}
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-            {t.interactive.subtitle}
-          </p>
+    <section className="bg-paper-deep border-t border-line">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
+        <div className="max-w-3xl">
+          <SectionLabel index="" label={t.interactive.badge} />
+          <h2 className="mt-6 text-4xl sm:text-5xl leading-[1.08] text-ink">{t.interactive.title}</h2>
+          <p className="mt-5 text-[1.02rem] leading-relaxed text-muted">{t.interactive.subtitle}</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Navigation Buttons (4 cols) */}
-          <div className="lg:col-span-4 space-y-3">
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-4 space-y-2" role="tablist" aria-label={L('Topics', 'विषय')}>
             {TOPICS.map((topic) => {
-              const isSelected = activeTopic.id === topic.id;
+              const on = topic.id === active.id;
               return (
                 <button
                   key={topic.id}
-                  onClick={() => setActiveTopic(topic)}
-                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between group ${
-                    isSelected
-                      ? 'bg-gradient-to-r from-cyan-950 to-slate-900 border-cyan-500 text-white shadow-lg shadow-cyan-950/50'
-                      : 'bg-slate-950/70 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-900 hover:border-slate-700'
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => setActiveId(topic.id)}
+                  className={`w-full text-left px-5 py-4 rounded-xl border transition-colors flex items-center justify-between gap-4 ${
+                    on ? 'bg-white border-accent' : 'bg-transparent border-line hover:border-ink/40'
                   }`}
                 >
-                  <div className="space-y-1">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider block ${
-                      isSelected ? 'text-cyan-400' : 'text-slate-500'
-                    }`}>
-                      {topic.category}
-                    </span>
-                    <h4 className="text-sm font-bold text-slate-100 group-hover:text-white">
-                      {topic.title}
-                    </h4>
-                  </div>
-                  <ArrowRight className={`w-4 h-4 shrink-0 transition-transform ${
-                    isSelected ? 'text-cyan-400 translate-x-1' : 'text-slate-600 group-hover:text-slate-400'
-                  }`} />
+                  <span>
+                    <span className={`block text-xs font-medium ${on ? 'text-accent' : 'text-muted'}`}>{term(topic.category, isHi)}</span>
+                    <span className="mt-0.5 block font-semibold text-ink">{b(topic.title)}</span>
+                  </span>
+                  <ArrowRight className={`w-4 h-4 shrink-0 ${on ? 'text-accent' : 'text-muted'}`} />
                 </button>
               );
             })}
-
-            <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 text-xs text-slate-400 space-y-2 mt-4">
-              <div className="flex items-center gap-1.5 font-bold text-slate-200">
-                <BookOpen className="w-4 h-4 text-cyan-400" />
-                Want complete chapter roadmaps?
-              </div>
-              <p>Explore over 40+ curated chemistry formula sheets and reaction maps in the study materials vault.</p>
-              <Link
-                href="/study-materials"
-                className="inline-flex items-center gap-1 text-cyan-400 hover:underline font-bold text-xs mt-1"
-              >
-                Access Complete Vault <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
+            <Link
+              href="/notes"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-deep"
+            >
+              {L('Read full chapter notes', 'पूरे अध्याय के नोट्स पढ़ें')}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
-          {/* Right Concept Breakdown Canvas (8 cols) */}
-          <div className="lg:col-span-8 bg-slate-950 rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div className="lg:col-span-8 bg-white border border-line rounded-2xl p-6 sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-accent">{term(active.category, isHi)}</p>
+            <h3 className="mt-2 text-2xl sm:text-3xl font-semibold text-ink">{b(active.title)}</h3>
+            <p className="mt-3 text-muted leading-relaxed">{b(active.summary)}</p>
+
+            <div className="mt-6 p-4 rounded-xl bg-paper-deep border border-line overflow-x-auto">
+              <p className="text-xs font-medium text-muted">{L('Equation', 'समीकरण')}</p>
+              <p className="mt-1 font-mono text-sm sm:text-[0.95rem] text-ink whitespace-pre-wrap">{active.reaction}</p>
+            </div>
+
+            <h4 className="mt-7 text-sm font-semibold text-ink">{L('Step by step', 'चरण दर चरण')}</h4>
+            <ol className="mt-3 space-y-2">
+              {active.steps.map((s, i) => (
+                <li key={i} className="flex items-start gap-3 text-[0.95rem] text-ink">
+                  <span className="w-6 h-6 shrink-0 rounded-full bg-accent-soft text-accent text-xs font-semibold flex items-center justify-center mt-0.5">
+                    {i + 1}
+                  </span>
+                  <span className="leading-relaxed">{b(s)}</span>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-line">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded-full border border-cyan-500/30">
-                  {activeTopic.category}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-white mt-2">
-                  {activeTopic.title}
-                </h3>
+                <p className="text-sm font-semibold text-ink">{L('Rule to remember', 'याद रखने का नियम')}</p>
+                <p className="mt-1 text-[0.92rem] leading-relaxed text-muted">{b(active.rule)}</p>
               </div>
-
-              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 bg-emerald-950/40 px-3 py-1 rounded-full border border-emerald-500/20">
-                <CheckCircle className="w-3.5 h-3.5" /> High-Yield Topic
-              </span>
-            </div>
-
-            {/* Reaction Formula Display */}
-            <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 mb-6 font-mono text-xs sm:text-sm text-cyan-300 overflow-x-auto shadow-inner">
-              <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-widest block mb-1">
-                Chemical Equation / Profile:
-              </span>
-              <div className="whitespace-pre-wrap">{activeTopic.reaction}</div>
-            </div>
-
-            {/* Mechanism Steps */}
-            <div className="space-y-3 mb-6">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                Step-by-Step Conceptual Mechanism:
-              </h4>
-              <div className="space-y-2">
-                {activeTopic.mechanismSteps.map((step, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-xs sm:text-sm text-slate-300 flex items-start gap-2.5"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                      {idx + 1}
-                    </span>
-                    <span className="leading-relaxed">{step}</span>
-                  </div>
-                ))}
+              <div>
+                <p className="text-sm font-semibold text-ink">{L('Why it matters in exams', 'परीक्षा में महत्व')}</p>
+                <p className="mt-1 text-[0.92rem] leading-relaxed text-muted">{b(active.exam)}</p>
               </div>
             </div>
-
-            {/* Key takeaway & Exam Relevance Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-800">
-              <div className="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-xs">
-                <strong className="text-cyan-300 block mb-1">Key Conceptual Rule:</strong>
-                <p className="text-slate-300 leading-relaxed">{activeTopic.keyTakeaway}</p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-indigo-950/30 border border-indigo-500/20 text-xs">
-                <strong className="text-indigo-300 block mb-1">Board & Competitive Exam Focus:</strong>
-                <p className="text-slate-300 leading-relaxed">{activeTopic.examRelevance}</p>
-              </div>
-            </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );

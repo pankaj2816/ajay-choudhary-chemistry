@@ -13,6 +13,7 @@ import {
   Testimonial,
   ConceptNote,
   Article,
+  Practical,
 } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import {
@@ -426,6 +427,35 @@ export async function saveArticle(item: Partial<Article>): Promise<Article> {
 export async function deleteArticle(id: string): Promise<boolean> {
   await commit(`delete article ${id}`, (db) => {
     db.articles = (db.articles || []).filter((a) => a.id !== id);
+  });
+  return true;
+}
+
+// ---------------- Practicals (YouTube videos) ----------------
+export async function getPracticals(): Promise<Practical[]> {
+  return (await load()).practicals || [];
+}
+
+export async function savePractical(item: Partial<Practical>): Promise<Practical> {
+  const defaults: Practical = {
+    id: item.id || `prac-${Date.now()}`,
+    title: item.title || 'Practical video',
+    description: item.description || '',
+    youtubeUrl: item.youtubeUrl || '',
+    className: item.className || 'All Classes',
+    topic: item.topic || '',
+    date: item.date || today(),
+    isPublished: item.isPublished !== undefined ? item.isPublished : true,
+  };
+  return commit(`${item.id ? 'update' : 'add'} practical video "${item.title ?? 'video'}"`, (db) => {
+    db.practicals = db.practicals || [];
+    return upsert(db.practicals, mergeRecord(db.practicals, item, defaults));
+  });
+}
+
+export async function deletePractical(id: string): Promise<boolean> {
+  await commit(`delete practical video ${id}`, (db) => {
+    db.practicals = (db.practicals || []).filter((p) => p.id !== id);
   });
   return true;
 }

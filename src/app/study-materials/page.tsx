@@ -10,6 +10,7 @@ import { useToast } from '@/context/ToastContext';
 import { getStudyMaterials } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
+import { term, duration as dur, formatDate } from '@/lib/terms';
 import {
   PageHeader,
   SearchField,
@@ -22,7 +23,7 @@ import {
 } from '@/components/ui/Editorial';
 
 function StudyMaterialsContent() {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
   const { showToast } = useToast();
   const searchParams = useSearchParams();
   const tax = initialDatabase.taxonomies;
@@ -50,7 +51,7 @@ function StudyMaterialsContent() {
         const matchClass = cls === 'All' || m.className === cls || m.className === 'All Classes';
         const matchType = type === 'All' || m.resourceType === type;
         const matchQuery =
-          !q || [m.title, m.chapter, m.description].some((f) => (f || '').toLowerCase().includes(q));
+          !q || [m.title, m.titleHi, m.chapter, m.description, m.descriptionHi].some((f) => (f || '').toLowerCase().includes(q));
         return matchSubject && matchClass && matchType && matchQuery;
       })
       .sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured) || b.uploadDate.localeCompare(a.uploadDate));
@@ -64,7 +65,7 @@ function StudyMaterialsContent() {
   };
 
   const download = (m: StudyMaterial) => {
-    showToast(`Downloading: ${m.title}`, 'info');
+    showToast(`${L('Downloading', 'डाउनलोड हो रहा है')}: ${m.title}`, 'info');
     triggerDownload(m.fileUrl, m.fileName || `${m.title.replace(/\s+/g, '_')}.pdf`);
   };
 
@@ -80,20 +81,20 @@ function StudyMaterialsContent() {
           </div>
           <div className="lg:col-span-3">
             <SelectField
-              label="Subject"
+              label={L('Subject', 'विषय')}
               value={subject}
               onChange={setSubject}
-              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: s }))]}
+              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: term(s, isHi) }))]}
             />
           </div>
           <div className="lg:col-span-3">
             <SelectField
-              label="Class"
+              label={L('Class', 'कक्षा')}
               value={cls}
               onChange={setCls}
               options={[
                 { value: 'All', label: t.pages.allClasses },
-                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: c })),
+                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: term(c, isHi) })),
               ]}
             />
           </div>
@@ -101,15 +102,15 @@ function StudyMaterialsContent() {
 
         <div className="mt-6">
           <ChipGroup
-            label="Resource type"
+            label={L('Resource type', 'संसाधन का प्रकार')}
             value={type}
             onChange={setType}
-            options={[{ value: 'All', label: t.pages.allTypes }, ...tax.resourceTypes.map((r) => ({ value: r, label: r }))]}
+            options={[{ value: 'All', label: t.pages.allTypes }, ...tax.resourceTypes.map((r) => ({ value: r, label: term(r, isHi) }))]}
           />
         </div>
 
         <div className="mt-12 flex items-baseline justify-between border-b border-ink pb-4">
-          <ResultCount shown={filtered.length} total={materials.length} noun="resources" />
+          <ResultCount shown={filtered.length} total={materials.length} noun={L('resources', 'संसाधन')} />
         </div>
 
         {/* List */}
@@ -124,19 +125,19 @@ function StudyMaterialsContent() {
               >
                 <div className="min-w-0">
                   <Meta>
-                    {m.subject} · {m.className} · {m.resourceType}
-                    {m.isFeatured && <span className="ml-2 text-accent">· Featured</span>}
+                    {term(m.subject, isHi)} · {term(m.className, isHi)} · {term(m.resourceType, isHi)}
+                    {m.isFeatured && <span className="ml-2 text-accent">· {L('Featured', 'विशेष')}</span>}
                   </Meta>
                   <h2
                     className="mt-2 font-display !text-[1.5rem] sm:!text-[1.7rem] leading-snug text-ink"
                     style={{ fontVariationSettings: '"opsz" 48' }}
                   >
-                    {m.title}
+                    {pick(m.title, m.titleHi)}
                   </h2>
-                  {m.chapter && <p className="mt-1 text-sm text-accent">{m.chapter}</p>}
-                  <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{m.description}</p>
+                  {m.chapter && <p className="mt-1 text-sm text-accent">{term(m.chapter, isHi)}</p>}
+                  <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{pick(m.description, m.descriptionHi)}</p>
                   <Meta className="mt-3">
-                    {m.fileSize && `${m.fileSize} · `}Added {m.uploadDate}
+                    {m.fileSize && `${m.fileSize} · `}{L('Added', 'जोड़ा गया')} {formatDate(m.uploadDate, isHi)}
                   </Meta>
                 </div>
                 <div className="flex md:flex-col md:items-end gap-6 md:gap-3 md:pt-6">
@@ -157,12 +158,12 @@ function StudyMaterialsContent() {
         <PDFPreviewModal
           isOpen
           onClose={() => setPreview(null)}
-          title={preview.title}
+          title={pick(preview.title, preview.titleHi)}
           subject={preview.subject}
           chapter={preview.chapter}
           className={preview.className}
           testType={preview.resourceType}
-          description={preview.description}
+          description={pick(preview.description, preview.descriptionHi)}
           fileUrl={preview.fileUrl}
           fileName={preview.fileName}
           fileSize={preview.fileSize}

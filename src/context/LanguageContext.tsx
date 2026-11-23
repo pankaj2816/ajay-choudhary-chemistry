@@ -437,9 +437,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       readBio: 'Read Full Faculty Bio'
     },
     interactive: {
-      badge: 'Interactive Learning Tool',
-      title: 'Interactive Concept Explorer & Reaction Visualizer',
-      subtitle: 'Select any key topic below to explore the chemical equation, step-by-step mechanism, and exam scoring insights.',
+      badge: 'Concept explorer',
+      title: 'Five key ideas, step by step',
+      subtitle: 'Pick a topic to see the equation, the steps and why it matters in exams.',
       selectTopic: 'Select Chemistry Topic:',
       reactionBoxTitle: 'Chemical Equation & Reaction Pathway',
       mechanismTitle: 'Step-by-Step Reaction Mechanism:',
@@ -631,11 +631,11 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       titleLine1: 'केमिस्ट्री को आसान बनाएं',
       titleHighlight: 'अजय चौधरी सर के साथ',
       description: 'ऑर्गेनिक रिएक्शन मैकेनिज्म, इनऑर्गेनिक केमिस्ट्री और लैब प्रैक्टिकल को आसान लॉजिक के साथ समझें। कक्षा 11वीं, 12वीं, बोर्ड्स, JEE और NEET के लिए सरल मार्गदर्शन।',
-      organicTitle: 'ऑर्गेनिक केमिस्ट्री',
+      organicTitle: 'कार्बनिक रसायन',
       organicSub: 'रिएक्शन मैकेनिज्म और रोडमैप',
-      inorganicTitle: 'इनऑर्गेनिक केमिस्ट्री',
+      inorganicTitle: 'अकार्बनिक रसायन',
       inorganicSub: 'बॉन्डिंग और आवर्त सारणी',
-      practicalTitle: 'प्रैक्टिकल केमिस्ट्री',
+      practicalTitle: 'प्रायोगिक रसायन',
       practicalSub: 'साल्ट एनालिसिस और वाइवा तैयारी',
       ctaMaterials: 'नोट्स डाउनलोड करें',
       ctaNotices: 'नोटिस बोर्ड देखें',
@@ -663,11 +663,11 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       badge: 'केमिस्ट्री के तीन मुख्य भाग',
       title: 'रसायन विज्ञान के तीनों भागों में पूरी पकड़',
       subtitle: 'विद्यार्थियों को रिएक्शन आसानी से समझाने, आवर्त सारणी याद रखने और लैब प्रैक्टिकल में पूरे अंक दिलाने के लिए तैयार किया गया कोर्स।',
-      organicName: 'ऑर्गेनिक केमिस्ट्री (Organic Chemistry)',
+      organicName: 'कार्बनिक रसायन',
       organicDesc: 'इलेक्ट्रॉन शिफ्ट, रेजोनेंस, नाम वाली रिएक्शन और स्टेप-बाय-स्टेप केमिकल कन्वर्जन।',
-      inorganicName: 'इनऑर्गेनिक केमिस्ट्री (Inorganic Chemistry)',
+      inorganicName: 'अकार्बनिक रसायन',
       inorganicDesc: 'क्रिस्टल फील्ड थ्योरी, कोऑर्डिनेशन कम्पाउंड, आवर्त सारणी के नियम और केमिकल बॉन्डिंग।',
-      practicalName: 'प्रैक्टिकल केमिस्ट्री (Practical Chemistry)',
+      practicalName: 'प्रायोगिक रसायन',
       practicalDesc: 'साल्ट एनालिसिस (धनायन/ऋणायन टेस्ट), टाइट्रेशन और बोर्ड प्रैक्टिकल वाइवा की पूरी तैयारी।',
       exploreBtn: 'सिलेबस और नोट्स देखें'
     },
@@ -729,9 +729,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       readBio: 'पूरा परिचय पढ़ें'
     },
     interactive: {
-      badge: 'इंटरैक्टिव टूल',
-      title: 'इंटरैक्टिव कॉन्सेप्ट और रिएक्शन टूल',
-      subtitle: 'किसी भी टॉपिक को चुनें और उसके स्टेप्स, रिएक्शन और परीक्षा के महत्वपूर्ण बिंदु आसानी से देखें।',
+      badge: 'कॉन्सेप्ट एक्सप्लोरर',
+      title: 'पाँच मुख्य विचार, चरण दर चरण',
+      subtitle: 'कोई विषय चुनें और उसका समीकरण, चरण और परीक्षा में उसका महत्व देखें।',
       selectTopic: 'केमिस्ट्री टॉपिक चुनें:',
       reactionBoxTitle: 'रासायनिक समीकरण और रिएक्शन पाथ',
       mechanismTitle: 'स्टेप-बाय-स्टेप रिएक्शन मैकेनिज्म:',
@@ -1196,6 +1196,12 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: Translations;
+  /** True when Hindi is selected */
+  isHi: boolean;
+  /** Inline bilingual string: L('Download', 'डाउनलोड') */
+  L: (en: string, hi: string) => string;
+  /** Content field with optional Hindi version: pick(item.title, item.titleHi) */
+  pick: (en: string | undefined, hi?: string | undefined) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -1204,23 +1210,41 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('ajay_chem_lang') as Language;
-    if (saved && (saved === 'en' || saved === 'hi' || saved === 'hinglish')) {
-      // Loads data once on mount; state updates are intentional.
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem('ajay_chem_lang');
+    } catch {
+      // storage unavailable
+    }
+    // The site offers English and Hindi; an older "Hinglish" choice falls back to English.
+    if (saved === 'hi') {
+      // Restores the saved choice after mount; state update is intentional.
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLanguageState(saved);
+      setLanguageState('hi');
     }
   }, []);
 
+  useEffect(() => {
+    document.documentElement.lang = language === 'hi' ? 'hi' : 'en';
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem('ajay_chem_lang', lang);
+    const next: Language = lang === 'hi' ? 'hi' : 'en';
+    setLanguageState(next);
+    try {
+      localStorage.setItem('ajay_chem_lang', next);
+    } catch {
+      // storage unavailable
+    }
   };
 
+  const isHi = language === 'hi';
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
+  const L = (en: string, hi: string) => (isHi ? hi : en);
+  const pick = (en: string | undefined, hi?: string | undefined) => (isHi && hi && hi.trim() ? hi : en || '');
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, isHi, L, pick }}>
       {children}
     </LanguageContext.Provider>
   );

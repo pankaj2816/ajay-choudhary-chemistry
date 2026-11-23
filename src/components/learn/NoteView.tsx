@@ -8,8 +8,10 @@ import { initialDatabase } from '@/data/initialData';
 import { getConceptNotes } from '@/lib/dataService';
 import Markdown, { extractHeadings } from '@/components/ui/Markdown';
 import { Eyebrow } from '@/components/ui/Editorial';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function NoteView({ slug }: { slug: string }) {
+  const { L, pick } = useLanguage();
   const [notes, setNotes] = useState<ConceptNote[]>(initialDatabase.conceptNotes || []);
 
   useEffect(() => {
@@ -22,8 +24,8 @@ export default function NoteView({ slug }: { slug: string }) {
   if (!note) {
     return (
       <div className="max-w-3xl mx-auto px-5 py-32 text-center">
-        <p className="text-2xl font-semibold text-ink">This note is not available.</p>
-        <Link href="/notes" className="mt-6 inline-block link-underline text-ink">See all notes</Link>
+        <p className="text-2xl font-semibold text-ink">{L('This note is not available.', 'यह नोट उपलब्ध नहीं है।')}</p>
+        <Link href="/notes" className="mt-6 inline-block link-underline text-ink">{L('See all notes', 'सभी नोट्स देखें')}</Link>
       </div>
     );
   }
@@ -32,24 +34,28 @@ export default function NoteView({ slug }: { slug: string }) {
   const idx = siblings.findIndex((n) => n.id === note.id);
   const prev = idx > 0 ? siblings[idx - 1] : null;
   const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
-  const headings = extractHeadings(note.body);
-  const minutes = Math.max(2, Math.round(note.body.split(/\s+/).length / 200));
+  const body = pick(note.body, note.bodyHi);
+  const headings = extractHeadings(body);
+  const minutes = Math.max(2, Math.round(body.split(/\s+/).length / 200));
+  const cls = L('Class', 'कक्षा');
 
   return (
     <article>
       <header className="bg-paper-deep border-b border-line">
         <div className="max-w-5xl mx-auto px-5 sm:px-8 pt-10 sm:pt-14 pb-10">
-          <nav className="text-sm text-muted flex flex-wrap items-center gap-2" aria-label="Breadcrumb">
-            <Link href="/notes" className="hover:text-accent">Concept notes</Link>
+          <nav className="text-sm text-muted flex flex-wrap items-center gap-2" aria-label={L('Breadcrumb', 'पथ')}>
+            <Link href="/notes" className="hover:text-accent">{L('Concept notes', 'कॉन्सेप्ट नोट्स')}</Link>
             <span>/</span>
-            <Link href={`/notes?class=${note.grade}`} className="hover:text-accent">Class {note.grade}</Link>
+            <Link href={`/notes?class=${note.grade}`} className="hover:text-accent">{cls} {note.grade}</Link>
           </nav>
           <div className="mt-8">
-            <Eyebrow>Class {note.grade} · Chapter {note.chapter}</Eyebrow>
-            <h1 className="mt-5 text-4xl sm:text-5xl leading-[1.08] text-ink">{note.title}</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{note.summary}</p>
+            <Eyebrow>
+              {cls} {note.grade} · {L('Chapter', 'अध्याय')} {note.chapter}
+            </Eyebrow>
+            <h1 className="mt-5 text-4xl sm:text-5xl leading-[1.08] text-ink">{pick(note.title, note.titleHi)}</h1>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{pick(note.summary, note.summaryHi)}</p>
             <p className="mt-5 inline-flex items-center gap-1.5 text-sm text-muted">
-              <Clock className="w-4 h-4" /> {minutes} min read
+              <Clock className="w-4 h-4" /> {minutes} {L('min read', 'मिनट में पढ़ें')}
             </p>
           </div>
         </div>
@@ -57,27 +63,32 @@ export default function NoteView({ slug }: { slug: string }) {
 
       <div className="max-w-5xl mx-auto px-5 sm:px-8 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_220px] gap-12">
         <div className="min-w-0">
-          <Markdown source={note.body} />
+          <Markdown source={body} />
 
           <div className="mt-16 pt-8 border-t border-line grid grid-cols-1 sm:grid-cols-2 gap-4">
             {prev ? (
               <Link href={`/notes/${prev.slug}`} className="group p-5 rounded-xl border border-line hover:border-accent transition-colors">
-                <span className="inline-flex items-center gap-1.5 text-sm text-muted"><ArrowLeft className="w-4 h-4" /> Previous chapter</span>
-                <span className="mt-1 block font-semibold text-ink group-hover:text-accent">{prev.title}</span>
+                <span className="inline-flex items-center gap-1.5 text-sm text-muted"><ArrowLeft className="w-4 h-4" /> {L('Previous chapter', 'पिछला अध्याय')}</span>
+                <span className="mt-1 block font-semibold text-ink group-hover:text-accent">{pick(prev.title, prev.titleHi)}</span>
               </Link>
             ) : <span />}
             {next && (
               <Link href={`/notes/${next.slug}`} className="group p-5 rounded-xl border border-line hover:border-accent transition-colors sm:text-right">
-                <span className="inline-flex items-center gap-1.5 text-sm text-muted">Next chapter <ArrowRight className="w-4 h-4" /></span>
-                <span className="mt-1 block font-semibold text-ink group-hover:text-accent">{next.title}</span>
+                <span className="inline-flex items-center gap-1.5 text-sm text-muted">{L('Next chapter', 'अगला अध्याय')} <ArrowRight className="w-4 h-4" /></span>
+                <span className="mt-1 block font-semibold text-ink group-hover:text-accent">{pick(next.title, next.titleHi)}</span>
               </Link>
             )}
           </div>
 
           <div className="mt-8 p-6 rounded-xl bg-accent-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <p className="text-ink">Practice this chapter with papers and solutions for Class {note.grade}.</p>
+            <p className="text-ink">
+              {L(
+                `Practice this chapter with papers and solutions for Class ${note.grade}.`,
+                `कक्षा ${note.grade} के प्रश्न पत्र और हल से इस अध्याय का अभ्यास करें।`,
+              )}
+            </p>
             <Link href={`/class-${note.grade}`} className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-deep">
-              Open Class {note.grade} page <ArrowRight className="w-4 h-4" />
+              {L(`Open Class ${note.grade} page`, `कक्षा ${note.grade} का पेज खोलें`)} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -85,7 +96,7 @@ export default function NoteView({ slug }: { slug: string }) {
         {headings.length > 2 && (
           <aside className="hidden lg:block">
             <div className="sticky top-28">
-              <p className="eyebrow !text-[0.66rem] text-muted">On this page</p>
+              <p className="eyebrow !text-[0.66rem] text-muted">{L('On this page', 'इस पेज पर')}</p>
               <ul className="mt-4 space-y-2.5 border-l border-line">
                 {headings.map((h) => (
                   <li key={h.id}>

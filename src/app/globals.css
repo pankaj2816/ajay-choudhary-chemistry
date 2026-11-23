@@ -230,3 +230,9 @@ label.border-b + *,
 input.border, select.border, textarea.border {
   border-radius: 0.5rem;
 }
+
+/* Devanagari letters join up; wide tracking pulls them apart */
+html[lang='hi'] .eyebrow,
+html[lang='hi'] [class*='tracking-'] {
+  letter-spacing: 0 !important;
+}

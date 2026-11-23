@@ -3,9 +3,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, Eye, Link2, MessageCircle, Paperclip } from 'lucide-react';
-import { ConceptNote, NoticeUpdate, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
+import { ConceptNote, NoticeUpdate, Practical, QuestionPaper, SolutionItem, StudyMaterial } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
-import { getConceptNotes, getQuestionPapers, getSolutions, getStudyMaterials, getUpdates } from '@/lib/dataService';
+import { getConceptNotes, getPracticals, getQuestionPapers, getSolutions, getStudyMaterials, getUpdates } from '@/lib/dataService';
+import { term, duration as dur, formatDate } from '@/lib/terms';
+import PracticalCard from '@/components/practicals/PracticalCard';
+import VideoModal from '@/components/practicals/VideoModal';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/context/ToastContext';
@@ -14,7 +17,7 @@ import PDFPreviewModal from '@/components/ui/PDFPreviewModal';
 import NoticeModal from '@/components/ui/NoticeModal';
 import { Eyebrow, Meta, SearchField, TextAction } from '@/components/ui/Editorial';
 
-type Tab = 'all' | 'notes' | 'papers' | 'solutions' | 'notices';
+type Tab = 'all' | 'notes' | 'papers' | 'videos' | 'solutions' | 'notices';
 
 const matches = (q: string, ...fields: (string | undefined)[]) =>
   !q || fields.some((f) => (f || '').toLowerCase().includes(q));
@@ -29,7 +32,7 @@ function SectionHead({ title, count }: { title: string; count: number }) {
 }
 
 export default function ClassPage({ grade }: { grade: Grade }) {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
   const c = t.classes;
   const { showToast } = useToast();
   const info = getClassInfo(grade);
@@ -39,6 +42,8 @@ export default function ClassPage({ grade }: { grade: Grade }) {
   const [solutions, setSolutions] = useState<SolutionItem[]>(initialDatabase.solutions);
   const [notices, setNotices] = useState<NoticeUpdate[]>(initialDatabase.updates);
   const [conceptNotes, setConceptNotes] = useState<ConceptNote[]>(initialDatabase.conceptNotes || []);
+  const [practicals, setPracticals] = useState<Practical[]>(initialDatabase.practicals || []);
+  const [video, setVideo] = useState<Practical | null>(null);
   const [tab, setTab] = useState<Tab>('all');
   const [query, setQuery] = useState('');
   const [preview, setPreview] = useState<StudyMaterial | null>(null);
@@ -58,6 +63,9 @@ export default function ClassPage({ grade }: { grade: Grade }) {
     getConceptNotes()
       .then((n) => Array.isArray(n) && setConceptNotes(n))
       .catch(() => {});
+    getPracticals()
+      .then((v) => Array.isArray(v) && setPracticals(v))
+      .catch(() => {});
   }, []);
 
   const classNotes = conceptNotes.filter((n) => n.grade === grade && n.isPublished).sort((a, b) => a.chapter - b.chapter);
@@ -67,28 +75,34 @@ export default function ClassPage({ grade }: { grade: Grade }) {
   const lists = useMemo(() => {
     const mats = materials
       .filter((m) => belongsToClass(m.className, info.level))
-      .filter((m) => matches(q, m.title, m.chapter, m.description, m.resourceType))
+      .filter((m) => matches(q, m.title, m.titleHi, m.chapter, m.description, m.descriptionHi, m.resourceType))
       .sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured) || b.uploadDate.localeCompare(a.uploadDate));
     const pps = papers
       .filter((p) => belongsToClass(p.className, info.level))
-      .filter((p) => matches(q, p.title, p.chapter, p.description, p.testType))
+      .filter((p) => matches(q, p.title, p.titleHi, p.chapter, p.description, p.descriptionHi, p.testType))
       .sort((a, b) => b.uploadDate.localeCompare(a.uploadDate));
     const sols = solutions
       .filter((s) => belongsToClass(s.className, info.level))
-      .filter((s) => matches(q, s.title, s.chapter, s.description, s.questionPaperTitle))
+      .filter((s) => matches(q, s.title, s.titleHi, s.chapter, s.description, s.descriptionHi, s.questionPaperTitle))
       .sort((a, b) => b.uploadDate.localeCompare(a.uploadDate));
     const nts = notices
       .filter((n) => n.isPublished !== false && belongsToClass(n.targetClass, info.level))
-      .filter((n) => matches(q, n.title, n.description, n.content))
+      .filter((n) => matches(q, n.title, n.titleHi, n.description, n.descriptionHi, n.content))
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.date.localeCompare(a.date));
-    return { mats, pps, sols, nts };
-  }, [materials, papers, solutions, notices, q, info.level]);
+    const vids = practicals
+      .filter((v) => v.isPublished && belongsToClass(v.className, info.level))
+      .filter((v) => matches(q, v.title, v.titleHi, v.description, v.descriptionHi, v.topic))
+      .sort((a, b) => b.date.localeCompare(a.date));
+    return { mats, pps, sols, nts, vids };
+  }, [materials, papers, solutions, notices, practicals, q, info.level]);
 
-  const total = lists.mats.length + lists.pps.length + lists.sols.length + lists.nts.length;
+  const total = lists.mats.length + lists.pps.length + lists.sols.length + lists.nts.length + lists.vids.length;
 
   const share = () => {
     const url = window.location.href.split('?')[0].split('#')[0];
-    const text = `${info.level} Chemistry: notes, papers and notices from Ajay Choudhary Sir\n${url}`;
+    const text = isHi
+      ? `${term(info.level, true)} रसायन विज्ञान: अजय चौधरी सर के नोट्स, प्रश्न पत्र और सूचनाएँ\n${url}`
+      : `${info.level} Chemistry: notes, papers and notices from Ajay Choudhary Sir\n${url}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
   };
 
@@ -103,7 +117,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
   };
 
   const download = (url: string, name: string, title: string) => {
-    showToast(`Downloading: ${title}`, 'info');
+    showToast(`${L('Downloading', 'डाउनलोड हो रहा है')}: ${title}`, 'info');
     triggerDownload(url, name);
   };
 
@@ -115,7 +129,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
       <p className="mt-2 text-muted max-w-md mx-auto">{q ? t.pages.noResultsSub : c.emptyBody}</p>
       {q && (
         <button onClick={() => setQuery('')} className="mt-6 link-underline text-sm font-medium text-ink">
-          Clear search
+          {L('Clear search', 'खोज साफ़ करें')}
         </button>
       )}
     </div>
@@ -126,7 +140,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
       {/* Header */}
       <header className="bg-paper border-b border-line">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-10 sm:pb-12">
-          <nav aria-label="Classes" className="grid grid-cols-4 sm:flex sm:flex-wrap gap-2">
+          <nav aria-label={L('Classes', 'कक्षाएँ')} className="grid grid-cols-4 sm:flex sm:flex-wrap gap-2">
             {CLASS_LIST.map((k) => (
               <Link
                 key={k.grade}
@@ -136,14 +150,14 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                   k.grade === grade ? 'bg-accent border-accent text-white' : 'border-line text-ink hover:border-accent hover:text-accent'
                 }`}
               >
-                {k.level}
+                {term(k.level, isHi)}
               </Link>
             ))}
           </nav>
 
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-8">
-              <Eyebrow>{info.course}</Eyebrow>
+              <Eyebrow>{L(info.course, info.courseHi)}</Eyebrow>
               <h1 className="mt-5 text-5xl sm:text-7xl leading-none text-ink">
                 {c.pageLabel} <span className="text-accent">{grade}</span>
               </h1>
@@ -185,8 +199,8 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                     href={`/notes/${n.slug}`}
                     className="block w-60 h-full p-4 rounded-xl bg-white border border-line hover:border-accent transition-colors"
                   >
-                    <span className="text-xs text-accent font-medium">Chapter {n.chapter}</span>
-                    <span className="mt-1 block text-[0.95rem] font-semibold leading-snug text-ink">{n.title}</span>
+                    <span className="text-xs text-accent font-medium">{L('Chapter', 'अध्याय')} {n.chapter}</span>
+                    <span className="mt-1 block text-[0.95rem] font-semibold leading-snug text-ink">{pick(n.title, n.titleHi)}</span>
                   </Link>
                 </li>
               ))}
@@ -216,7 +230,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                       active ? 'bg-ink border-ink text-white' : 'border-line text-ink hover:border-ink/50'
                     }`}
                   >
-                    {ch.name}
+                    {L(ch.name, ch.nameHi)}
                   </button>
                 );
               })}
@@ -226,12 +240,13 @@ export default function ClassPage({ grade }: { grade: Grade }) {
 
         {/* Tabs */}
         <div className="mt-10 sticky top-[72px] z-20 -mx-5 sm:-mx-8 px-5 sm:px-8 py-3 bg-paper/95 backdrop-blur border-y border-line overflow-x-auto">
-          <div role="group" aria-label="Show" className="flex gap-2 w-max">
+          <div role="group" aria-label={L('Show', 'दिखाएँ')} className="flex gap-2 w-max">
             {(
               [
                 ['all', `${c.everything} (${total})`],
                 ['notes', `${c.notesBooks} (${lists.mats.length})`],
                 ['papers', `${c.papers} (${lists.pps.length})`],
+                ['videos', `${L('Practical videos', 'प्रैक्टिकल वीडियो')} (${lists.vids.length})`],
                 ['solutions', `${c.solutions} (${lists.sols.length})`],
                 ['notices', `${c.notices} (${lists.nts.length})`],
               ] as [Tab, string][]
@@ -263,17 +278,17 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                   <li key={m.id} className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-x-10 gap-y-3 py-6 border-b border-line">
                     <div className="min-w-0">
                       <Meta>
-                        {m.resourceType}
-                        {m.chapter ? ` · ${m.chapter}` : ''}
+                        {term(m.resourceType, isHi)}
+                        {m.chapter ? ` · ${term(m.chapter, isHi)}` : ''}
                       </Meta>
-                      <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink">{m.title}</h3>
-                      {m.description && <p className="mt-1.5 text-[0.95rem] text-muted line-clamp-2">{m.description}</p>}
+                      <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink">{pick(m.title, m.titleHi)}</h3>
+                      {m.description && <p className="mt-1.5 text-[0.95rem] text-muted line-clamp-2">{pick(m.description, m.descriptionHi)}</p>}
                     </div>
                     <div className="flex md:flex-col md:items-end gap-6 md:gap-2 md:pt-5">
                       <TextAction onClick={() => setPreview(m)} tone="accent" icon={<Eye className="w-4 h-4" />}>
                         {c.open}
                       </TextAction>
-                      <TextAction onClick={() => download(m.fileUrl, m.fileName, m.title)} icon={<ArrowDown className="w-4 h-4" />}>
+                      <TextAction onClick={() => download(m.fileUrl, m.fileName, pick(m.title, m.titleHi))} icon={<ArrowDown className="w-4 h-4" />}>
                         {t.pages.downloadBtn}
                       </TextAction>
                     </div>
@@ -294,10 +309,10 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                     <li key={p.id} className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-x-10 gap-y-3 py-6 border-b border-line">
                       <div className="min-w-0">
                         <Meta>
-                          {p.testType} · {p.totalMarks} marks · {p.duration}
+                          {term(p.testType, isHi)} · {p.totalMarks} {L('marks', 'अंक')} · {dur(p.duration, isHi)}
                         </Meta>
-                        <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink">{p.title}</h3>
-                        {p.chapter && <p className="mt-1 text-sm text-muted">{p.chapter}</p>}
+                        <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink">{pick(p.title, p.titleHi)}</h3>
+                        {p.chapter && <p className="mt-1 text-sm text-muted">{term(p.chapter, isHi)}</p>}
                       </div>
                       <div className="flex flex-wrap md:flex-col md:items-end gap-x-6 gap-y-2 md:pt-5">
                         <TextAction onClick={() => setPaper(p)} tone="accent" icon={<Eye className="w-4 h-4" />}>
@@ -316,6 +331,25 @@ export default function ClassPage({ grade }: { grade: Grade }) {
             </>
           )}
 
+          {/* Practical videos */}
+          {show('videos') && lists.vids.length > 0 && (
+            <>
+              <SectionHead title={L('Practical videos', 'प्रैक्टिकल वीडियो')} count={lists.vids.length} />
+              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {lists.vids.map((v) => (
+                  <li key={v.id}>
+                    <PracticalCard item={v} onOpen={setVideo} />
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm">
+                <Link href="/practicals" className="font-medium text-accent hover:text-accent-deep">
+                  {L('All practical videos', 'सभी प्रैक्टिकल वीडियो')} →
+                </Link>
+              </p>
+            </>
+          )}
+
           {/* Solutions */}
           {show('solutions') && lists.sols.length > 0 && (
             <>
@@ -324,9 +358,13 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                 {lists.sols.map((s) => (
                   <li key={s.id} className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-x-10 gap-y-3 py-6 border-b border-line">
                     <div className="min-w-0">
-                      <Meta>{s.chapter || s.subject}</Meta>
-                      <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink">{s.title}</h3>
-                      {s.questionPaperTitle && <p className="mt-1 text-sm text-muted">For: {s.questionPaperTitle}</p>}
+                      <Meta>{term(s.chapter || s.subject, isHi)}</Meta>
+                      <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink">{pick(s.title, s.titleHi)}</h3>
+                      {s.questionPaperTitle && (
+                        <p className="mt-1 text-sm text-muted">
+                          {L('For', 'प्रश्न पत्र')}: {pick(s.questionPaperTitle, papers.find((p) => p.id === s.questionPaperId)?.titleHi)}
+                        </p>
+                      )}
                     </div>
                     <div className="flex md:flex-col md:items-end gap-6 md:pt-5">
                       <TextAction onClick={() => setSolution(s)} tone="accent" icon={<ArrowRight className="w-4 h-4" />}>
@@ -350,16 +388,16 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                       <div className="min-w-0">
                         <Meta>
                           {n.isPinned ? `${t.notices.pinned} · ` : ''}
-                          {n.category} · {n.date}
+                          {term(n.category, isHi)} · {formatDate(n.date, isHi)}
                         </Meta>
                         <h3 className="mt-1.5 text-lg sm:text-xl font-semibold leading-snug text-ink group-hover:text-accent transition-colors">
-                          {n.title}
+                          {pick(n.title, n.titleHi)}
                         </h3>
-                        <p className="mt-1.5 text-[0.95rem] text-muted line-clamp-2">{n.description}</p>
+                        <p className="mt-1.5 text-[0.95rem] text-muted line-clamp-2">{pick(n.description, n.descriptionHi)}</p>
                         {n.attachmentUrl && (
                           <p className="mt-2 inline-flex items-center gap-1 text-xs text-muted max-w-full">
                             <Paperclip className="w-3.5 h-3.5 shrink-0" />
-                            <span className="truncate">{n.attachmentName || 'Attachment'}</span>
+                            <span className="truncate">{n.attachmentName || L('Attachment', 'संलग्न फ़ाइल')}</span>
                           </p>
                         )}
                       </div>
@@ -375,6 +413,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
             total > 0 &&
             ((tab === 'notes' && !lists.mats.length) ||
               (tab === 'papers' && !lists.pps.length) ||
+              (tab === 'videos' && !lists.vids.length) ||
               (tab === 'solutions' && !lists.sols.length) ||
               (tab === 'notices' && !lists.nts.length)) && renderEmpty()}
         </div>
@@ -384,12 +423,12 @@ export default function ClassPage({ grade }: { grade: Grade }) {
         <PDFPreviewModal
           isOpen
           onClose={() => setPreview(null)}
-          title={preview.title}
+          title={pick(preview.title, preview.titleHi)}
           subject={preview.subject}
           chapter={preview.chapter}
           className={preview.className}
           testType={preview.resourceType}
-          description={preview.description}
+          description={pick(preview.description, preview.descriptionHi)}
           fileUrl={preview.fileUrl}
           fileName={preview.fileName}
           fileSize={preview.fileSize}
@@ -400,14 +439,14 @@ export default function ClassPage({ grade }: { grade: Grade }) {
         <PDFPreviewModal
           isOpen
           onClose={() => setPaper(null)}
-          title={paper.title}
+          title={pick(paper.title, paper.titleHi)}
           subject={paper.subject}
           chapter={paper.chapter}
           className={paper.className}
           testType={paper.testType}
           totalMarks={paper.totalMarks}
           duration={paper.duration}
-          description={paper.description}
+          description={pick(paper.description, paper.descriptionHi)}
           fileUrl={paper.fileUrl}
           fileName={paper.fileName}
           fileSize={paper.fileSize}
@@ -419,11 +458,11 @@ export default function ClassPage({ grade }: { grade: Grade }) {
         <PDFPreviewModal
           isOpen
           onClose={() => setSolution(null)}
-          title={solution.title}
+          title={pick(solution.title, solution.titleHi)}
           subject={solution.subject}
           chapter={solution.chapter}
           className={solution.className}
-          description={solution.description}
+          description={pick(solution.description, solution.descriptionHi)}
           fileUrl={solution.solutionPdfUrl}
           fileName={solution.solutionPdfName}
           fileSize={solution.solutionPdfSize}
@@ -434,11 +473,12 @@ export default function ClassPage({ grade }: { grade: Grade }) {
           verifiedBy={solution.verifiedBy}
         />
       )}
+      {video && <VideoModal item={video} onClose={() => setVideo(null)} />}
       {notice && (
         <NoticeModal
           notice={notice}
           onClose={() => setNotice(null)}
-          onDownload={(n) => n.attachmentUrl && download(n.attachmentUrl, n.attachmentName || 'attachment', n.title)}
+          onDownload={(n) => n.attachmentUrl && download(n.attachmentUrl, n.attachmentName || 'attachment', pick(n.title, n.titleHi))}
         />
       )}
     </>

@@ -1,12 +1,16 @@
+'use client';
+
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import ElementTile from '@/components/ui/ElementTile';
 
 export default function NotFound() {
+  const { L } = useLanguage();
   const links = [
-    { href: '/study-materials', label: 'Study material' },
-    { href: '/question-papers', label: 'Question papers' },
-    { href: '/solutions', label: 'Solutions' },
-    { href: '/updates', label: 'Notice board' },
+    { href: '/study-materials', label: L('Study material', 'अध्ययन सामग्री') },
+    { href: '/question-papers', label: L('Question papers', 'प्रश्न पत्र') },
+    { href: '/solutions', label: L('Solutions', 'हल') },
+    { href: '/updates', label: L('Notice board', 'नोटिस बोर्ड') },
   ];
 
   return (
@@ -15,13 +19,17 @@ export default function NotFound() {
         <div className="lg:col-span-7">
           <p className="eyebrow text-muted flex items-center gap-3">
             <span className="h-px w-8 bg-accent" aria-hidden="true" />
-            Error 404
+            {L('Error 404', 'त्रुटि 404')}
           </p>
           <h1 className="mt-6 text-[2.8rem] sm:text-7xl leading-[1.02] text-ink" style={{ fontVariationSettings: '"opsz" 144' }}>
-            This page has <em className="text-accent">dissolved.</em>
+            {L('This page has ', 'यह पेज ')}
+            <em className="text-accent">{L('dissolved.', 'घुल गया।')}</em>
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">
-            The page you were looking for has moved or no longer exists. Try one of these instead.
+            {L(
+              'The page you were looking for has moved or no longer exists. Try one of these instead.',
+              'आप जो पेज ढूँढ रहे थे वह हट गया है या अब मौजूद नहीं है। इनमें से कोई आज़माएँ।',
+            )}
           </p>
           <ul className="mt-10 max-w-lg border-t border-ink">
             {links.map((l) => (
@@ -34,7 +42,7 @@ export default function NotFound() {
             ))}
           </ul>
           <Link href="/" className="mt-10 inline-flex px-7 py-4 bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors">
-            Back to home
+            {L('Back to home', 'होम पेज पर जाएँ')}
           </Link>
         </div>
         <div className="hidden lg:flex lg:col-span-5 justify-center">

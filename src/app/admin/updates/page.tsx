@@ -1,5 +1,6 @@
 'use client';
 
+import HindiFields from '@/components/admin/HindiFields';
 import React, { useState, useEffect } from 'react';
 import {
   Bell,
@@ -61,9 +62,12 @@ export default function AdminUpdatesPage() {
   // Form State
   const [formData, setFormData] = useState<Omit<NoticeUpdate, 'id'>>({
     title: '',
+    titleHi: '',
     category: 'Important Notice',
     description: '',
+    descriptionHi: '',
     content: '',
+    contentHi: '',
     date: new Date().toISOString().split('T')[0],
     isPinned: false,
     isPublished: true,
@@ -118,9 +122,12 @@ export default function AdminUpdatesPage() {
     setEditingId(null);
     setFormData({
       title: '',
+      titleHi: '',
       category: 'Important Notice',
       description: '',
+      descriptionHi: '',
       content: '',
+      contentHi: '',
       date: new Date().toISOString().split('T')[0],
       isPinned: false,
       isPublished: true,
@@ -136,9 +143,12 @@ export default function AdminUpdatesPage() {
     setEditingId(item.id);
     setFormData({
       title: item.title,
+      titleHi: item.titleHi || '',
       category: item.category,
       description: item.description,
+      descriptionHi: item.descriptionHi || '',
       content: item.content,
+      contentHi: item.contentHi || '',
       date: item.date,
       isPinned: item.isPinned,
       isPublished: item.isPublished,
@@ -623,6 +633,16 @@ export default function AdminUpdatesPage() {
                   </div>
                 )}
               </div>
+
+              <HindiFields
+                fields={[
+                  { key: 'titleHi', label: 'Title in Hindi', placeholder: 'जैसे: रविवार को टेस्ट होगा' },
+                  { key: 'descriptionHi', label: 'Short summary in Hindi', rows: 3 },
+                  { key: 'contentHi', label: 'Full message in Hindi', rows: 5 },
+                ]}
+                values={formData as unknown as Record<string, string | undefined>}
+                onChange={(k, v) => setFormData({ ...formData, [k]: v })}
+              />
 
               {/* Attachment upload */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">

@@ -1,5 +1,6 @@
 'use client';
 
+import HindiFields from '@/components/admin/HindiFields';
 import React, { useState, useEffect } from 'react';
 import {
   CheckCircle,
@@ -27,6 +28,7 @@ export default function AdminSolutionsPage() {
 
   const [formData, setFormData] = useState<Omit<SolutionItem, 'id'>>({
     title: '',
+    titleHi: '',
     questionPaperId: '',
     questionPaperTitle: '',
     subject: 'Organic Chemistry',
@@ -34,6 +36,7 @@ export default function AdminSolutionsPage() {
     className: 'Class 12',
     uploadDate: new Date().toISOString().split('T')[0],
     description: '',
+    descriptionHi: '',
     solutionPdfUrl: '',
     solutionPdfName: '',
     solutionPdfSize: '',
@@ -83,6 +86,7 @@ export default function AdminSolutionsPage() {
     setEditingId(null);
     setFormData({
       title: '',
+      titleHi: '',
       questionPaperId: papers[0]?.id || '',
       questionPaperTitle: papers[0]?.title || '',
       subject: papers[0]?.subject || 'Organic Chemistry',
@@ -90,6 +94,7 @@ export default function AdminSolutionsPage() {
       className: papers[0]?.className || 'Class 12',
       uploadDate: new Date().toISOString().split('T')[0],
       description: '',
+      descriptionHi: '',
       solutionPdfUrl: '',
       solutionPdfName: '',
       solutionPdfSize: '',
@@ -104,6 +109,7 @@ export default function AdminSolutionsPage() {
     setEditingId(sol.id);
     setFormData({
       title: sol.title,
+      titleHi: sol.titleHi || '',
       questionPaperId: sol.questionPaperId,
       questionPaperTitle: sol.questionPaperTitle,
       subject: sol.subject,
@@ -111,6 +117,7 @@ export default function AdminSolutionsPage() {
       className: sol.className,
       uploadDate: sol.uploadDate,
       description: sol.description,
+      descriptionHi: sol.descriptionHi || '',
       solutionPdfUrl: sol.solutionPdfUrl || '',
       solutionPdfName: sol.solutionPdfName || '',
       solutionPdfSize: sol.solutionPdfSize || '',
@@ -374,6 +381,14 @@ export default function AdminSolutionsPage() {
                   className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none font-mono"
                 ></textarea>
               </div>
+
+              <HindiFields
+                fields={[
+                  { key: 'titleHi', label: 'Title in Hindi', placeholder: 'जैसे: यूनिट टेस्ट 1 का हल' },
+                ]}
+                values={formData as unknown as Record<string, string | undefined>}
+                onChange={(k, v) => setFormData({ ...formData, [k]: v })}
+              />
 
               {/* Dynamic Answer Key Builder */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">

@@ -6,8 +6,10 @@ import { initialDatabase } from '@/data/initialData';
 import { getArticles } from '@/lib/dataService';
 import { PageHeader } from '@/components/ui/Editorial';
 import ArticleCard from './ArticleCard';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ArticlesHub() {
+  const { L } = useLanguage();
   const [articles, setArticles] = useState<Article[]>(initialDatabase.articles || []);
 
   useEffect(() => {
@@ -21,13 +23,16 @@ export default function ArticlesHub() {
   return (
     <>
       <PageHeader
-        label="Articles"
-        title="Chemistry around you"
-        intro="Short, illustrated reads that connect what you study to everyday life: from fireworks to onions."
+        label={L('Articles', 'लेख')}
+        title={L('Chemistry around you', 'आपके आस-पास का रसायन')}
+        intro={L(
+          'Short, illustrated reads that connect what you study to everyday life: from fireworks to onions.',
+          'चित्रों के साथ छोटे लेख, जो आपकी पढ़ाई को रोज़मर्रा की ज़िंदगी से जोड़ते हैं: आतिशबाज़ी से लेकर प्याज़ तक।',
+        )}
       />
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
         {list.length === 0 ? (
-          <p className="py-20 text-center text-muted">New articles are coming soon.</p>
+          <p className="py-20 text-center text-muted">{L('New articles are coming soon.', 'नए लेख जल्द आ रहे हैं।')}</p>
         ) : (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {list.map((a, i) => (

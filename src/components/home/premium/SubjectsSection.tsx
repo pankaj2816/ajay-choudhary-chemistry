@@ -8,7 +8,8 @@ import ElementTile from '@/components/ui/ElementTile';
 import SectionLabel from './SectionLabel';
 
 export default function SubjectsSection() {
-  const { t } = useLanguage();
+  const { t, isHi } = useLanguage();
+  const L2 = (en: string[], hi: string[]) => (isHi ? hi : en);
 
   const subjects = [
     {
@@ -17,13 +18,22 @@ export default function SubjectsSection() {
       name: t.subjects.organicName,
       sub: t.hero.organicSub,
       desc: t.subjects.organicDesc,
-      topics: [
-        'General Organic Chemistry (GOC)',
-        'Reaction mechanisms & curved arrows',
-        'Named reactions & conversions',
-        'Aldehydes, ketones & carboxylic acids',
-        'Isomerism & stereochemistry',
-      ],
+      topics: L2(
+        [
+          'General Organic Chemistry (GOC)',
+          'Reaction mechanisms & curved arrows',
+          'Named reactions & conversions',
+          'Aldehydes, ketones & carboxylic acids',
+          'Isomerism & stereochemistry',
+        ],
+        [
+          'सामान्य कार्बनिक रसायन (GOC)',
+          'अभिक्रिया क्रियाविधि और वक्र तीर',
+          'नामित अभिक्रियाएँ और रूपांतरण',
+          'ऐल्डिहाइड, कीटोन और कार्बोक्सिलिक अम्ल',
+          'समावयवता और त्रिविम रसायन',
+        ],
+      ),
     },
     {
       id: 'inorganic',
@@ -31,13 +41,22 @@ export default function SubjectsSection() {
       name: t.subjects.inorganicName,
       sub: t.hero.inorganicSub,
       desc: t.subjects.inorganicDesc,
-      topics: [
-        'Periodic classification & trends',
-        'Chemical bonding & MOT',
-        'Coordination compounds & CFT',
-        'p-Block & d-Block elements',
-        'Metallurgy & extraction',
-      ],
+      topics: L2(
+        [
+          'Periodic classification & trends',
+          'Chemical bonding & MOT',
+          'Coordination compounds & CFT',
+          'p-Block & d-Block elements',
+          'Metallurgy & extraction',
+        ],
+        [
+          'आवर्ती वर्गीकरण और प्रवृत्तियाँ',
+          'रासायनिक आबंधन और MOT',
+          'उपसहसंयोजन यौगिक और CFT',
+          'p-ब्लॉक और d-ब्लॉक तत्व',
+          'धातुकर्म और निष्कर्षण',
+        ],
+      ),
     },
     {
       id: 'practical',
@@ -45,13 +64,22 @@ export default function SubjectsSection() {
       name: t.subjects.practicalName,
       sub: t.hero.practicalSub,
       desc: t.subjects.practicalDesc,
-      topics: [
-        'Qualitative salt analysis',
-        'Volumetric titrations',
-        'Functional group tests',
-        'Flame & borax bead tests',
-        'Board viva preparation',
-      ],
+      topics: L2(
+        [
+          'Qualitative salt analysis',
+          'Volumetric titrations',
+          'Functional group tests',
+          'Flame & borax bead tests',
+          'Board viva preparation',
+        ],
+        [
+          'गुणात्मक लवण विश्लेषण',
+          'आयतनमितीय अनुमापन',
+          'क्रियात्मक समूह परीक्षण',
+          'ज्वाला और बोरैक्स मनका परीक्षण',
+          'बोर्ड वाइवा की तैयारी',
+        ],
+      ),
     },
   ];
 

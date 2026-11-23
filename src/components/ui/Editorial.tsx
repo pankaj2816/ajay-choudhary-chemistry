@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Search, X, ChevronDown } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 /* ------------------------------------------------------------------ *
  * Shared building blocks for inner pages, in the "Ink & Ivory" style.
@@ -61,6 +62,7 @@ export function SearchField({
   onChange: (v: string) => void;
   placeholder: string;
 }) {
+  const { L } = useLanguage();
   return (
     <label className="relative flex items-center border-b border-ink focus-within:border-accent transition-colors">
       <Search className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
@@ -73,7 +75,7 @@ export function SearchField({
         className="w-full bg-transparent px-3 py-3.5 text-[0.98rem] text-ink placeholder:text-muted/70 outline-none [&::-webkit-search-cancel-button]:hidden"
       />
       {value && (
-        <button type="button" onClick={() => onChange('')} className="p-1 text-muted hover:text-ink" aria-label="Clear search">
+        <button type="button" onClick={() => onChange('')} className="p-1 text-muted hover:text-ink" aria-label={L('Clear search', 'खोज साफ़ करें')}>
           <X className="w-4 h-4" />
         </button>
       )}
@@ -147,21 +149,23 @@ export function ChipGroup({
 }
 
 export function ResultCount({ shown, total, noun }: { shown: number; total: number; noun: string }) {
+  const { isHi } = useLanguage();
   return (
     <p className="text-sm text-muted tabular-nums">
-      {shown === total ? `${total} ${noun}` : `${shown} of ${total} ${noun}`}
+      {shown === total ? `${total} ${noun}` : isHi ? `${total} में से ${shown} ${noun}` : `${shown} of ${total} ${noun}`}
     </p>
   );
 }
 
 export function EmptyState({ title, body, onReset }: { title: string; body: string; onReset?: () => void }) {
+  const { L } = useLanguage();
   return (
     <div className="py-20 text-center border-t border-line">
       <p className="font-display text-2xl text-ink">{title}</p>
       <p className="mt-2 text-muted">{body}</p>
       {onReset && (
         <button type="button" onClick={onReset} className="mt-6 link-underline text-sm font-medium text-ink">
-          Clear all filters
+          {L('Clear all filters', 'सभी फ़िल्टर हटाएँ')}
         </button>
       )}
     </div>

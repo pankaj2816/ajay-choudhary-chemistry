@@ -5,12 +5,14 @@ import { Testimonial } from '@/lib/types';
 import { initialDatabase } from '@/data/initialData';
 import { getTestimonials } from '@/lib/dataService';
 import SectionLabel from './SectionLabel';
+import { useLanguage } from '@/context/LanguageContext';
 
 /**
  * Real student/parent testimonials, added by Ajay Sir in Admin → Testimonials.
  * Renders nothing until at least one is published.
  */
 export default function TestimonialsSection() {
+  const { L } = useLanguage();
   const [items, setItems] = useState<Testimonial[]>(initialDatabase.testimonials || []);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function TestimonialsSection() {
   return (
     <section className="bg-paper">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
-        <SectionLabel index="" label="In their words" />
+        <SectionLabel index="" label={L('In their words', 'उनके शब्दों में')} />
         <figure className="mt-10 max-w-5xl">
           <blockquote>
             <p className="font-display text-3xl sm:text-[2.8rem] leading-[1.18] text-ink" style={{ fontVariationSettings: '"opsz" 144' }}>

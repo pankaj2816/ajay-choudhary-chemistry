@@ -11,7 +11,7 @@ import ArticleCard from '@/components/learn/ArticleCard';
 import SectionLabel from './SectionLabel';
 
 export default function LearnSection() {
-  const { t } = useLanguage();
+  const { t, L } = useLanguage();
   const [articles, setArticles] = useState<Article[]>(initialDatabase.articles || []);
   const [notes, setNotes] = useState<ConceptNote[]>(initialDatabase.conceptNotes || []);
 
@@ -49,7 +49,7 @@ export default function LearnSection() {
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white border border-line text-sm font-medium text-ink hover:border-accent hover:text-accent transition-colors"
               >
                 Class {g}
-                <span className="text-xs text-muted">{notes.filter((n) => n.grade === g && n.isPublished).length} chapters</span>
+                <span className="text-xs text-muted">{notes.filter((n) => n.grade === g && n.isPublished).length} {L('chapters', 'अध्याय')}</span>
               </Link>
             ))}
           </div>

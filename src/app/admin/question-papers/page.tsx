@@ -1,5 +1,6 @@
 'use client';
 
+import HindiFields from '@/components/admin/HindiFields';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
@@ -57,6 +58,7 @@ export default function AdminQuestionPapersPage() {
 
   const [formData, setFormData] = useState<Omit<QuestionPaper, 'id'>>({
     title: '',
+    titleHi: '',
     subject: 'Organic Chemistry',
     className: 'Class 12',
     chapter: '',
@@ -66,6 +68,7 @@ export default function AdminQuestionPapersPage() {
     totalMarks: 50,
     duration: '90 Minutes',
     description: '',
+    descriptionHi: '',
     fileUrl: '',
     fileName: '',
     fileSize: '',
@@ -94,6 +97,7 @@ export default function AdminQuestionPapersPage() {
     setEditingId(null);
     setFormData({
       title: '',
+      titleHi: '',
       subject: 'Organic Chemistry',
       className: 'Class 12',
       chapter: '',
@@ -103,6 +107,7 @@ export default function AdminQuestionPapersPage() {
       totalMarks: 50,
       duration: '90 Minutes',
       description: '',
+      descriptionHi: '',
       fileUrl: '',
       fileName: '',
       fileSize: '',
@@ -115,6 +120,7 @@ export default function AdminQuestionPapersPage() {
     setEditingId(paper.id);
     setFormData({
       title: paper.title,
+      titleHi: paper.titleHi || '',
       subject: paper.subject,
       className: paper.className,
       chapter: paper.chapter,
@@ -124,6 +130,7 @@ export default function AdminQuestionPapersPage() {
       totalMarks: paper.totalMarks,
       duration: paper.duration,
       description: paper.description,
+      descriptionHi: paper.descriptionHi || '',
       fileUrl: paper.fileUrl,
       fileName: paper.fileName,
       fileSize: paper.fileSize,
@@ -477,6 +484,15 @@ export default function AdminQuestionPapersPage() {
                   className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 ></textarea>
               </div>
+
+              <HindiFields
+                fields={[
+                  { key: 'titleHi', label: 'Title in Hindi', placeholder: 'जैसे: कक्षा 12 यूनिट टेस्ट 1' },
+                  { key: 'descriptionHi', label: 'Description in Hindi', rows: 3 },
+                ]}
+                values={formData as unknown as Record<string, string | undefined>}
+                onChange={(k, v) => setFormData({ ...formData, [k]: v })}
+              />
 
               {/* Upload PDF */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">

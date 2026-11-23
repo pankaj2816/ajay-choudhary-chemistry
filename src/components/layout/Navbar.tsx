@@ -12,7 +12,7 @@ import { CLASS_LIST } from '@/lib/classes';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { t, L, isHi } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
@@ -22,6 +22,7 @@ export default function Navbar() {
   const resourcesRef = useRef<HTMLDivElement>(null);
 
   const resourceLinks = [
+    { label: t.nav.subjects, href: '/subjects' },
     { label: t.nav.studyMaterials, href: '/study-materials' },
     { label: t.nav.questionPapers, href: '/question-papers' },
     { label: t.nav.solutions, href: '/solutions' },
@@ -29,12 +30,11 @@ export default function Navbar() {
     { label: t.home.articlesNav, href: '/articles' },
   ];
 
-  const classLinks = CLASS_LIST.map((c) => ({ label: c.level, href: c.href }));
+  const classLinks = CLASS_LIST.map((c) => ({ label: `${t.classes.pageLabel} ${c.grade}`, href: c.href }));
 
-  const primaryLinks = [
-    { label: t.nav.about, href: '/about' },
-    { label: t.nav.subjects, href: '/subjects' },
-  ];
+  const practicalsLink = { label: L('Practicals', 'प्रैक्टिकल'), href: '/practicals' };
+
+  const primaryLinks = [{ label: t.nav.about, href: '/about' }];
 
   const trailingLinks = [
     { label: t.nav.updates, href: '/updates' },
@@ -106,15 +106,15 @@ export default function Navbar() {
           scrolled ? 'bg-paper/92 backdrop-blur-md border-b border-line' : 'bg-paper border-b border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-4 xl:gap-6">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-2 sm:gap-4 xl:gap-6">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Ajay Choudhary Sir — Home">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0" aria-label={L('Ajay Choudhary Sir — Home', 'अजय चौधरी सर — होम')}>
             <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
             <span className="flex flex-col leading-tight">
               <span className="font-display text-[1.15rem] text-ink" style={{ fontVariationSettings: '"opsz" 36' }}>
                 Ajay Choudhary
               </span>
-              <span className="eyebrow !text-[0.62rem] !tracking-[0.22em] text-muted">Chemistry</span>
+              <span className={`eyebrow !text-[0.62rem] text-muted ${isHi ? '' : '!tracking-[0.22em]'}`}>{L('Chemistry', 'रसायन विज्ञान')}</span>
             </span>
           </Link>
 
@@ -148,6 +148,10 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            <Link href={practicalsLink.href} className={linkClass(isActive(practicalsLink.href))}>
+              {practicalsLink.label}
+            </Link>
 
             {primaryLinks.map((l) => (
               <Link key={l.href} href={l.href} className={linkClass(isActive(l.href))}>
@@ -192,31 +196,29 @@ export default function Navbar() {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-0.5 sm:gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-2.5 text-muted hover:text-ink transition-colors"
+              className="p-2 sm:p-2.5 text-muted hover:text-ink transition-colors"
               aria-label={t.nav.search}
               title={`${t.nav.search} (Ctrl + K)`}
             >
               <Search className="w-[18px] h-[18px]" />
             </button>
 
-            <div className="hidden sm:block">
-              <LanguageSwitcher />
-            </div>
+            <LanguageSwitcher />
 
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center whitespace-nowrap ml-2 px-5 py-2.5 bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors"
+              className="hidden md:inline-flex lg:hidden xl:inline-flex items-center whitespace-nowrap ml-2 px-5 py-2.5 bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors"
             >
               {t.home.enquire}
             </Link>
 
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2.5 -mr-2 text-ink"
-              aria-label="Open menu"
+              className="lg:hidden p-2 sm:p-2.5 -mr-1 sm:-mr-2 text-ink"
+              aria-label={L('Open menu', 'मेनू खोलें')}
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -232,7 +234,7 @@ export default function Navbar() {
               <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
               <span className="font-display text-[1.15rem]">Ajay Choudhary</span>
             </Link>
-            <button onClick={() => setMobileMenuOpen(false)} className="p-2.5 -mr-2" aria-label="Close menu">
+            <button onClick={() => setMobileMenuOpen(false)} className="p-2.5 -mr-2" aria-label={L('Close menu', 'मेनू बंद करें')}>
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -254,7 +256,7 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            {[{ label: t.nav.home, href: '/' }, ...primaryLinks, ...resourceLinks, ...trailingLinks].map((l, i) => (
+            {[{ label: t.nav.home, href: '/' }, practicalsLink, ...primaryLinks, ...resourceLinks, ...trailingLinks].map((l, i) => (
               <Link
                 key={l.href}
                 href={l.href}

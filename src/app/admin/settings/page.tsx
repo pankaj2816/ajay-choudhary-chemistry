@@ -1,5 +1,6 @@
 'use client';
 
+import HindiFields from '@/components/admin/HindiFields';
 import React, { useState, useEffect } from 'react';
 import {
   Settings,
@@ -123,6 +124,12 @@ export default function AdminSettingsPage() {
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
+
+            <HindiFields
+              fields={[{ key: 'bannerAlertHi', label: 'Announcement in Hindi', placeholder: 'जैसे: कक्षा 11 और 12 के नए बैच में प्रवेश शुरू' }]}
+              values={settings as unknown as Record<string, string | undefined>}
+              onChange={(k, v) => setSettings({ ...settings, [k]: v })}
+            />
 
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1">
@@ -285,6 +292,15 @@ export default function AdminSettingsPage() {
                     />
                   </div>
                 </div>
+                <HindiFields
+                  fields={[
+                    { key: 'locationHi', label: 'Area / location in Hindi' },
+                    { key: 'batchesHi', label: 'Batches in Hindi' },
+                    { key: 'scheduleHi', label: 'Schedule in Hindi' },
+                  ]}
+                  values={center as unknown as Record<string, string | undefined>}
+                  onChange={(k, v) => updateCenter(idx, k as keyof CoachingCenter, v)}
+                />
               </div>
             ))}
           </div>

@@ -21,7 +21,7 @@ export interface SearchResults {
   scoredStudyMaterials?: ScoredResult<StudyMaterial>[];
 }
 
-function calculateScore(text: string, query: string, weight: number): { score: number; snippet: string } {
+function calculateScore(text: string | undefined, query: string, weight: number): { score: number; snippet: string } {
   if (!text) return { score: 0, snippet: '' };
   const lower = text.toLowerCase();
   const q = query.toLowerCase();
@@ -94,6 +94,8 @@ export function searchClientDatabase(query: string): { results: SearchResults; t
       }
     }
 
+    totalScore += calculateScore(item.titleHi, q, 90).score + calculateScore(item.descriptionHi, q, 15).score;
+
     if (totalScore > 0) {
       scoredStudyMaterials.push({ item, score: totalScore, matchedField: bestField, matchedSnippet: bestSnippet });
     }
@@ -125,6 +127,8 @@ export function searchClientDatabase(query: string): { results: SearchResults; t
 
     const descMatch = calculateScore(item.description, q, 15);
     if (descMatch.score > 0) totalScore += descMatch.score;
+
+    totalScore += calculateScore(item.titleHi, q, 90).score + calculateScore(item.descriptionHi, q, 15).score;
 
     if (totalScore > 0) {
       scoredQuestionPapers.push({ item, score: totalScore, matchedField: bestField, matchedSnippet: bestSnippet });
@@ -164,6 +168,8 @@ export function searchClientDatabase(query: string): { results: SearchResults; t
     const stepMatch = calculateScore(item.stepByStepContent || '', q, 10);
     if (stepMatch.score > 0) totalScore += stepMatch.score;
 
+    totalScore += calculateScore(item.titleHi, q, 90).score + calculateScore(item.descriptionHi, q, 15).score;
+
     if (totalScore > 0) {
       scoredSolutions.push({ item, score: totalScore, matchedField: bestField, matchedSnippet: bestSnippet });
     }
@@ -196,6 +202,8 @@ export function searchClientDatabase(query: string): { results: SearchResults; t
 
     const contentMatch = calculateScore(item.content || '', q, 15);
     if (contentMatch.score > 0) totalScore += contentMatch.score;
+
+    totalScore += calculateScore(item.titleHi, q, 90).score + calculateScore(item.descriptionHi, q, 15).score;
 
     if (totalScore > 0) {
       scoredUpdates.push({ item, score: totalScore, matchedField: bestField, matchedSnippet: bestSnippet });

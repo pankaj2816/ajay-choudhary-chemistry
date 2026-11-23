@@ -10,7 +10,7 @@ import { getSettings } from '@/lib/dataService';
 import SectionLabel from './SectionLabel';
 
 export default function VisitSection() {
-  const { t } = useLanguage();
+  const { t, L, pick } = useLanguage();
   const [settings, setSettings] = useState<SiteSettings>(initialDatabase.settings);
 
   useEffect(() => {
@@ -45,18 +45,18 @@ export default function VisitSection() {
             >
               <p className="text-xs text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</p>
               <h3 className="mt-3 font-display text-2xl text-ink" style={{ fontVariationSettings: '"opsz" 48' }}>{c.name}</h3>
-              <p className="mt-1 text-sm text-accent">{c.location}</p>
+              <p className="mt-1 text-sm text-accent">{pick(c.location, c.locationHi)}</p>
               <dl className="mt-6 space-y-3 text-[0.92rem]">
                 <div>
-                  <dt className="sr-only">Batches</dt>
-                  <dd className="text-ink">{c.batches}</dd>
+                  <dt className="sr-only">{L('Batches', 'बैच')}</dt>
+                  <dd className="text-ink">{pick(c.batches, c.batchesHi)}</dd>
                 </div>
                 <div>
-                  <dt className="sr-only">Schedule</dt>
-                  <dd className="text-muted">{c.schedule}</dd>
+                  <dt className="sr-only">{L('Schedule', 'समय')}</dt>
+                  <dd className="text-muted">{pick(c.schedule, c.scheduleHi)}</dd>
                 </div>
                 <div>
-                  <dt className="sr-only">Address</dt>
+                  <dt className="sr-only">{L('Address', 'पता')}</dt>
                   <dd className="text-muted">{c.address}</dd>
                 </div>
               </dl>

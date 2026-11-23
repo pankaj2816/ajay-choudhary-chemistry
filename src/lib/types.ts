@@ -33,9 +33,12 @@ export type TestType =
 export interface NoticeUpdate {
   id: string;
   title: string;
+  titleHi?: string;
   category: NoticeCategory;
   description: string;
+  descriptionHi?: string;
   content: string;
+  contentHi?: string;
   date: string;
   isPinned: boolean;
   isPublished: boolean;
@@ -48,6 +51,7 @@ export interface NoticeUpdate {
 export interface QuestionPaper {
   id: string;
   title: string;
+  titleHi?: string;
   subject: SubjectType;
   className: ClassLevel;
   chapter: string;
@@ -57,6 +61,7 @@ export interface QuestionPaper {
   totalMarks: number;
   duration: string;
   description: string;
+  descriptionHi?: string;
   fileUrl: string;
   fileName: string;
   fileSize: string;
@@ -73,6 +78,7 @@ export interface AnswerKeyItem {
 export interface SolutionItem {
   id: string;
   title: string;
+  titleHi?: string;
   questionPaperId: string;
   questionPaperTitle: string;
   subject: SubjectType;
@@ -80,6 +86,7 @@ export interface SolutionItem {
   className: ClassLevel;
   uploadDate: string;
   description: string;
+  descriptionHi?: string;
   solutionPdfUrl?: string;
   solutionPdfName?: string;
   solutionPdfSize?: string;
@@ -91,11 +98,13 @@ export interface SolutionItem {
 export interface StudyMaterial {
   id: string;
   title: string;
+  titleHi?: string;
   subject: SubjectType;
   className: ClassLevel;
   chapter: string;
   resourceType: ResourceType;
   description: string;
+  descriptionHi?: string;
   fileUrl: string;
   fileName: string;
   fileSize: string;
@@ -108,9 +117,12 @@ export interface CoachingCenter {
   id: string;
   name: string;
   location: string;
+  locationHi?: string;
   address: string;
   batches: string;
+  batchesHi?: string;
   schedule: string;
+  scheduleHi?: string;
   contactNumber: string;
 }
 
@@ -118,12 +130,16 @@ export interface TeamMember {
   id: string;
   name: string;
   role: string;
+  roleHi?: string;
+  designationHi?: string;
+  centersHi?: string;
   designation: string;
   specialization: string;
   experience: string;
   centers: string;
   image: string;
   bio: string;
+  bioHi?: string;
   email?: string;
   phone?: string;
 }
@@ -156,6 +172,7 @@ export interface SiteSettings {
   enquiryEmail?: string;
   bannerActive: boolean;
   bannerAlert: string;
+  bannerAlertHi?: string;
   bannerLink?: string;
   coachingCenters: CoachingCenter[];
 }
@@ -191,9 +208,12 @@ export interface ConceptNote {
   grade: string;
   chapter: number;
   title: string;
+  titleHi?: string;
   summary: string;
+  summaryHi?: string;
   /** Simple Markdown: ## headings, - lists, | tables |, > tips, **bold** */
   body: string;
+  bodyHi?: string;
   isPublished: boolean;
   updatedDate: string;
 }
@@ -202,11 +222,29 @@ export interface Article {
   id: string;
   slug: string;
   title: string;
+  titleHi?: string;
   summary: string;
+  summaryHi?: string;
   image: string;
   imageAlt: string;
+  imageAltHi?: string;
   tags: string[];
   body: string;
+  bodyHi?: string;
+  date: string;
+  isPublished: boolean;
+}
+
+export interface Practical {
+  id: string;
+  title: string;
+  titleHi?: string;
+  description: string;
+  descriptionHi?: string;
+  /** Any YouTube link: watch?v=, youtu.be/, shorts/ or embed/ */
+  youtubeUrl: string;
+  className: ClassLevel;
+  topic?: string;
   date: string;
   isPublished: boolean;
 }
@@ -221,6 +259,7 @@ export interface DatabaseSchema {
   testimonials?: Testimonial[];
   conceptNotes?: ConceptNote[];
   articles?: Article[];
+  practicals?: Practical[];
   settings: SiteSettings;
   taxonomies: TaxonomyData;
 }

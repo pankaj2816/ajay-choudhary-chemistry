@@ -26,7 +26,7 @@ function inline(text: string, keyBase: string): React.ReactNode[] {
 }
 
 export function slugifyHeading(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return text.toLowerCase().replace(/[^\p{L}\p{M}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '');
 }
 
 export function extractHeadings(md: string): { id: string; text: string }[] {

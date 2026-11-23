@@ -1,5 +1,6 @@
 'use client';
 
+import HindiFields from '@/components/admin/HindiFields';
 import React, { useState, useEffect } from 'react';
 import {
   BookOpen,
@@ -59,11 +60,13 @@ export default function AdminStudyMaterialsPage() {
 
   const [formData, setFormData] = useState<Omit<StudyMaterial, 'id' | 'downloadsCount'>>({
     title: '',
+    titleHi: '',
     subject: 'Organic Chemistry',
     className: 'Class 12',
     chapter: '',
     resourceType: 'Chapter Notes',
     description: '',
+    descriptionHi: '',
     fileUrl: '',
     fileName: '',
     fileSize: '',
@@ -93,11 +96,13 @@ export default function AdminStudyMaterialsPage() {
     setEditingId(null);
     setFormData({
       title: '',
+      titleHi: '',
       subject: 'Organic Chemistry',
       className: 'Class 12',
       chapter: '',
       resourceType: 'Chapter Notes',
       description: '',
+      descriptionHi: '',
       fileUrl: '',
       fileName: '',
       fileSize: '',
@@ -111,11 +116,13 @@ export default function AdminStudyMaterialsPage() {
     setEditingId(item.id);
     setFormData({
       title: item.title,
+      titleHi: item.titleHi || '',
       subject: item.subject,
       className: item.className,
       chapter: item.chapter,
       resourceType: item.resourceType,
       description: item.description,
+      descriptionHi: item.descriptionHi || '',
       fileUrl: item.fileUrl,
       fileName: item.fileName,
       fileSize: item.fileSize,
@@ -449,6 +456,15 @@ export default function AdminStudyMaterialsPage() {
                   className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 ></textarea>
               </div>
+
+              <HindiFields
+                fields={[
+                  { key: 'titleHi', label: 'Title in Hindi', placeholder: 'जैसे: कक्षा 11 GOC के पूरे नोट्स' },
+                  { key: 'descriptionHi', label: 'Description in Hindi', rows: 3 },
+                ]}
+                values={formData as unknown as Record<string, string | undefined>}
+                onChange={(k, v) => setFormData({ ...formData, [k]: v })}
+              />
 
               {/* Upload PDF */}
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { searchClientDatabase } from '@/lib/searchUtils';
 import { useLanguage } from '@/context/LanguageContext';
+import { term, formatDate } from '@/lib/terms';
 import { PageHeader, SearchField, Meta } from '@/components/ui/Editorial';
 
 function Highlight({ text, query }: { text: string; query: string }) {
@@ -38,6 +39,7 @@ function Group({
   count: number;
   children: React.ReactNode;
 }) {
+  const { L } = useLanguage();
   if (!count) return null;
   return (
     <section className="mt-14 first:mt-0">
@@ -46,7 +48,7 @@ function Group({
           {title} <span className="text-muted">({count})</span>
         </h3>
         <Link href={href} className="text-sm text-muted hover:text-accent">
-          Open section
+          {L('Open section', 'सेक्शन खोलें')}
         </Link>
       </div>
       <ul>{children}</ul>
@@ -76,7 +78,8 @@ function Row({ href, meta, title, snippet, query }: { href: string; meta: string
 }
 
 function SearchContent() {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
+  const tm = (...v: (string | undefined)[]) => v.filter(Boolean).map((x) => term(x, isHi)).join(' · ');
   const router = useRouter();
   const params = useSearchParams();
   const [query, setQuery] = useState(params.get('q') || '');
@@ -94,12 +97,14 @@ function SearchContent() {
 
   return (
     <>
-      <PageHeader label={t.nav.search} title="Search notes, papers and notices" />
+      <PageHeader label={t.nav.search} title={L('Search notes, papers and notices', 'नोट्स, प्रश्न पत्र और सूचनाएँ खोजें')} />
 
       <section className="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-        <SearchField value={query} onChange={update} placeholder="Try “GOC”, “salt analysis”, “unit test”…" />
+        <SearchField value={query} onChange={update} placeholder={L('Try “GOC”, “salt analysis”, “unit test”…', '“GOC”, “लवण विश्लेषण”, “यूनिट टेस्ट” आज़माएँ…')} />
         <p className="mt-4 text-sm text-muted">
-          {query.trim() ? `${totalMatches} result${totalMatches === 1 ? '' : 's'} for “${query.trim()}”` : 'Type a topic, chapter or keyword.'}
+          {query.trim()
+            ? L(`${totalMatches} result${totalMatches === 1 ? '' : 's'} for “${query.trim()}”`, `“${query.trim()}” के लिए ${totalMatches} परिणाम`)
+            : L('Type a topic, chapter or keyword.', 'कोई विषय, अध्याय या शब्द लिखें।')}
         </p>
 
         {query.trim() && totalMatches === 0 && (
@@ -115,9 +120,9 @@ function SearchContent() {
               <Row
                 key={m.id}
                 href={`/study-materials?q=${enc}`}
-                meta={`${m.subject} · ${m.className} · ${m.resourceType}`}
-                title={m.title}
-                snippet={snippet(results.scoredStudyMaterials, m, m.description)}
+                meta={tm(m.subject, m.className, m.resourceType)}
+                title={pick(m.title, m.titleHi)}
+                snippet={isHi && m.descriptionHi ? m.descriptionHi : snippet(results.scoredStudyMaterials, m, m.description)}
                 query={query}
               />
             ))}
@@ -127,9 +132,9 @@ function SearchContent() {
               <Row
                 key={p.id}
                 href={`/question-papers?q=${enc}`}
-                meta={`${p.testType} · ${p.subject} · ${p.className}`}
-                title={p.title}
-                snippet={snippet(results.scoredQuestionPapers, p, p.description)}
+                meta={tm(p.testType, p.subject, p.className)}
+                title={pick(p.title, p.titleHi)}
+                snippet={isHi && p.descriptionHi ? p.descriptionHi : snippet(results.scoredQuestionPapers, p, p.description)}
                 query={query}
               />
             ))}
@@ -139,9 +144,9 @@ function SearchContent() {
               <Row
                 key={s.id}
                 href={`/solutions?id=${s.id}`}
-                meta={`${s.subject} · ${s.className}`}
-                title={s.title}
-                snippet={snippet(results.scoredSolutions, s, s.description)}
+                meta={tm(s.subject, s.className)}
+                title={pick(s.title, s.titleHi)}
+                snippet={isHi && s.descriptionHi ? s.descriptionHi : snippet(results.scoredSolutions, s, s.description)}
                 query={query}
               />
             ))}
@@ -151,9 +156,9 @@ function SearchContent() {
               <Row
                 key={u.id}
                 href={`/updates?id=${u.id}`}
-                meta={`${u.category} · ${u.date}`}
-                title={u.title}
-                snippet={snippet(results.scoredUpdates, u, u.description)}
+                meta={`${term(u.category, isHi)} · ${formatDate(u.date, isHi)}`}
+                title={pick(u.title, u.titleHi)}
+                snippet={isHi && u.descriptionHi ? u.descriptionHi : snippet(results.scoredUpdates, u, u.description)}
                 query={query}
               />
             ))}

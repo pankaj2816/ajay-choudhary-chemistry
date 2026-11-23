@@ -8,7 +8,7 @@ import SafeImage from '@/components/ui/SafeImage';
 import SectionLabel from './SectionLabel';
 
 export default function AboutSection() {
-  const { t } = useLanguage();
+  const { t, L } = useLanguage();
   const quote = t.about.philosophyQuote.replace(/^[“"]|[”"]$/g, '');
 
   return (
@@ -19,7 +19,7 @@ export default function AboutSection() {
             <div className="relative aspect-[9/10] overflow-hidden bg-paper">
               <SafeImage
                 src="/images/ajay-lab-practical.jpg"
-                alt="Ajay Choudhary Sir conducting a laboratory practical"
+                alt={L('Ajay Choudhary Sir conducting a laboratory practical', 'प्रयोगशाला में प्रैक्टिकल कराते अजय चौधरी सर')}
                 fill
                 sizes="(min-width: 1024px) 38vw, 90vw"
                 className="object-cover object-[65%_30%]"

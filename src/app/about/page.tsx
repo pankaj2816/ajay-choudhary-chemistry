@@ -14,7 +14,7 @@ import SectionLabel from '@/components/home/premium/SectionLabel';
 const stripNumber = (s: string) => s.replace(/^\s*\d+\.\s*/, '');
 
 export default function AboutPage() {
-  const { t } = useLanguage();
+  const { t, L, pick } = useLanguage();
   const a = t.about;
   const [team, setTeam] = useState<TeamMember[]>(initialDatabase.teamMembers);
   const [settings, setSettings] = useState<SiteSettings>(initialDatabase.settings);
@@ -78,7 +78,7 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="absolute -right-3 -bottom-3 sm:-right-5 sm:-bottom-5 w-full h-full bg-paper-deep" aria-hidden="true" />
                 <div className="relative aspect-[4/5] overflow-hidden bg-paper-deep">
-                  <SafeImage src="/images/ajay-classroom.jpg" alt="Ajay Choudhary Sir" fill priority sizes="(min-width:1024px) 40vw, 90vw" className="object-cover object-[50%_18%]" />
+                  <SafeImage src="/images/ajay-classroom.jpg" alt={L('Ajay Choudhary Sir', 'अजय चौधरी सर')} fill priority sizes="(min-width:1024px) 40vw, 90vw" className="object-cover object-[50%_18%]" />
                 </div>
               </div>
             </figure>
@@ -152,18 +152,18 @@ export default function AboutPage() {
       {team.length > 0 && (
         <section className="bg-paper-deep border-y border-line">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 py-24 lg:py-32">
-            <SectionLabel index="04" label="In class & in the lab" />
+            <SectionLabel index="04" label={L('In class & in the lab', 'कक्षा में और प्रयोगशाला में')} />
             <h2 className="mt-6 text-4xl sm:text-5xl leading-[1.08] text-ink">{t.portfolio.title}</h2>
             <div className={`mt-14 grid grid-cols-1 sm:grid-cols-2 ${team.length >= 3 ? 'lg:grid-cols-3' : ''} gap-x-8 gap-y-12`}>
               {team.map((m) => (
                 <figure key={m.id}>
                   <div className="relative aspect-[4/5] overflow-hidden bg-paper">
-                    <SafeImage src={m.image} alt={`${m.name} — ${m.role}`} fill sizes="(min-width:1024px) 30vw, 90vw" className="object-cover object-top" />
+                    <SafeImage src={m.image} alt={`${m.name} — ${pick(m.role, m.roleHi)}`} fill sizes="(min-width:1024px) 30vw, 90vw" className="object-cover object-top" />
                   </div>
                   <figcaption className="mt-5">
-                    <p className="font-display text-xl text-ink">{m.role}</p>
-                    <p className="mt-1 text-sm text-muted">{[m.designation, m.centers].filter(Boolean).join(' · ')}</p>
-                    {m.bio && <p className="mt-3 text-[0.92rem] leading-relaxed text-muted line-clamp-3">{m.bio}</p>}
+                    <p className="font-display text-xl text-ink">{pick(m.role, m.roleHi)}</p>
+                    <p className="mt-1 text-sm text-muted">{[pick(m.designation, m.designationHi), pick(m.centers, m.centersHi)].filter(Boolean).join(' · ')}</p>
+                    {m.bio && <p className="mt-3 text-[0.92rem] leading-relaxed text-muted line-clamp-3">{pick(m.bio, m.bioHi)}</p>}
                   </figcaption>
                 </figure>
               ))}
@@ -182,9 +182,9 @@ export default function AboutPage() {
             {settings.coachingCenters.map((c, i) => (
               <div key={c.id} className={`py-8 md:pr-8 ${i > 0 ? 'border-t md:border-t-0 md:border-l border-line md:pl-8' : ''}`}>
                 <h3 className="font-display text-2xl text-ink">{c.name}</h3>
-                <p className="mt-1 text-sm text-accent">{c.location}</p>
-                <p className="mt-5 text-[0.92rem] text-ink">{c.batches}</p>
-                <p className="mt-2 text-[0.92rem] text-muted">{c.schedule}</p>
+                <p className="mt-1 text-sm text-accent">{pick(c.location, c.locationHi)}</p>
+                <p className="mt-5 text-[0.92rem] text-ink">{pick(c.batches, c.batchesHi)}</p>
+                <p className="mt-2 text-[0.92rem] text-muted">{pick(c.schedule, c.scheduleHi)}</p>
               </div>
             ))}
           </div>

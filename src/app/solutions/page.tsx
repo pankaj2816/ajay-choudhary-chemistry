@@ -10,6 +10,7 @@ import { useToast } from '@/context/ToastContext';
 import { getSolutions, getQuestionPapers } from '@/lib/dataService';
 import { triggerDownload } from '@/lib/downloadUtils';
 import { useLanguage } from '@/context/LanguageContext';
+import { term, duration as dur, formatDate } from '@/lib/terms';
 import {
   PageHeader,
   SearchField,
@@ -21,7 +22,7 @@ import {
 } from '@/components/ui/Editorial';
 
 function SolutionsContent() {
-  const { t } = useLanguage();
+  const { t, L, isHi, pick } = useLanguage();
   const { showToast } = useToast();
   const searchParams = useSearchParams();
   const tax = initialDatabase.taxonomies;
@@ -74,10 +75,10 @@ function SolutionsContent() {
 
   const download = (s: SolutionItem) => {
     if (!s.solutionPdfUrl) {
-      showToast('This solution is available to read online only.', 'info');
+      showToast(L('This solution is available to read online only.', 'यह हल केवल ऑनलाइन पढ़ने के लिए उपलब्ध है।'), 'info');
       return;
     }
-    showToast(`Downloading: ${s.title}`, 'info');
+    showToast(`${L('Downloading', 'डाउनलोड हो रहा है')}: ${s.title}`, 'info');
     triggerDownload(s.solutionPdfUrl, s.solutionPdfName || `${s.title.replace(/\s+/g, '_')}.pdf`);
   };
 
@@ -92,27 +93,27 @@ function SolutionsContent() {
           </div>
           <div className="lg:col-span-3">
             <SelectField
-              label="Subject"
+              label={L('Subject', 'विषय')}
               value={subject}
               onChange={setSubject}
-              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: s }))]}
+              options={[{ value: 'All', label: t.pages.allSubjects }, ...tax.subjects.map((s) => ({ value: s, label: term(s, isHi) }))]}
             />
           </div>
           <div className="lg:col-span-3">
             <SelectField
-              label="Class"
+              label={L('Class', 'कक्षा')}
               value={cls}
               onChange={setCls}
               options={[
                 { value: 'All', label: t.pages.allClasses },
-                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: c })),
+                ...tax.classes.filter((c) => c !== 'All Classes').map((c) => ({ value: c, label: term(c, isHi) })),
               ]}
             />
           </div>
         </div>
 
         <div className="mt-12 flex items-baseline justify-between border-b border-ink pb-4">
-          <ResultCount shown={filtered.length} total={solutions.length} noun="solutions" />
+          <ResultCount shown={filtered.length} total={solutions.length} noun={L('solutions', 'हल')} />
         </div>
 
         {filtered.length === 0 ? (
@@ -128,28 +129,30 @@ function SolutionsContent() {
                 >
                   <div className="min-w-0">
                     <Meta>
-                      {s.subject} · {s.className}
-                      {s.answerKey?.length ? ` · ${s.answerKey.length}-question answer key` : ''}
+                      {term(s.subject, isHi)} · {term(s.className, isHi)}
+                      {s.answerKey?.length
+                        ? L(` · ${s.answerKey.length}-question answer key`, ` · ${s.answerKey.length} प्रश्नों की उत्तर कुंजी`)
+                        : ''}
                     </Meta>
                     <h2
                       className="mt-2 font-display !text-[1.5rem] sm:!text-[1.7rem] leading-snug text-ink"
                       style={{ fontVariationSettings: '"opsz" 48' }}
                     >
-                      {s.title}
+                      {pick(s.title, s.titleHi)}
                     </h2>
                     {s.questionPaperTitle && (
                       <p className="mt-1 text-sm text-muted">
-                        For: <span className="text-ink">{s.questionPaperTitle}</span>
+                        {L('For', 'प्रश्न पत्र')}: <span className="text-ink">{pick(s.questionPaperTitle, linked?.titleHi)}</span>
                       </p>
                     )}
-                    <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{s.description}</p>
+                    <p className="mt-3 max-w-3xl text-[0.95rem] leading-relaxed text-muted line-clamp-2">{pick(s.description, s.descriptionHi)}</p>
                     <Meta className="mt-3">
-                      Checked by {s.verifiedBy || 'Ajay Choudhary Sir'} · {s.uploadDate}
+                      {L('Checked by', 'जाँचकर्ता:')} {isHi && (!s.verifiedBy || s.verifiedBy.startsWith('Ajay')) ? 'अजय चौधरी सर' : s.verifiedBy || 'Ajay Choudhary Sir'} · {formatDate(s.uploadDate, isHi)}
                     </Meta>
                   </div>
                   <div className="flex flex-wrap md:flex-col md:items-end gap-x-6 gap-y-3 md:pt-6">
                     <TextAction onClick={() => setSolution(s)} tone="accent" icon={<ArrowRight className="w-4 h-4" />}>
-                      Read solution
+                      {L('Read solution', 'हल पढ़ें')}
                     </TextAction>
                     {s.solutionPdfUrl && (
                       <TextAction onClick={() => download(s)} icon={<ArrowDown className="w-4 h-4" />}>
@@ -173,12 +176,12 @@ function SolutionsContent() {
         <PDFPreviewModal
           isOpen
           onClose={() => setSolution(null)}
-          title={solution.title}
+          title={pick(solution.title, solution.titleHi)}
           subject={solution.subject}
           chapter={solution.chapter}
           className={solution.className}
-          testType="Verified Solution"
-          description={solution.description}
+          testType={L('Verified solution', 'जाँचा हुआ हल')}
+          description={pick(solution.description, solution.descriptionHi)}
           fileUrl={solution.solutionPdfUrl}
           fileName={solution.solutionPdfName}
           fileSize={solution.solutionPdfSize}
@@ -194,14 +197,14 @@ function SolutionsContent() {
         <PDFPreviewModal
           isOpen
           onClose={() => setPaper(null)}
-          title={paper.title}
+          title={pick(paper.title, paper.titleHi)}
           subject={paper.subject}
           chapter={paper.chapter}
           className={paper.className}
           testType={paper.testType}
           totalMarks={paper.totalMarks}
           duration={paper.duration}
-          description={paper.description}
+          description={pick(paper.description, paper.descriptionHi)}
           fileUrl={paper.fileUrl}
           fileName={paper.fileName}
           fileSize={paper.fileSize}

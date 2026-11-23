@@ -11,7 +11,7 @@ import ElementTile from '@/components/ui/ElementTile';
 import { CLASS_LIST } from '@/lib/classes';
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, L, pick } = useLanguage();
   const pathname = usePathname();
   const [settings, setSettings] = useState<SiteSettings>(initialDatabase.settings);
 
@@ -28,7 +28,7 @@ export default function Footer() {
   const columns = [
     {
       title: t.classes.navLabel,
-      links: CLASS_LIST.map((c) => ({ label: c.level, href: c.href })),
+      links: [...CLASS_LIST.map((c) => ({ label: `${t.classes.pageLabel} ${c.grade}`, href: c.href })), { label: L('Practicals', 'प्रैक्टिकल'), href: '/practicals' }],
     },
     {
       title: t.footer.resourcesTitle,
@@ -97,7 +97,7 @@ export default function Footer() {
               {settings.coachingCenters.map((c) => (
                 <li key={c.id} className="py-3.5 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                   <span className="text-paper">{c.name}</span>
-                  <span className="text-sm text-paper/50">{c.location}</span>
+                  <span className="text-sm text-paper/50">{pick(c.location, c.locationHi)}</span>
                 </li>
               ))}
             </ul>
@@ -113,7 +113,7 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} {t.footer.rightsReserved}
             <span className="mx-2">·</span>
-            Designed &amp; developed by{' '}
+            {L('Designed & developed by', 'डिज़ाइन व विकास:')}{' '}
             <a
               href="https://pixeltocloud.com?utm_source=chemistry_classes&utm_medium=footer_credit&utm_campaign=client_referral"
               target="_blank"
@@ -124,7 +124,7 @@ export default function Footer() {
             </a>
           </p>
           <Link href="/admin/login" className="hover:text-paper/80 transition-colors">
-            Teacher login
+            {L('Teacher login', 'शिक्षक लॉगिन')}
           </Link>
         </div>
       </div>

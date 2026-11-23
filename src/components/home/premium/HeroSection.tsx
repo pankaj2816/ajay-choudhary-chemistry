@@ -7,7 +7,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import SafeImage from '@/components/ui/SafeImage';
 
 export default function HeroSection() {
-  const { t } = useLanguage();
+  const { t, L } = useLanguage();
 
   const facts = [
     { value: '8+', label: t.home.factYears },
@@ -73,7 +73,7 @@ export default function HeroSection() {
             <div className="relative aspect-[4/5] overflow-hidden bg-paper-deep">
               <SafeImage
                 src="/images/ajay-classroom.jpg"
-                alt="Ajay Choudhary Sir in his chemistry classroom"
+                alt={L('Ajay Choudhary Sir in his chemistry classroom', 'अपनी रसायन विज्ञान कक्षा में अजय चौधरी सर')}
                 fill
                 priority
                 sizes="(min-width: 1024px) 40vw, 90vw"
@@ -82,7 +82,7 @@ export default function HeroSection() {
             </div>
             </div>
             <figcaption className="relative mt-8 sm:mt-9 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 border-t border-line pt-4">
-              <span className="font-display text-lg text-ink">Ajay Choudhary Sir</span>
+              <span className="font-display text-lg text-ink">{L('Ajay Choudhary Sir', 'अजय चौधरी सर')}</span>
               <span className="text-[0.8rem] text-muted sm:text-right">{t.hero.teacherCardRole}</span>
             </figcaption>
           </figure>

@@ -8,8 +8,9 @@ export interface ClassInfo {
   href: string;
   /** Short subtitle shown on cards and headers */
   course: string;
+  courseHi: string;
   /** NCERT chemistry chapters, with a keyword used to filter items */
-  chapters: { name: string; key: string }[];
+  chapters: { name: string; nameHi: string; key: string }[];
 }
 
 export const CLASS_LIST: ClassInfo[] = [
@@ -18,11 +19,12 @@ export const CLASS_LIST: ClassInfo[] = [
     level: 'Class 9',
     href: '/class-9',
     course: 'Science: Chemistry',
+    courseHi: 'विज्ञान: रसायन',
     chapters: [
-      { name: 'Matter in Our Surroundings', key: 'matter' },
-      { name: 'Is Matter Around Us Pure?', key: 'pure' },
-      { name: 'Atoms and Molecules', key: 'molecule' },
-      { name: 'Structure of the Atom', key: 'atom' },
+      { name: 'Matter in Our Surroundings', nameHi: 'हमारे आस-पास के पदार्थ', key: 'matter' },
+      { name: 'Is Matter Around Us Pure?', nameHi: 'क्या हमारे आस-पास के पदार्थ शुद्ध हैं?', key: 'pure' },
+      { name: 'Atoms and Molecules', nameHi: 'परमाणु एवं अणु', key: 'molecule' },
+      { name: 'Structure of the Atom', nameHi: 'परमाणु की संरचना', key: 'atom' },
     ],
   },
   {
@@ -30,11 +32,12 @@ export const CLASS_LIST: ClassInfo[] = [
     level: 'Class 10',
     href: '/class-10',
     course: 'Science: Chemistry',
+    courseHi: 'विज्ञान: रसायन',
     chapters: [
-      { name: 'Chemical Reactions and Equations', key: 'reaction' },
-      { name: 'Acids, Bases and Salts', key: 'acid' },
-      { name: 'Metals and Non-metals', key: 'metal' },
-      { name: 'Carbon and its Compounds', key: 'carbon' },
+      { name: 'Chemical Reactions and Equations', nameHi: 'रासायनिक अभिक्रियाएँ एवं समीकरण', key: 'reaction' },
+      { name: 'Acids, Bases and Salts', nameHi: 'अम्ल, क्षारक एवं लवण', key: 'acid' },
+      { name: 'Metals and Non-metals', nameHi: 'धातु एवं अधातु', key: 'metal' },
+      { name: 'Carbon and its Compounds', nameHi: 'कार्बन एवं उसके यौगिक', key: 'carbon' },
     ],
   },
   {
@@ -42,16 +45,17 @@ export const CLASS_LIST: ClassInfo[] = [
     level: 'Class 11',
     href: '/class-11',
     course: 'Chemistry · Boards, JEE & NEET',
+    courseHi: 'रसायन · बोर्ड, JEE और NEET',
     chapters: [
-      { name: 'Some Basic Concepts of Chemistry', key: 'basic concept' },
-      { name: 'Structure of Atom', key: 'atom' },
-      { name: 'Periodic Classification', key: 'periodic' },
-      { name: 'Chemical Bonding', key: 'bonding' },
-      { name: 'Thermodynamics', key: 'thermo' },
-      { name: 'Equilibrium', key: 'equilibri' },
-      { name: 'Redox Reactions', key: 'redox' },
-      { name: 'Organic Chemistry: Basic Principles (GOC)', key: 'goc' },
-      { name: 'Hydrocarbons', key: 'hydrocarbon' },
+      { name: 'Some Basic Concepts of Chemistry', nameHi: 'रसायन विज्ञान की कुछ मूल अवधारणाएँ', key: 'basic concept' },
+      { name: 'Structure of Atom', nameHi: 'परमाणु की संरचना', key: 'atom' },
+      { name: 'Periodic Classification', nameHi: 'तत्वों का आवर्ती वर्गीकरण', key: 'periodic' },
+      { name: 'Chemical Bonding', nameHi: 'रासायनिक आबंधन', key: 'bonding' },
+      { name: 'Thermodynamics', nameHi: 'ऊष्मागतिकी', key: 'thermo' },
+      { name: 'Equilibrium', nameHi: 'साम्यावस्था', key: 'equilibri' },
+      { name: 'Redox Reactions', nameHi: 'अपचयोपचय अभिक्रियाएँ', key: 'redox' },
+      { name: 'Organic Chemistry: Basic Principles (GOC)', nameHi: 'कार्बनिक रसायन: मूल सिद्धांत (GOC)', key: 'goc' },
+      { name: 'Hydrocarbons', nameHi: 'हाइड्रोकार्बन', key: 'hydrocarbon' },
     ],
   },
   {
@@ -59,17 +63,18 @@ export const CLASS_LIST: ClassInfo[] = [
     level: 'Class 12',
     href: '/class-12',
     course: 'Chemistry · Boards, JEE & NEET',
+    courseHi: 'रसायन · बोर्ड, JEE और NEET',
     chapters: [
-      { name: 'Solutions', key: 'solution' },
-      { name: 'Electrochemistry', key: 'electro' },
-      { name: 'Chemical Kinetics', key: 'kinetic' },
-      { name: 'd- and f-Block Elements', key: 'block' },
-      { name: 'Coordination Compounds', key: 'coordination' },
-      { name: 'Haloalkanes and Haloarenes', key: 'halo' },
-      { name: 'Alcohols, Phenols and Ethers', key: 'alcohol' },
-      { name: 'Aldehydes, Ketones and Carboxylic Acids', key: 'aldehyde' },
-      { name: 'Amines', key: 'amine' },
-      { name: 'Biomolecules', key: 'biomolecule' },
+      { name: 'Solutions', nameHi: 'विलयन', key: 'solution' },
+      { name: 'Electrochemistry', nameHi: 'वैद्युत रसायन', key: 'electro' },
+      { name: 'Chemical Kinetics', nameHi: 'रासायनिक बलगतिकी', key: 'kinetic' },
+      { name: 'd- and f-Block Elements', nameHi: 'd- एवं f-ब्लॉक के तत्व', key: 'block' },
+      { name: 'Coordination Compounds', nameHi: 'उपसहसंयोजन यौगिक', key: 'coordination' },
+      { name: 'Haloalkanes and Haloarenes', nameHi: 'हैलोऐल्केन तथा हैलोऐरीन', key: 'halo' },
+      { name: 'Alcohols, Phenols and Ethers', nameHi: 'ऐल्कोहॉल, फ़ीनॉल एवं ईथर', key: 'alcohol' },
+      { name: 'Aldehydes, Ketones and Carboxylic Acids', nameHi: 'ऐल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल', key: 'aldehyde' },
+      { name: 'Amines', nameHi: 'ऐमीन', key: 'amine' },
+      { name: 'Biomolecules', nameHi: 'जैव-अणु', key: 'biomolecule' },
     ],
   },
 ];

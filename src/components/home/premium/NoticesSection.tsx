@@ -8,18 +8,20 @@ import { initialDatabase } from '@/data/initialData';
 import { NoticeUpdate } from '@/lib/types';
 import { getUpdates } from '@/lib/dataService';
 import SectionLabel from './SectionLabel';
+import { term } from '@/lib/terms';
 
-function splitDate(iso: string) {
+function splitDate(iso: string, isHi: boolean) {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return { day: '', rest: iso };
+  const loc = isHi ? 'hi-IN' : 'en-IN';
   return {
-    day: d.toLocaleDateString('en-IN', { day: '2-digit' }),
-    rest: d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }),
+    day: d.toLocaleDateString(loc, { day: '2-digit' }),
+    rest: d.toLocaleDateString(loc, { month: 'short', year: 'numeric' }),
   };
 }
 
 export default function NoticesSection() {
-  const { t } = useLanguage();
+  const { t, isHi, pick } = useLanguage();
   const [updates, setUpdates] = useState<NoticeUpdate[]>(initialDatabase.updates);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function NoticesSection() {
 
           <ul className="lg:col-span-8 border-t border-ink">
             {notices.map((n) => {
-              const { day, rest } = splitDate(n.date);
+              const { day, rest } = splitDate(n.date, isHi);
               return (
                 <li key={n.id} className="border-b border-line">
                   <Link href={`/updates?id=${n.id}`} className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[6rem_1fr_auto] gap-x-6 gap-y-2 py-7">
@@ -64,12 +66,12 @@ export default function NoticesSection() {
                     <div className="min-w-0">
                       <p className="eyebrow !text-[0.68rem] text-accent">
                         {n.isPinned ? `${t.notices.pinned} · ` : ''}
-                        {n.category}
+                        {term(n.category, isHi)}
                       </p>
                       <p className="mt-2 font-display text-xl sm:text-[1.4rem] leading-snug text-ink group-hover:text-accent transition-colors" style={{ fontVariationSettings: '"opsz" 36' }}>
-                        {n.title}
+                        {pick(n.title, n.titleHi)}
                       </p>
-                      <p className="mt-2 text-[0.92rem] leading-relaxed text-muted line-clamp-2">{n.description}</p>
+                      <p className="mt-2 text-[0.92rem] leading-relaxed text-muted line-clamp-2">{pick(n.description, n.descriptionHi)}</p>
                     </div>
                     <span className="hidden sm:inline-flex items-center gap-1.5 self-center text-sm text-muted group-hover:text-accent transition-colors">
                       {t.home.readNotice}
