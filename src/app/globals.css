@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /* =====================================================================
-   Design system — "Ink & Ivory"
-   A restrained, editorial palette: warm ivory paper, deep ink, and a
-   single oxblood accent (picked up from Ajay Sir's blazer in the photos).
+   Design system — "Clean white + blue"
+   White pages, navy text and one friendly blue for buttons and links,
+   with clean sans-serif headings.
    The Tailwind colour scales used across the older inner pages
    (slate / cyan / teal / sky / indigo / blue / purple) are remapped here
    so every page follows the same palette without a rewrite.
@@ -12,81 +12,69 @@
 @theme {
   /* Fonts (CSS variables are set by next/font in layout.tsx) */
   --font-sans: var(--font-body), var(--font-deva), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-serif), var(--font-deva), Georgia, serif;
+  --font-display: var(--font-body), var(--font-deva), ui-sans-serif, system-ui, sans-serif;
 
-  /* Core tokens */
-  --color-ink: #141a26;
-  --color-ink-soft: #232b3a;
-  --color-paper: #f7f4ee;
-  --color-paper-deep: #efe9df;
-  --color-line: #ddd5c7;
-  --color-muted: #5f5a52;
-  --color-accent: #7b2234;
-  --color-accent-deep: #5f1a28;
-  --color-accent-soft: #f2e5e2;
-  --color-brass: #b3925f;
+  /* Core tokens — clean white, navy text, one friendly blue */
+  --color-ink: #0f172a;
+  --color-ink-soft: #1e293b;
+  --color-paper: #ffffff;
+  --color-paper-deep: #f5f8fc;
+  --color-line: #e2e8f0;
+  --color-muted: #475569;
+  --color-accent: #2563eb;
+  --color-accent-deep: #1d4ed8;
+  --color-accent-soft: #eff6ff;
+  --color-brass: #60a5fa;
 
-  /* Neutral scale: warm, ink-leaning greys */
-  --color-slate-50: #f7f4ee;
-  --color-slate-100: #efe9df;
-  --color-slate-200: #e2dbcf;
-  --color-slate-300: #cdc5b8;
-  --color-slate-400: #9d968b;
-  --color-slate-500: #77716a;
-  --color-slate-600: #5f5a52;
-  --color-slate-700: #3f4350;
-  --color-slate-800: #2a3140;
-  --color-slate-900: #1b2230;
-  --color-slate-950: #141a26;
+  /* Neutral scale (cool slate) */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #0b1220;
 
-  /* Accent scale (oxblood) — replaces cyan / teal / sky / indigo / blue / purple */
-  --color-cyan-50: #faf3f1;  --color-cyan-100: #f2e5e2; --color-cyan-200: #e5c9c4;
-  --color-cyan-300: #d6a9a2; --color-cyan-400: #c98f88; --color-cyan-500: #a3404f;
-  --color-cyan-600: #7b2234; --color-cyan-700: #6a1d2d; --color-cyan-800: #5a1826;
-  --color-cyan-900: #3d1019; --color-cyan-950: #2a0b11;
+  /* One accent family: cyan / teal / sky / indigo / purple all follow blue */
+  --color-cyan-50: #eff6ff;  --color-cyan-100: #dbeafe; --color-cyan-200: #bfdbfe;
+  --color-cyan-300: #93c5fd; --color-cyan-400: #60a5fa; --color-cyan-500: #3b82f6;
+  --color-cyan-600: #2563eb; --color-cyan-700: #1d4ed8; --color-cyan-800: #1e40af;
+  --color-cyan-900: #1e3a8a; --color-cyan-950: #172554;
 
-  --color-teal-50: #faf3f1;  --color-teal-100: #f2e5e2; --color-teal-200: #e5c9c4;
-  --color-teal-300: #d6a9a2; --color-teal-400: #c98f88; --color-teal-500: #a3404f;
-  --color-teal-600: #7b2234; --color-teal-700: #6a1d2d; --color-teal-800: #5a1826;
-  --color-teal-900: #3d1019; --color-teal-950: #2a0b11;
+  --color-teal-50: #eff6ff;  --color-teal-100: #dbeafe; --color-teal-200: #bfdbfe;
+  --color-teal-300: #93c5fd; --color-teal-400: #60a5fa; --color-teal-500: #3b82f6;
+  --color-teal-600: #2563eb; --color-teal-700: #1d4ed8; --color-teal-800: #1e40af;
+  --color-teal-900: #1e3a8a; --color-teal-950: #172554;
 
-  --color-sky-50: #faf3f1;  --color-sky-100: #f2e5e2; --color-sky-200: #e5c9c4;
-  --color-sky-300: #d6a9a2; --color-sky-400: #c98f88; --color-sky-500: #a3404f;
-  --color-sky-600: #7b2234; --color-sky-700: #6a1d2d; --color-sky-800: #5a1826;
-  --color-sky-900: #3d1019; --color-sky-950: #2a0b11;
+  --color-sky-50: #eff6ff;  --color-sky-100: #dbeafe; --color-sky-200: #bfdbfe;
+  --color-sky-300: #93c5fd; --color-sky-400: #60a5fa; --color-sky-500: #3b82f6;
+  --color-sky-600: #2563eb; --color-sky-700: #1d4ed8; --color-sky-800: #1e40af;
+  --color-sky-900: #1e3a8a; --color-sky-950: #172554;
 
-  --color-blue-50: #faf3f1;  --color-blue-100: #f2e5e2; --color-blue-200: #e5c9c4;
-  --color-blue-300: #d6a9a2; --color-blue-400: #c98f88; --color-blue-500: #a3404f;
-  --color-blue-600: #7b2234; --color-blue-700: #6a1d2d; --color-blue-800: #5a1826;
-  --color-blue-900: #3d1019; --color-blue-950: #2a0b11;
+  --color-indigo-50: #eff6ff;  --color-indigo-100: #dbeafe; --color-indigo-200: #bfdbfe;
+  --color-indigo-300: #93c5fd; --color-indigo-400: #60a5fa; --color-indigo-500: #3b82f6;
+  --color-indigo-600: #2563eb; --color-indigo-700: #1d4ed8; --color-indigo-800: #1e40af;
+  --color-indigo-900: #1e3a8a; --color-indigo-950: #172554;
 
-  /* Secondary scale (brass) — replaces indigo / purple */
-  --color-indigo-50: #f8f3ea;  --color-indigo-100: #f0e6d4; --color-indigo-200: #e2cfae;
-  --color-indigo-300: #d2b88a; --color-indigo-400: #c4a574; --color-indigo-500: #b3925f;
-  --color-indigo-600: #8f734a; --color-indigo-700: #74603f; --color-indigo-800: #5b4b33;
-  --color-indigo-900: #3f3424; --color-indigo-950: #2a2318;
+  --color-purple-50: #eff6ff;  --color-purple-100: #dbeafe; --color-purple-200: #bfdbfe;
+  --color-purple-300: #93c5fd; --color-purple-400: #60a5fa; --color-purple-500: #3b82f6;
+  --color-purple-600: #2563eb; --color-purple-700: #1d4ed8; --color-purple-800: #1e40af;
+  --color-purple-900: #1e3a8a; --color-purple-950: #172554;
 
-  --color-purple-50: #f8f3ea;  --color-purple-100: #f0e6d4; --color-purple-200: #e2cfae;
-  --color-purple-300: #d2b88a; --color-purple-400: #c4a574; --color-purple-500: #b3925f;
-  --color-purple-600: #8f734a; --color-purple-700: #74603f; --color-purple-800: #5b4b33;
-  --color-purple-900: #3f3424; --color-purple-950: #2a2318;
-
-  /* Positive state: muted forest instead of neon emerald */
-  --color-emerald-50: #eef4ef;  --color-emerald-100: #dbe8de; --color-emerald-200: #b9d2bf;
-  --color-emerald-300: #92b79b; --color-emerald-400: #6f9c7a; --color-emerald-500: #4f8060;
-  --color-emerald-600: #3b6a4b; --color-emerald-700: #2f563d; --color-emerald-800: #254431;
-  --color-emerald-900: #1a3023; --color-emerald-950: #0f1f16;
-
-  /* Calmer geometry: smaller radii, softer shadows, slightly larger small text */
-  --radius-lg: 0.375rem;
-  --radius-xl: 0.5rem;
-  --radius-2xl: 0.625rem;
-  --radius-3xl: 0.875rem;
+  /* Calm geometry: soft radii and light shadows; small text bumped for readability */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.625rem;
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
   --text-xs: 0.8125rem;
   --text-xs--line-height: 1.55;
-  --shadow-lg: 0 6px 20px -8px rgb(20 26 38 / 0.18);
-  --shadow-xl: 0 12px 30px -12px rgb(20 26 38 / 0.22);
-  --shadow-2xl: 0 24px 48px -20px rgb(20 26 38 / 0.28);
+  --shadow-lg: 0 6px 20px -8px rgb(15 23 42 / 0.12);
+  --shadow-xl: 0 12px 30px -12px rgb(15 23 42 / 0.16);
+  --shadow-2xl: 0 24px 48px -20px rgb(15 23 42 / 0.22);
 }
 
 @layer base {
@@ -108,7 +96,7 @@
 
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-paper-deep); }
-  ::-webkit-scrollbar-thumb { background: #c9c0b1; border-radius: 6px; border: 2px solid var(--color-paper-deep); }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; border: 2px solid var(--color-paper-deep); }
 }
 
 /* ---------------------------------------------------------------------
@@ -117,17 +105,23 @@
    --------------------------------------------------------------------- */
 h1, h2 {
   font-family: var(--font-display);
-  font-weight: 450 !important;
-  letter-spacing: -0.02em;
-  font-variation-settings: "opsz" 96;
+  font-weight: 650 !important;
+  letter-spacing: -0.025em;
+}
+
+/* Simple, upright headings and quotes everywhere */
+h1 em, h2 em {
+  font-style: normal;
+}
+.font-display.italic {
+  font-style: normal;
+  font-weight: 500;
 }
 
 /* Legacy gradient-text highlights become an italic serif accent */
 .bg-clip-text.text-transparent {
   background-image: none !important;
-  color: inherit !important;
-  font-style: italic;
-  font-family: var(--font-display);
+  color: var(--color-accent) !important;
 }
 
 /* Tiny legacy text sizes are bumped for readability on phones */
@@ -174,6 +168,8 @@ h1, h2 {
    --------------------------------------------------------------------- */
 .font-display {
   font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
 .eyebrow {
@@ -223,4 +219,14 @@ h1, h2 {
 
 @media print {
   .no-print { display: none !important; }
+}
+
+/* Friendly rounded buttons, inputs and chips */
+:is(a, button):is(.bg-accent, .bg-ink, .bg-paper),
+:is(a, button).border.border-ink,
+[role="group"] > button,
+label > span.border,
+label.border-b + *,
+input.border, select.border, textarea.border {
+  border-radius: 0.5rem;
 }

@@ -27,11 +27,11 @@ export default function HeroSection() {
             </p>
 
             <h1
-              className="mt-7 text-[2.9rem] sm:text-6xl lg:text-[5.25rem] leading-[1.02] text-ink rise-in rise-in-delay-1"
+              className="mt-7 text-[2.6rem] sm:text-6xl lg:text-[4.4rem] leading-[1.05] text-ink rise-in rise-in-delay-1"
               style={{ fontVariationSettings: '"opsz" 144' }}
             >
               {t.hero.titleLine1}{' '}
-              <em className="block text-accent italic">{t.hero.titleHighlight}</em>
+              <em className="block text-accent">{t.hero.titleHighlight}</em>
             </h1>
 
             <p className="mt-7 max-w-xl text-[1.075rem] sm:text-lg leading-relaxed text-muted rise-in rise-in-delay-2">

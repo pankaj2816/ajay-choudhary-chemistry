@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Fraunces, Instrument_Sans, Noto_Sans_Devanagari } from "next/font/google";
+import { Instrument_Sans, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import { ToastProvider } from "@/context/ToastContext";
 import { LanguageProvider } from "@/context/LanguageContext";
-
-const display = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  axes: ["opsz"],
-  display: "swap",
-});
 
 const body = Instrument_Sans({
   subsets: ["latin"],
@@ -66,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${devanagari.variable} font-sans`}>
+    <html lang="en" className={`${body.variable} ${devanagari.variable} font-sans`}>
       <body className="min-h-screen flex flex-col bg-paper text-ink">
         <LanguageProvider>
           <ToastProvider>
