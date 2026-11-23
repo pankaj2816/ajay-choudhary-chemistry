@@ -32,7 +32,7 @@ export default function AdminTeamPage() {
     designation: 'M.Sc. Chemistry',
     specialization: 'Organic Chemistry & Reaction Mechanisms',
     experience: '5+ Years',
-    centers: 'Catalyst Career Institute, Apex Science Academy & Prerana Hub',
+    centers: 'Alwar, Rajasthan',
     image: '/images/ajay-choudhary.jpg',
     bio: '',
     email: '',
@@ -65,7 +65,7 @@ export default function AdminTeamPage() {
       designation: 'M.Sc. Chemistry, B.Ed',
       specialization: 'Inorganic Chemistry & Periodic Trends',
       experience: '5+ Years Experience',
-      centers: 'Catalyst, Apex & Prerana Centers',
+      centers: 'Alwar, Rajasthan',
       image: '/images/ajay-choudhary.jpg',
       bio: '',
       email: '',
@@ -342,7 +342,7 @@ export default function AdminTeamPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Apex Science Academy & Catalyst Career Institute"
+                  placeholder="e.g. Vasundhara Senior Secondary School, Alwar"
                   value={formData.centers}
                   onChange={(e) => setFormData({ ...formData, centers: e.target.value })}
                   className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"

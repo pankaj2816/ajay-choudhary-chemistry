@@ -8,7 +8,7 @@ import ElementTile from '@/components/ui/ElementTile';
 import SectionLabel from './SectionLabel';
 
 export default function SubjectsSection() {
-  const { t, isHi } = useLanguage();
+  const { t, isHi, L } = useLanguage();
   const L2 = (en: string[], hi: string[]) => (isHi ? hi : en);
 
   const subjects = [
@@ -59,6 +59,17 @@ export default function SubjectsSection() {
       ),
     },
     {
+      id: 'physical',
+      tile: { symbol: 'H', number: 1, name: 'Hydrogen' },
+      name: t.subjects.physicalName,
+      sub: L('Numericals, step by step', 'न्यूमेरिकल, चरण दर चरण'),
+      desc: t.subjects.physicalDesc,
+      topics: L2(
+        ['Mole concept & stoichiometry', 'Thermodynamics', 'Chemical & ionic equilibrium', 'Electrochemistry', 'Chemical kinetics & solutions'],
+        ['मोल संकल्पना और रससमीकरणमिति', 'ऊष्मागतिकी', 'रासायनिक और आयनिक साम्यावस्था', 'वैद्युतरसायन', 'रासायनिक बलगतिकी और विलयन'],
+      ),
+    },
+    {
       id: 'practical',
       tile: { symbol: 'Ag', number: 47, name: 'Silver' },
       name: t.subjects.practicalName,
@@ -94,17 +105,15 @@ export default function SubjectsSection() {
           <p className="lg:col-span-5 text-[1.02rem] leading-relaxed text-muted">{t.subjects.subtitle}</p>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 border-t border-line">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-10 xl:gap-x-8 gap-y-6">
           {subjects.map((s, i) => (
             <article
               key={s.id}
               id={s.id}
-              className={`pt-10 pb-4 md:pr-8 lg:pr-12 ${
-                i > 0 ? 'border-t md:border-t-0 md:border-l border-line md:pl-8 lg:pl-12 mt-10 md:mt-0' : ''
-              } flex flex-col`}
+              className="pt-10 pb-4 border-t border-ink flex flex-col"
             >
               <ElementTile {...s.tile} size="md" tone={i === 0 ? 'accent' : 'light'} />
-              <h3 className="mt-7 font-display text-[1.85rem] leading-tight text-ink" style={{ fontVariationSettings: '"opsz" 60' }}>
+              <h3 className="mt-7 font-display text-[1.7rem] leading-tight text-ink" style={{ fontVariationSettings: '"opsz" 60' }}>
                 {s.name}
               </h3>
               <p className="mt-1 text-sm text-accent">{s.sub}</p>

@@ -181,10 +181,10 @@ export default function AboutPage() {
           <div className="mt-14 grid grid-cols-1 md:grid-cols-3 border-t border-ink">
             {settings.coachingCenters.map((c, i) => (
               <div key={c.id} className={`py-8 md:pr-8 ${i > 0 ? 'border-t md:border-t-0 md:border-l border-line md:pl-8' : ''}`}>
-                <h3 className="font-display text-2xl text-ink">{c.name}</h3>
+                <h3 className="font-display text-2xl text-ink">{pick(c.name, c.nameHi)}</h3>
                 <p className="mt-1 text-sm text-accent">{pick(c.location, c.locationHi)}</p>
                 <p className="mt-5 text-[0.92rem] text-ink">{pick(c.batches, c.batchesHi)}</p>
-                <p className="mt-2 text-[0.92rem] text-muted">{pick(c.schedule, c.scheduleHi)}</p>
+                {c.schedule && <p className="mt-2 text-[0.92rem] text-muted">{pick(c.schedule, c.scheduleHi)}</p>}
               </div>
             ))}
           </div>

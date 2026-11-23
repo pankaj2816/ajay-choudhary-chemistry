@@ -105,6 +105,43 @@ const SUBJECT_DETAILS: {
     papersUrl: '/question-papers?subject=Inorganic+Chemistry',
   },
   {
+    id: 'physical',
+    title: 'Physical Chemistry',
+    titleHi: 'भौतिक रसायन',
+    tagline: 'Concepts, Formulas & Numericals Step by Step',
+    taglineHi: 'संकल्पनाएँ, सूत्र एवं न्यूमेरिकल चरण दर चरण',
+    description: 'Physical Chemistry is where most marks are won or lost on numericals. Each formula is built from its idea first, so students know when to use it, which units to watch, and how to set out a full-marks answer in boards and competitive exams.',
+    descriptionHi: 'भौतिक रसायन में ज़्यादातर अंक न्यूमेरिकल से मिलते या छूटते हैं। हर सूत्र पहले उसके विचार से बनाया जाता है, ताकि विद्यार्थी जानें कि उसे कब लगाना है, किन इकाइयों का ध्यान रखना है और बोर्ड व प्रतियोगी परीक्षा में पूरे अंक वाला उत्तर कैसे लिखना है।',
+    coreModules: [
+      {
+        title: 'Mole Concept & Atomic Structure',
+        titleHi: 'मोल संकल्पना एवं परमाणु संरचना',
+        topics: ['Mole, Molar Mass & Stoichiometry', 'Limiting Reagent & Concentration Terms', 'Bohr Model & Quantum Numbers', 'Electronic Configuration & Exceptions'],
+        topicsHi: ['मोल, मोलर द्रव्यमान एवं रससमीकरणमिति', 'सीमांत अभिकर्मक एवं सांद्रता के पद', 'बोर मॉडल एवं क्वांटम संख्याएँ', 'इलेक्ट्रॉनिक विन्यास एवं अपवाद'],
+      },
+      {
+        title: 'Thermodynamics & Equilibrium',
+        titleHi: 'ऊष्मागतिकी एवं साम्यावस्था',
+        topics: ['First Law, Enthalpy & Hess’s Law', 'Entropy & Gibbs Energy (ΔG = ΔH − TΔS)', 'Kc, Kp & Le Chatelier’s Principle', 'pH, Buffers & Solubility Product'],
+        topicsHi: ['प्रथम नियम, एन्थैल्पी एवं हेस का नियम', 'एन्ट्रॉपी एवं गिब्ज़ ऊर्जा (ΔG = ΔH − TΔS)', 'Kc, Kp एवं ले-शातेलिए सिद्धांत', 'pH, बफ़र एवं विलेयता गुणनफल'],
+      },
+      {
+        title: 'Solutions & Electrochemistry',
+        titleHi: 'विलयन एवं वैद्युतरसायन',
+        topics: ['Raoult’s Law & Colligative Properties', 'Van’t Hoff Factor', 'Nernst Equation & Cell EMF', 'Conductance & Faraday’s Laws'],
+        topicsHi: ['राउल्ट का नियम एवं अणुसंख्य गुणधर्म', 'वान्ट हॉफ़ गुणक', 'नेर्न्स्ट समीकरण एवं सेल विभव', 'चालकत्व एवं फ़ैराडे के नियम'],
+      },
+      {
+        title: 'Chemical Kinetics',
+        titleHi: 'रासायनिक बलगतिकी',
+        topics: ['Rate Law, Order & Molecularity', 'Zero & First Order Integrated Equations', 'Half-life Calculations', 'Arrhenius Equation & Activation Energy'],
+        topicsHi: ['वेग नियम, कोटि एवं आण्विकता', 'शून्य एवं प्रथम कोटि के समाकलित समीकरण', 'अर्ध-आयु की गणना', 'आरेनियस समीकरण एवं सक्रियण ऊर्जा'],
+      },
+    ],
+    materialsUrl: '/study-materials?subject=Physical+Chemistry',
+    papersUrl: '/question-papers?subject=Physical+Chemistry',
+  },
+  {
     id: 'practical',
     title: 'Practical Chemistry',
     titleHi: 'प्रायोगिक रसायन',
@@ -151,8 +188,8 @@ export default function SubjectsPage() {
         label={L('Curriculum', 'पाठ्यक्रम')}
         title={L('Chemistry subjects & expertise', 'रसायन विज्ञान के विषय')}
         intro={L(
-          'Detailed syllabus breakdowns and the way each part of Chemistry is taught: Organic, Inorganic and Practical.',
-          'हर भाग का विस्तृत पाठ्यक्रम और उसे पढ़ाने का तरीका: कार्बनिक, अकार्बनिक और प्रायोगिक रसायन।',
+          'Detailed syllabus breakdowns and the way each part of Chemistry is taught: Organic, Inorganic, Physical and Practical.',
+          'हर भाग का विस्तृत पाठ्यक्रम और उसे पढ़ाने का तरीका: कार्बनिक, अकार्बनिक, भौतिक और प्रायोगिक रसायन।',
         )}
         aside={
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label={L('Jump to subject', 'विषय पर जाएँ')}>

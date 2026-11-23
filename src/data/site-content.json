@@ -2,52 +2,55 @@
   "settings": {
     "teacherName": "Ajay Choudhary",
     "tagline": "Experienced Chemistry Educator | 8+ Years of Academic Excellence",
-    "bioShort": "Empowering students to master Organic Chemistry, Inorganic Chemistry, and Laboratory Practicals through first-principles conceptual clarity and systematic problem solving.",
+    "bioShort": "Helping students master Organic, Inorganic, Physical and Practical Chemistry through clear concepts and step-by-step problem solving.",
     "experienceYears": 8,
     "centersCount": 3,
     "studentsCount": "5,000+",
-    "email": "contact@ajaychemistry.com",
-    "phone": "+91 98765 43210",
-    "whatsapp": "+91 98765 43210",
+    "email": "ajaychemistryhub@gmail.com",
+    "phone": "+91 80786 67488",
+    "whatsapp": "+91 80786 67488",
     "bannerActive": true,
     "bannerAlert": "📢 Admissions Open for Class 11 & 12 Chemistry Master Batch & JEE/NEET Revision. Check Notice Board!",
     "bannerLink": "/updates",
     "coachingCenters": [
       {
         "id": "center-1",
-        "name": "Catalyst Career Institute",
-        "location": "Central Campus, Sector 14",
-        "address": "Plot 42, Knowledge Park, Sector 14, Metro Pillar 128",
-        "batches": "Class 12 Board + JEE Target / Dropper Masterclass",
-        "schedule": "Mon, Wed, Fri (4:00 PM – 7:30 PM)",
-        "contactNumber": "+91 98765 43210",
-        "locationHi": "सेंट्रल कैंपस, सेक्टर 14",
-        "batchesHi": "कक्षा 12 बोर्ड + JEE लक्ष्य / ड्रॉपर मास्टरक्लास",
-        "scheduleHi": "सोम, बुध, शुक्र (शाम 4:00 – 7:30)"
+        "name": "Vasundhara Senior Secondary School",
+        "nameHi": "वसुंधरा सीनियर सेकेंडरी स्कूल",
+        "location": "Barodamev, Alwar (Rajasthan)",
+        "locationHi": "बड़ौदामेव, अलवर (राजस्थान)",
+        "address": "Barodamev, Alwar, Rajasthan",
+        "batches": "Class 11th and 12th Board",
+        "batchesHi": "कक्षा 11 और 12 बोर्ड",
+        "schedule": "",
+        "scheduleHi": "",
+        "contactNumber": "+91 80786 67488"
       },
       {
         "id": "center-2",
-        "name": "Apex Science Academy",
-        "location": "North Wing, Model Town",
-        "address": "B-Block Main Market, Opposite City Park, Model Town",
-        "batches": "Class 11 Foundation Chemistry & Organic Basics",
-        "schedule": "Tue, Thu, Sat (3:30 PM – 7:00 PM)",
-        "contactNumber": "+91 98765 43211",
-        "locationHi": "नॉर्थ विंग, मॉडल टाउन",
-        "batchesHi": "कक्षा 11 फ़ाउंडेशन रसायन और कार्बनिक की बुनियाद",
-        "scheduleHi": "मंगल, गुरु, शनि (दोपहर 3:30 – शाम 7:00)"
+        "name": "Poddar Senior Secondary School",
+        "nameHi": "पोद्दार सीनियर सेकेंडरी स्कूल",
+        "location": "Laxmangarh, Alwar (Rajasthan)",
+        "locationHi": "लक्ष्मणगढ़, अलवर (राजस्थान)",
+        "address": "Laxmangarh, Alwar, Rajasthan",
+        "batches": "Class 11th and 12th Board, Foundation Chemistry",
+        "batchesHi": "कक्षा 11 और 12 बोर्ड, फ़ाउंडेशन केमिस्ट्री",
+        "schedule": "",
+        "scheduleHi": "",
+        "contactNumber": "+91 80786 67488"
       },
       {
         "id": "center-3",
-        "name": "Prerana Learning Hub",
-        "location": "South Extension Centre",
-        "address": "3rd Floor, Scholar Towers, Near Central Library",
-        "batches": "NEET Chemistry Intensive & Practical Lab Sessions",
-        "schedule": "Sunday Special Batches (8:30 AM – 2:00 PM)",
-        "contactNumber": "+91 98765 43212",
-        "locationHi": "साउथ एक्सटेंशन केंद्र",
-        "batchesHi": "NEET रसायन गहन कोर्स और प्रायोगिक लैब सत्र",
-        "scheduleHi": "रविवार विशेष बैच (सुबह 8:30 – दोपहर 2:00)"
+        "name": "Indra Public School",
+        "nameHi": "इंद्रा पब्लिक स्कूल",
+        "location": "Kathumar, Alwar (Rajasthan)",
+        "locationHi": "कठूमर, अलवर (राजस्थान)",
+        "address": "Kathumar, Alwar, Rajasthan",
+        "batches": "Class 11th and 12th Board",
+        "batchesHi": "कक्षा 11 और 12 बोर्ड",
+        "schedule": "",
+        "scheduleHi": "",
+        "contactNumber": "+91 80786 67488"
       }
     ],
     "bannerAlertHi": "कक्षा 11 व 12 रसायन मास्टर बैच और JEE/NEET रिवीज़न में प्रवेश शुरू। नोटिस बोर्ड देखें!"
@@ -142,14 +145,14 @@
       "designation": "M.Sc. Chemistry, B.Ed (8+ Years Experience)",
       "specialization": "Reaction Mechanisms, Stereochemistry & Synthesis Roadmaps",
       "experience": "8+ Years teaching over 5,000+ board & competitive aspirants.",
-      "centers": "Catalyst Career Institute (Sector 14)",
+      "centers": "Alwar, Rajasthan",
       "image": "/images/ajay-choudhary.jpg",
       "bio": "Renowned for his systematic, step-by-step breakdown of difficult reaction mechanisms and crystal-clear visual explanation of molecular orbitals and curved-arrow electron flow.",
-      "email": "ajay@ajaychemistry.com",
+      "email": "ajaychemistryhub@gmail.com",
       "roleHi": "कार्बनिक रसायन और अभिक्रिया क्रियाविधियाँ",
       "bioHi": "कठिन अभिक्रिया क्रियाविधियों को चरण-दर-चरण समझाने और आण्विक कक्षकों व वक्र-तीर इलेक्ट्रॉन प्रवाह की स्पष्ट दृश्य व्याख्या के लिए जाने जाते हैं।",
       "designationHi": "एम.एससी. रसायन, बी.एड (8+ वर्ष का अनुभव)",
-      "centersHi": "कैटलिस्ट करियर इंस्टीट्यूट (सेक्टर 14)"
+      "centersHi": "अलवर, राजस्थान"
     },
     {
       "id": "team-2",
@@ -158,14 +161,14 @@
       "designation": "Senior Chemistry Faculty & Lab Instructor",
       "specialization": "Qualitative Salt Analysis, Titrations & Viva Voce Preparation",
       "experience": "8+ Years hands-on laboratory coaching and practical workshops.",
-      "centers": "Prerana Learning Hub (South Extension)",
+      "centers": "Alwar, Rajasthan",
       "image": "/images/chemistry-lab-hero.jpg",
       "bio": "Leading structured laboratory salt analysis workshops, brown ring tests, redox titration estimations, and comprehensive practical viva training.",
-      "email": "contact@ajaychemistry.com",
+      "email": "ajaychemistryhub@gmail.com",
       "roleHi": "प्रायोगिक रसायन और प्रयोगशाला विशेषज्ञ",
       "bioHi": "लवण विश्लेषण कार्यशालाएँ, भूरा वलय परीक्षण, रेडॉक्स अनुमापन और प्रायोगिक वाइवा की व्यवस्थित तैयारी कराते हैं।",
       "designationHi": "वरिष्ठ रसायन शिक्षक एवं लैब प्रशिक्षक",
-      "centersHi": "प्रेरणा लर्निंग हब (साउथ एक्सटेंशन)"
+      "centersHi": "अलवर, राजस्थान"
     },
     {
       "id": "team-3",
@@ -174,14 +177,14 @@
       "designation": "Inorganic Chemistry Educator",
       "specialization": "Coordination Chemistry, Periodic Trends & Crystal Field Theory",
       "experience": "8+ Years mentoring JEE, NEET & Board toppers.",
-      "centers": "Apex Science Academy (Model Town)",
+      "centers": "Alwar, Rajasthan",
       "image": "/images/ajay-classroom.jpg",
       "bio": "Specialist in demystifying inorganic periodic trends, transition metals, crystal field energy splitting (Δo), and molecular orbital theory without rote memorization.",
-      "email": "contact@ajaychemistry.com",
+      "email": "ajaychemistryhub@gmail.com",
       "roleHi": "अकार्बनिक रसायन और आबंधन की अवधारणाएँ",
       "bioHi": "आवर्ती प्रवृत्तियों, संक्रमण धातुओं, क्रिस्टल क्षेत्र विपाटन (Δo) और आण्विक कक्षक सिद्धांत को बिना रटे समझाने में विशेषज्ञ।",
       "designationHi": "अकार्बनिक रसायन शिक्षक",
-      "centersHi": "एपेक्स साइंस एकेडमी (मॉडल टाउन)"
+      "centersHi": "अलवर, राजस्थान"
     }
   ],
   "updates": [
@@ -190,7 +193,7 @@
       "title": "Class 12 Organic Chemistry Grand Revision & Mechanism Workshop",
       "category": "Class Update",
       "description": "Special weekend intensive on Electrophilic Aromatic Substitution, Aldol Condensation, and Cannizzaro mechanisms.",
-      "content": "### Weekend Special Masterclass Announcement\n\nAll Class 12 students across **Catalyst**, **Apex**, and **Prerana** centers are required to attend the special Organic Reaction Mechanisms Bootcamp this Saturday.\n\n**Topics Covered:**\n- Nucleophilic addition to carbonyl compounds\n- Enolate chemistry & Named Reactions\n- Directing groups in aromatic ring conversions\n- High-yield JEE/NEET multi-step synthesis pathways\n\n*Please bring your Organic Chemistry Roadmaps and solved DPPs.*",
+      "content": "### Weekend Special Masterclass Announcement\n\nAll Class 12 students are required to attend the special Organic Reaction Mechanisms revision class. The day and time for your school will be shared in class.\n\n**Topics Covered:**\n- Nucleophilic addition to carbonyl compounds\n- Enolate chemistry & Named Reactions\n- Directing groups in aromatic ring conversions\n- High-yield JEE/NEET multi-step synthesis pathways\n\n*Please bring your Organic Chemistry Roadmaps and solved DPPs.*",
       "date": "2026-08-16",
       "isPinned": true,
       "isPublished": true,
@@ -200,7 +203,7 @@
       "targetClass": "Class 12",
       "titleHi": "कक्षा 12 कार्बनिक रसायन: ग्रैंड रिवीज़न और क्रियाविधि कार्यशाला",
       "descriptionHi": "इलेक्ट्रॉनरागी ऐरोमैटिक प्रतिस्थापन, ऐल्डोल संघनन और कैनिज़ारो क्रियाविधियों पर सप्ताहांत की विशेष गहन कक्षा।",
-      "contentHi": "### सप्ताहांत विशेष मास्टरक्लास की घोषणा\n\n**Catalyst**, **Apex** और **Prerana** केंद्रों के सभी कक्षा 12 के छात्रों को इस शनिवार होने वाले कार्बनिक अभिक्रिया क्रियाविधि बूटकैंप में आना अनिवार्य है।\n\n**शामिल विषय:**\n- कार्बोनिल यौगिकों में नाभिकरागी योग\n- इनोलेट रसायन और नामित अभिक्रियाएँ\n- ऐरोमैटिक वलय रूपांतरणों में निर्देशक समूह\n- JEE/NEET के लिए महत्वपूर्ण बहु-चरणीय संश्लेषण मार्ग\n\n*कृपया अपने कार्बनिक रसायन रोडमैप और हल किए हुए DPP साथ लाएँ।*"
+      "contentHi": "### सप्ताहांत विशेष मास्टरक्लास की घोषणा\n\nकक्षा 12 के सभी छात्रों को कार्बनिक अभिक्रिया क्रियाविधि की विशेष रिवीज़न कक्षा में आना अनिवार्य है। आपके विद्यालय के लिए दिन और समय कक्षा में बताया जाएगा।\n\n**शामिल विषय:**\n- कार्बोनिल यौगिकों में नाभिकरागी योग\n- इनोलेट रसायन और नामित अभिक्रियाएँ\n- ऐरोमैटिक वलय रूपांतरणों में निर्देशक समूह\n- JEE/NEET के लिए महत्वपूर्ण बहु-चरणीय संश्लेषण मार्ग\n\n*कृपया अपने कार्बनिक रसायन रोडमैप और हल किए हुए DPP साथ लाएँ।*"
     },
     {
       "id": "notif-2",
@@ -224,7 +227,7 @@
       "title": "Practical Chemistry Lab Session: Systematic Qualitative Salt Analysis",
       "category": "Important Notice",
       "description": "Mandatory laboratory sessions for Class 11 & 12 students covering cation and anion zero to VI group testing.",
-      "content": "### Laboratory Practical Schedule\n\nPractical sessions for qualitative salt analysis (identification of acid and basic radicals) are scheduled as per the batches below:\n\n- **Batch A (Apex Center):** Saturday 9:00 AM – 11:30 AM\n- **Batch B (Catalyst Center):** Saturday 2:00 PM – 4:30 PM\n- **Batch C (Prerana Center):** Sunday 10:00 AM – 12:30 PM\n\n*Lab coats and safety goggles are strictly compulsory.*",
+      "content": "### Laboratory Practical Sessions\n\nPractical sessions for qualitative salt analysis (identification of acid and basic radicals) will be held at each school. The date and time for your school will be shared in class.\n\n*Lab coats and safety goggles are strictly compulsory.*",
       "date": "2026-08-10",
       "isPinned": false,
       "isPublished": true,
@@ -234,7 +237,7 @@
       "targetClass": "All Classes",
       "titleHi": "प्रायोगिक रसायन लैब सत्र: व्यवस्थित गुणात्मक लवण विश्लेषण",
       "descriptionHi": "कक्षा 11 व 12 के छात्रों के लिए अनिवार्य प्रयोगशाला सत्र, जिनमें शून्य से VI समूह तक धनायन और ऋणायन परीक्षण होंगे।",
-      "contentHi": "### प्रयोगशाला प्रैक्टिकल समय-सारणी\n\nगुणात्मक लवण विश्लेषण (अम्लीय और क्षारीय मूलकों की पहचान) के प्रैक्टिकल सत्र नीचे दिए बैचों के अनुसार होंगे:\n\n- **बैच A (Apex केंद्र):** शनिवार सुबह 9:00 – 11:30\n- **बैच B (Catalyst केंद्र):** शनिवार दोपहर 2:00 – 4:30\n- **बैच C (Prerana केंद्र):** रविवार सुबह 10:00 – दोपहर 12:30\n\n*लैब कोट और सुरक्षा चश्मा पहनना अनिवार्य है।*"
+      "contentHi": "### प्रयोगशाला प्रैक्टिकल सत्र\n\nगुणात्मक लवण विश्लेषण (अम्लीय और क्षारीय मूलकों की पहचान) के प्रैक्टिकल सत्र हर विद्यालय में होंगे। आपके विद्यालय के लिए तारीख और समय कक्षा में बताया जाएगा।\n\n*लैब कोट और सुरक्षा चश्मा पहनना अनिवार्य है।*"
     },
     {
       "id": "notif-4",

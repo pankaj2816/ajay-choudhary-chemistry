@@ -294,6 +294,7 @@ export default function AdminSettingsPage() {
                 </div>
                 <HindiFields
                   fields={[
+                    { key: 'nameHi', label: 'School name in Hindi' },
                     { key: 'locationHi', label: 'Area / location in Hindi' },
                     { key: 'batchesHi', label: 'Batches in Hindi' },
                     { key: 'scheduleHi', label: 'Schedule in Hindi' },

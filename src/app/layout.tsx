@@ -24,7 +24,7 @@ const isPages = process.env.GITHUB_ACTIONS === 'true';
 export const metadata: Metadata = {
   metadataBase: new URL(isPages ? 'https://pankaj2816.github.io' : 'http://localhost:3000'),
   title: "Ajay Choudhary Sir | Chemistry Teacher | Organic & Inorganic Specialist",
-  description: "Official teaching platform of Ajay Choudhary Sir, an experienced Chemistry educator with 8+ years of expertise across 3 coaching centers. Access study materials, question papers, verified solutions, and notice board updates.",
+  description: "Official teaching platform of Ajay Choudhary Sir, an experienced Chemistry educator with 8+ years of experience, teaching Class 11 and 12 at three schools in Alwar, Rajasthan. Access study materials, question papers, verified solutions, and notice board updates.",
   keywords: [
     "Ajay Choudhary Sir Chemistry",
     "Ajay Sir Chemistry",

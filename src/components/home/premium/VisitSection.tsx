@@ -44,21 +44,19 @@ export default function VisitSection() {
               className={`py-8 md:pr-8 ${i > 0 ? 'border-t md:border-t-0 md:border-l border-line md:pl-8' : ''}`}
             >
               <p className="text-xs text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</p>
-              <h3 className="mt-3 font-display text-2xl text-ink" style={{ fontVariationSettings: '"opsz" 48' }}>{c.name}</h3>
+              <h3 className="mt-3 font-display text-2xl text-ink" style={{ fontVariationSettings: '"opsz" 48' }}>{pick(c.name, c.nameHi)}</h3>
               <p className="mt-1 text-sm text-accent">{pick(c.location, c.locationHi)}</p>
               <dl className="mt-6 space-y-3 text-[0.92rem]">
                 <div>
                   <dt className="sr-only">{L('Batches', 'बैच')}</dt>
                   <dd className="text-ink">{pick(c.batches, c.batchesHi)}</dd>
                 </div>
-                <div>
-                  <dt className="sr-only">{L('Schedule', 'समय')}</dt>
-                  <dd className="text-muted">{pick(c.schedule, c.scheduleHi)}</dd>
-                </div>
-                <div>
-                  <dt className="sr-only">{L('Address', 'पता')}</dt>
-                  <dd className="text-muted">{c.address}</dd>
-                </div>
+                {c.schedule && (
+                  <div>
+                    <dt className="sr-only">{L('Schedule', 'समय')}</dt>
+                    <dd className="text-muted">{pick(c.schedule, c.scheduleHi)}</dd>
+                  </div>
+                )}
               </dl>
             </div>
           ))}

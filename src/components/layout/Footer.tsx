@@ -46,6 +46,7 @@ export default function Footer() {
       links: [
         { label: t.subjects.organicName, href: '/subjects#organic' },
         { label: t.subjects.inorganicName, href: '/subjects#inorganic' },
+        { label: t.subjects.physicalName, href: '/subjects#physical' },
         { label: t.subjects.practicalName, href: '/subjects#practical' },
         { label: t.nav.about, href: '/about' },
       ],
@@ -96,7 +97,7 @@ export default function Footer() {
             <ul className="divide-y divide-paper/10 border-y border-paper/10">
               {settings.coachingCenters.map((c) => (
                 <li key={c.id} className="py-3.5 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                  <span className="text-paper">{c.name}</span>
+                  <span className="text-paper">{pick(c.name, c.nameHi)}</span>
                   <span className="text-sm text-paper/50">{pick(c.location, c.locationHi)}</span>
                 </li>
               ))}

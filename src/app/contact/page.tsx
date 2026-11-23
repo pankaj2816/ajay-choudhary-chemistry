@@ -14,8 +14,8 @@ const FAQS = [
   {
     q: 'How can I join one of Ajay Sir’s batches?',
     qHi: 'अजय सर के बैच में कैसे जुड़ें?',
-    a: 'Send an enquiry using the form on this page, or message on WhatsApp. You can also visit any of the coaching centres listed here during class hours to ask about batch timings and seats.',
-    aHi: 'इस पेज के फ़ॉर्म से पूछताछ भेजें, या WhatsApp पर संदेश करें। बैच के समय और सीटों के बारे में पूछने के लिए आप कक्षा के समय यहाँ दिए किसी भी कोचिंग सेंटर पर भी आ सकते हैं।',
+    a: 'Send an enquiry using the form on this page, or message on WhatsApp. You can also ask Ajay Sir at any of the schools listed here.',
+    aHi: 'इस पेज के फ़ॉर्म से पूछताछ भेजें, या WhatsApp पर संदेश करें। आप यहाँ दिए किसी भी विद्यालय में अजय सर से सीधे भी पूछ सकते हैं।',
   },
   {
     q: 'Are there separate doubt-clearing sessions?',
@@ -155,11 +155,11 @@ export default function ContactPage() {
                 {settings.coachingCenters.map((c) => (
                   <li key={c.id} className="py-6 border-b border-line">
                     <div className="flex items-baseline justify-between gap-4">
-                      <h3 className="font-display text-xl text-ink">{c.name}</h3>
+                      <h3 className="font-display text-xl text-ink">{pick(c.name, c.nameHi)}</h3>
                       <span className="text-xs text-accent text-right">{pick(c.location, c.locationHi)}</span>
                     </div>
-                    <p className="mt-2 text-sm text-muted">{c.address}</p>
-                    <p className="mt-1 text-sm text-ink">{pick(c.schedule, c.scheduleHi)}</p>
+                    <p className="mt-2 text-sm text-ink">{pick(c.batches, c.batchesHi)}</p>
+                    {c.schedule && <p className="mt-1 text-sm text-muted">{pick(c.schedule, c.scheduleHi)}</p>}
                     {c.address && (
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${c.name} ${c.address}`)}`}
@@ -229,8 +229,8 @@ export default function ContactPage() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder={L(
-                        'Tell us your class, which centre suits you, and what you would like to know.',
-                        'अपनी कक्षा, आपके लिए कौन-सा सेंटर ठीक है, और आप क्या जानना चाहते हैं, यह लिखें।',
+                        'Tell us your class, your school, and what you would like to know.',
+                        'अपनी कक्षा, अपना विद्यालय और आप क्या जानना चाहते हैं, यह लिखें।',
                       )}
                     />
                   </Field>

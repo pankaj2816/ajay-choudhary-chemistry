@@ -116,6 +116,7 @@ export interface StudyMaterial {
 export interface CoachingCenter {
   id: string;
   name: string;
+  nameHi?: string;
   location: string;
   locationHi?: string;
   address: string;
