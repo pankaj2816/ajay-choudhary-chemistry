@@ -16,8 +16,11 @@ const EMPTY: Partial<Practical> = {
   youtubeUrl: '',
   className: 'Class 12',
   topic: '',
+  kind: 'lecture',
   isPublished: true,
 };
+
+const isPractical = (p: Partial<Practical>) => (p.kind || 'practical') === 'practical';
 
 const input =
   'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-slate-500';
@@ -28,6 +31,7 @@ export default function AdminPracticalsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Partial<Practical> | null>(null);
+  const [filter, setFilter] = useState<string>('All');
 
   const load = () =>
     getPracticals()
@@ -37,6 +41,13 @@ export default function AdminPracticalsPage() {
 
   useEffect(() => {
     load();
+    // Opened from a class shortcut: /admin/practicals?class=Class%2011
+    const cls = new URLSearchParams(window.location.search).get('class') as ClassLevel | null;
+    if (cls && CLASSES.includes(cls)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFilter(cls);
+      setForm({ ...EMPTY, className: cls });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,7 +97,9 @@ export default function AdminPracticalsPage() {
     }
   };
 
-  const sorted = [...items].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = [...items]
+    .filter((p) => filter === 'All' || p.className === filter || p.className === 'All Classes')
+    .sort((a, b) => b.date.localeCompare(a.date));
 
   return (
     <div className="max-w-5xl space-y-8">
@@ -94,19 +107,31 @@ export default function AdminPracticalsPage() {
         <div>
           <h1 className="text-3xl text-white flex items-center gap-3">
             <PlayCircle className="w-7 h-7 text-indigo-400" />
-            Practical videos
+            Class videos (YouTube)
           </h1>
           <p className="mt-2 text-sm text-slate-400 max-w-2xl">
-            Paste a YouTube link and write a short description. Students watch it on the Practicals page and on their class page.
+            Copy a video link from YouTube, paste it here, choose the class, and add a title and short description. Students watch it under “Videos” on their class page. Practical videos also appear on the Practicals page.
           </p>
         </div>
         <button
-          onClick={() => setForm({ ...EMPTY })}
+          onClick={() => setForm({ ...EMPTY, className: filter !== 'All' ? (filter as ClassLevel) : EMPTY.className })}
           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent hover:bg-accent-deep text-white text-sm font-medium shrink-0"
         >
           <Plus className="w-4 h-4" />
           Add video
         </button>
+      </div>
+
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Show videos for">
+        {['All', ...CLASSES.filter((c) => c !== 'All Classes')].map((c) => (
+          <button
+            key={c}
+            onClick={() => setFilter(c)}
+            className={`px-3.5 py-1.5 rounded-lg text-sm border ${filter === c ? 'bg-white text-ink border-white' : 'border-slate-700 text-slate-300 hover:text-white'}`}
+          >
+            {c === 'All' ? 'All classes' : c}
+          </button>
+        ))}
       </div>
 
       {loading ? (
@@ -128,7 +153,7 @@ export default function AdminPracticalsPage() {
                 <div className="min-w-0 flex-1">
                   <p className={`font-medium leading-snug line-clamp-2 ${p.isPublished ? 'text-white' : 'text-slate-500'}`}>{p.title}</p>
                   <p className="mt-1 text-xs text-slate-400">
-                    {p.className}
+                    {p.className} · {isPractical(p) ? 'Practical' : 'Class lecture'}
                     {p.topic ? ` · ${p.topic}` : ''}
                     {!p.isPublished && ' · hidden'}
                   </p>
@@ -159,7 +184,7 @@ export default function AdminPracticalsPage() {
         <div className="fixed inset-0 z-50 bg-black/70 flex items-start sm:items-center justify-center p-2 sm:p-6 overflow-y-auto">
           <form onSubmit={submit} className="w-full max-w-3xl bg-slate-950 border border-slate-800 rounded-2xl p-5 sm:p-7 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl text-white">{form.id ? 'Edit video' : 'Add practical video'}</h2>
+              <h2 className="text-xl text-white">{form.id ? 'Edit video' : 'Add a YouTube video'}</h2>
               <button type="button" onClick={() => setForm(null)} className="text-slate-400 hover:text-white" aria-label="Close">
                 <X className="w-5 h-5" />
               </button>
@@ -183,11 +208,11 @@ export default function AdminPracticalsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block text-sm text-slate-300">
                 Title (English) *
-                <input className={`${input} mt-1.5`} value={form.title || ''} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Salt analysis: test for Cl⁻" />
+                <input className={`${input} mt-1.5`} value={form.title || ''} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Hybridisation in 10 minutes" />
               </label>
               <label className="block text-sm text-slate-300">
                 Title (हिन्दी)
-                <input className={`${input} mt-1.5`} value={form.titleHi || ''} onChange={(e) => setForm({ ...form, titleHi: e.target.value })} placeholder="जैसे: लवण विश्लेषण: Cl⁻ का परीक्षण" />
+                <input className={`${input} mt-1.5`} value={form.titleHi || ''} onChange={(e) => setForm({ ...form, titleHi: e.target.value })} placeholder="जैसे: 10 मिनट में संकरण" />
               </label>
               <label className="block text-sm text-slate-300">
                 Class
@@ -198,18 +223,29 @@ export default function AdminPracticalsPage() {
                 </select>
               </label>
               <label className="block text-sm text-slate-300">
-                Topic (optional)
-                <input className={`${input} mt-1.5`} value={form.topic || ''} onChange={(e) => setForm({ ...form, topic: e.target.value })} placeholder="e.g. Salt analysis" />
+                Type of video
+                <select
+                  className={`${input} mt-1.5`}
+                  value={form.kind || 'practical'}
+                  onChange={(e) => setForm({ ...form, kind: e.target.value as 'lecture' | 'practical' })}
+                >
+                  <option value="lecture">Class lecture / explanation</option>
+                  <option value="practical">Practical (lab experiment)</option>
+                </select>
+              </label>
+              <label className="block text-sm text-slate-300">
+                Chapter or topic (optional)
+                <input className={`${input} mt-1.5`} value={form.topic || ''} onChange={(e) => setForm({ ...form, topic: e.target.value })} placeholder="e.g. Chemical Bonding" />
               </label>
             </div>
 
             <label className="block text-sm text-slate-300">
               Description (English)
-              <textarea rows={4} className={`${input} mt-1.5`} value={form.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="What students will learn, apparatus used, precautions…" />
+              <textarea rows={4} className={`${input} mt-1.5`} value={form.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="What students will learn from this video…" />
             </label>
             <label className="block text-sm text-slate-300">
               Description (हिन्दी)
-              <textarea rows={4} className={`${input} mt-1.5`} value={form.descriptionHi || ''} onChange={(e) => setForm({ ...form, descriptionHi: e.target.value })} placeholder="छात्र क्या सीखेंगे, उपकरण, सावधानियाँ…" />
+              <textarea rows={4} className={`${input} mt-1.5`} value={form.descriptionHi || ''} onChange={(e) => setForm({ ...form, descriptionHi: e.target.value })} placeholder="इस वीडियो से छात्र क्या सीखेंगे…" />
             </label>
             <p className="text-xs text-slate-500">If you leave the Hindi fields empty, the English text is shown in Hindi mode too.</p>
 

@@ -81,7 +81,16 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       .map<Row>((a) => ({ id: a.id, href: `/articles/${a.slug}`, title: pick(a.title, a.titleHi), meta: L('Article', 'लेख') }));
     const videos = (initialDatabase.practicals || [])
       .filter((v) => v.isPublished && has(v.title, v.titleHi, v.topic))
-      .map<Row>((v) => ({ id: v.id, href: '/practicals', title: pick(v.title, v.titleHi), meta: term(v.className, isHi) }));
+      .map<Row>((v) => {
+        const grade = v.className.match(/\d+/)?.[0];
+        const lab = (v.kind || 'practical') === 'practical';
+        return {
+          id: v.id,
+          href: !lab && grade ? `/class-${grade}` : '/practicals',
+          title: pick(v.title, v.titleHi),
+          meta: `${term(v.className, isHi)} · ${lab ? L('Practical', 'प्रैक्टिकल') : L('Class video', 'क्लास वीडियो')}`,
+        };
+      });
 
     return [
       {
@@ -123,7 +132,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           meta: term(s.className, isHi),
         })),
       },
-      { key: 'videos', label: L('Practical videos', 'प्रैक्टिकल वीडियो'), all: '/practicals', rows: videos },
+      { key: 'videos', label: L('Videos', 'वीडियो'), all: '/practicals', rows: videos },
       { key: 'articles', label: L('Articles', 'लेख'), all: '/articles', rows: articles },
       {
         key: 'notices',

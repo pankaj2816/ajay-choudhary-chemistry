@@ -34,7 +34,7 @@ const ADMIN_NAV_ITEMS = [
   { label: 'Verified Solutions', href: '/admin/solutions', icon: CheckCircle },
   { label: 'Study Materials', href: '/admin/study-materials', icon: BookOpen },
   { label: 'Notes & Articles', href: '/admin/learn', icon: BookOpenText },
-  { label: 'Practical Videos', href: '/admin/practicals', icon: PlayCircle },
+  { label: 'Videos (YouTube)', href: '/admin/practicals', icon: PlayCircle },
   { label: 'Subjects & Chapters', href: '/admin/categories', icon: Layers },
   { label: 'Team Portfolio', href: '/admin/team', icon: Users },
   { label: 'Testimonials', href: '/admin/testimonials', icon: Quote },

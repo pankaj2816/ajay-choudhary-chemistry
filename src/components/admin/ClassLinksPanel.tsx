@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Copy, MessageCircle, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import { Copy, MessageCircle, ExternalLink, PlayCircle } from 'lucide-react';
 import { CLASS_LIST } from '@/lib/classes';
 import { useToast } from '@/context/ToastContext';
 
@@ -39,6 +40,13 @@ export default function ClassLinksPanel() {
               <p className="text-xs text-slate-400 truncate">…{c.href}</p>
             </div>
             <div className="flex items-center gap-1 shrink-0">
+              <Link
+                href={`/admin/practicals?class=${encodeURIComponent(c.level)}`}
+                className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800"
+                title={`Add a YouTube video for ${c.level}`}
+              >
+                <PlayCircle className="w-4 h-4" />
+              </Link>
               <button onClick={() => copy(c.href)} className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800" title="Copy link">
                 <Copy className="w-4 h-4" />
               </button>

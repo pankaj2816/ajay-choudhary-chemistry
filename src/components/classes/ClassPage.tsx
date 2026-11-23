@@ -246,7 +246,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
                 ['all', `${c.everything} (${total})`],
                 ['notes', `${c.notesBooks} (${lists.mats.length})`],
                 ['papers', `${c.papers} (${lists.pps.length})`],
-                ['videos', `${L('Practical videos', 'प्रैक्टिकल वीडियो')} (${lists.vids.length})`],
+                ['videos', `${L('Videos', 'वीडियो')} (${lists.vids.length})`],
                 ['solutions', `${c.solutions} (${lists.sols.length})`],
                 ['notices', `${c.notices} (${lists.nts.length})`],
               ] as [Tab, string][]
@@ -334,7 +334,7 @@ export default function ClassPage({ grade }: { grade: Grade }) {
           {/* Practical videos */}
           {show('videos') && lists.vids.length > 0 && (
             <>
-              <SectionHead title={L('Practical videos', 'प्रैक्टिकल वीडियो')} count={lists.vids.length} />
+              <SectionHead title={L('Videos', 'वीडियो')} count={lists.vids.length} />
               <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {lists.vids.map((v) => (
                   <li key={v.id}>

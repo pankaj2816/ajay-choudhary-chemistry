@@ -35,7 +35,7 @@ export default function PracticalCard({ item, onOpen }: { item: Practical; onOpe
       </div>
       <div className="p-5 flex flex-col flex-1">
         <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-          {cls}
+          {cls} · {(item.kind || 'practical') === 'practical' ? L('Practical', 'प्रैक्टिकल') : L('Class video', 'क्लास वीडियो')}
           {item.topic ? ` · ${item.topic}` : ''}
         </p>
         <h3 className="mt-2 text-lg font-semibold leading-snug text-ink group-hover:text-accent transition-colors">

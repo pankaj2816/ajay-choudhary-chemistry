@@ -439,15 +439,16 @@ export async function getPracticals(): Promise<Practical[]> {
 export async function savePractical(item: Partial<Practical>): Promise<Practical> {
   const defaults: Practical = {
     id: item.id || `prac-${Date.now()}`,
-    title: item.title || 'Practical video',
+    title: item.title || 'Class video',
     description: item.description || '',
     youtubeUrl: item.youtubeUrl || '',
     className: item.className || 'All Classes',
     topic: item.topic || '',
+    kind: item.kind || 'lecture',
     date: item.date || today(),
     isPublished: item.isPublished !== undefined ? item.isPublished : true,
   };
-  return commit(`${item.id ? 'update' : 'add'} practical video "${item.title ?? 'video'}"`, (db) => {
+  return commit(`${item.id ? 'update' : 'add'} video "${item.title ?? 'video'}"`, (db) => {
     db.practicals = db.practicals || [];
     return upsert(db.practicals, mergeRecord(db.practicals, item, defaults));
   });

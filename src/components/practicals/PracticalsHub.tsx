@@ -24,7 +24,7 @@ export default function PracticalsHub() {
       .catch(() => {});
   }, []);
 
-  const published = items.filter((p) => p.isPublished).sort((a, b) => b.date.localeCompare(a.date));
+  const published = items.filter((p) => p.isPublished && (p.kind || 'practical') === 'practical').sort((a, b) => b.date.localeCompare(a.date));
   const level = CLASS_LIST.find((c) => c.grade === cls)?.level;
   const list = level ? published.filter((p) => belongsToClass(p.className, level)) : published;
 

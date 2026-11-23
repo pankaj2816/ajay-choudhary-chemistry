@@ -246,6 +246,8 @@ export interface Practical {
   youtubeUrl: string;
   className: ClassLevel;
   topic?: string;
+  /** 'lecture' = class video, 'practical' = lab video (older entries have none and count as practical) */
+  kind?: 'lecture' | 'practical';
   date: string;
   isPublished: boolean;
 }
