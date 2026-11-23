@@ -1,2 +1,2 @@
-:HL["/ajay-choudhary-chemistry/_next/static/chunks/451i90e83pe91.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"ElQSdOHAQoyQpxwGb32lL"}
+:HL["/ajay-choudhary-chemistry/_next/static/chunks/1z_4t823e3lk4.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"1zVgs3fqirZPOXbBy42ZD"}
