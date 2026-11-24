@@ -197,6 +197,15 @@ export async function uploadDataUrl(dataUrl: string, fileName: string): Promise<
   }
 
   const safeName = (fileName || 'document.pdf').replace(/[^a-zA-Z0-9.\-_]/g, '_').replace(/_+/g, '_');
+
+  // Only documents and plain images. Files that browsers can run as web pages
+  // (HTML, SVG, scripts) are refused, so an upload can never act on the site.
+  const ext = safeName.split('.').pop()?.toLowerCase() || '';
+  const ALLOWED = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'webp', 'gif'];
+  const mime = dataUrl.slice(5, dataUrl.indexOf(';')).toLowerCase();
+  if (!ALLOWED.includes(ext) || /html|svg|xml|javascript/.test(mime)) {
+    throw new GitHubError('This type of file cannot be uploaded. Please use a PDF, Word, PowerPoint, Excel or an image (JPG, PNG, WebP).', 415);
+  }
   const finalName = `${Date.now()}_${safeName}`;
 
   await api(`${repoPath}/contents/${UPLOADS_DIR}/${finalName}`, {

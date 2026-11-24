@@ -479,6 +479,7 @@ export async function saveMessage(item: Partial<ContactMessage>): Promise<Contac
     body: JSON.stringify({
       _subject: `New enquiry: ${item.subject || 'Chemistry batch'} — ${item.name || 'Student'}`,
       _template: 'table',
+      _honey: '',
       _replyto: item.email || '',
       Name: item.name || '',
       Email: item.email || '',

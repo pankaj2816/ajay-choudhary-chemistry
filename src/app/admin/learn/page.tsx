@@ -311,7 +311,7 @@ export default function AdminLearnPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="block text-sm text-slate-300">
                   Picture (JPG, PNG, WebP or SVG, under 5 MB)
-                  <input type="file" accept=".jpg,.jpeg,.png,.webp,.svg" onChange={pickImage} className="mt-1.5 block w-full text-sm text-slate-300 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-slate-800 file:text-white" />
+                  <input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={pickImage} className="mt-1.5 block w-full text-sm text-slate-300 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-slate-800 file:text-white" />
                   {article.image && <span className="mt-1 block text-xs text-emerald-400">Picture selected</span>}
                 </label>
                 <label className="block text-sm text-slate-300">

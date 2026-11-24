@@ -90,6 +90,8 @@ export default function ContactPage() {
   const whatsappNumber = (settings.whatsapp || settings.phone || '').replace(/[^0-9]/g, '');
   const phone = (settings.phone || '').replace(/\s/g, '');
 
+  const [trap, setTrap] = useState('');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
@@ -98,6 +100,11 @@ export default function ContactPage() {
     }
     if (form.phone.trim() && form.phone.replace(/\D/g, '').length < 10) {
       showToast(L('Please enter a valid 10-digit phone number, or leave it blank.', 'कृपया सही 10 अंकों का फ़ोन नंबर लिखें, या इसे खाली छोड़ दें।'), 'error');
+      return;
+    }
+    // Spam bots fill every box, including the hidden one people never see.
+    if (trap) {
+      setSubmitted(true);
       return;
     }
     setSubmitting(true);
@@ -193,6 +200,12 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="mt-8 border-t border-ink pt-8 space-y-8" noValidate>
+                  <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                    <label>
+                      Leave this empty
+                      <input type="text" name="website" tabIndex={-1} autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} />
+                    </label>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     <Field label={`${t.contact.nameLabel.replace(/\s*\*\s*$/, '')} *`}>
                       <input className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={L('Your full name', 'आपका पूरा नाम')} autoComplete="name" />
