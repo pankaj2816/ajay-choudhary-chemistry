@@ -9,8 +9,8 @@
     "email": "ajaychemistryhub@gmail.com",
     "phone": "+91 80786 67488",
     "whatsapp": "+91 80786 67488",
-    "bannerActive": true,
-    "bannerAlert": "📢 Admissions Open for Class 11 & 12 Chemistry Master Batch & JEE/NEET Revision. Check Notice Board!",
+    "bannerActive": false,
+    "bannerAlert": "",
     "bannerLink": "/updates",
     "coachingCenters": [
       {
@@ -53,7 +53,7 @@
         "contactNumber": "+91 80786 67488"
       }
     ],
-    "bannerAlertHi": "कक्षा 11 व 12 रसायन मास्टर बैच और JEE/NEET रिवीज़न में प्रवेश शुरू। नोटिस बोर्ड देखें!",
+    "bannerAlertHi": "",
     "teacherNameHi": "अजय चौधरी",
     "taglineHi": "वरिष्ठ रसायन विज्ञान शिक्षक • 8+ वर्ष अनुभव",
     "bioShortHi": "ऑर्गेनिक रिएक्शन मैकेनिज्म, इनऑर्गेनिक केमिस्ट्री, फ़िज़िकल केमिस्ट्री के न्यूमेरिकल और लैब प्रैक्टिकल को आसान लॉजिक के साथ समझें। कक्षा 11वीं, 12वीं बोर्ड, JEE और NEET के लिए सरल मार्गदर्शन।"

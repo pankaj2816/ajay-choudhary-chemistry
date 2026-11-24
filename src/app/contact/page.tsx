@@ -12,10 +12,10 @@ import SectionLabel from '@/components/home/premium/SectionLabel';
 
 const FAQS = [
   {
-    q: 'How can I join one of Ajay Sir’s batches?',
-    qHi: 'अजय सर के बैच में कैसे जुड़ें?',
-    a: 'Send an enquiry using the form on this page, or message on WhatsApp. You can also ask Ajay Sir at any of the schools listed here.',
-    aHi: 'इस पेज के फ़ॉर्म से पूछताछ भेजें, या WhatsApp पर संदेश करें। आप यहाँ दिए किसी भी विद्यालय में अजय सर से सीधे भी पूछ सकते हैं।',
+    q: 'Where does Ajay Sir teach?',
+    qHi: 'अजय सर कहाँ पढ़ाते हैं?',
+    a: 'He teaches Class 11 and 12 Chemistry at Vasundhara Senior Secondary School (Barodamev), Poddar Senior Secondary School (Laxmangarh) and Indra Public School (Kathumar), all in Alwar, Rajasthan. Anyone can send him a message using the form on this page.',
+    aHi: 'वे अलवर (राजस्थान) के वसुंधरा सीनियर सेकेंडरी स्कूल (बड़ौदामेव), पोद्दार सीनियर सेकेंडरी स्कूल (लक्ष्मणगढ़) और इंद्रा पब्लिक स्कूल (कठूमर) में कक्षा 11 और 12 की केमिस्ट्री पढ़ाते हैं। कोई भी इस पेज के फ़ॉर्म से उन्हें संदेश भेज सकता है।',
   },
   {
     q: 'Are there separate doubt-clearing sessions?',
@@ -47,11 +47,11 @@ const CLASS_OPTIONS = [
 ];
 
 const TOPIC_OPTIONS = [
-  ['Batch admission', 'बैच में प्रवेश'],
-  ['Batch timings & fees', 'बैच का समय और फ़ीस'],
-  ['Free demo class', 'मुफ़्त डेमो क्लास'],
-  ['Test series', 'टेस्ट सीरीज़'],
-  ['Doubt / study help', 'डाउट / पढ़ाई में मदद'],
+  ['Doubt in a chapter', 'किसी अध्याय में डाउट'],
+  ['Notes / study material', 'नोट्स / अध्ययन सामग्री'],
+  ['Question paper or solution', 'प्रश्न पत्र या हल'],
+  ['Practical / lab', 'प्रैक्टिकल / लैब'],
+  ['Guidance for exams', 'परीक्षा के लिए मार्गदर्शन'],
   ['Other', 'अन्य'],
 ];
 
@@ -79,7 +79,7 @@ export default function ContactPage() {
     email: '',
     phone: '',
     studentClass: 'Class 12',
-    subject: 'Batch admission',
+    subject: 'Doubt in a chapter',
     message: '',
   });
 

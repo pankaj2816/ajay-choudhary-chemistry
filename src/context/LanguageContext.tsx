@@ -332,7 +332,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     banner: {
       announcement: 'Important Announcement',
-      text: '📢 Admissions Open for Class 11 & 12 Chemistry Master Batch & JEE/NEET Revision. Check Notice Board!',
+      text: 'New notes, papers and notices are posted on the Notice Board.',
       viewNotice: 'View Notice'
     },
     hero: {
@@ -385,12 +385,12 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     notices: {
       badge: 'Official Announcements',
-      title: 'Latest Notices, Exam Dates & Batch Updates',
+      title: 'Latest notices, exam dates & class updates',
       subtitle: 'Test dates, homework, doubt classes and holiday notices for students at all three schools.',
       viewAll: 'View All Notices',
       downloadBtn: 'Download Attachment',
       pinned: 'Pinned Announcement',
-      allBatches: 'All Batches',
+      allBatches: 'All classes',
       clickToRead: 'Click to read full announcement'
     },
     materials: {
@@ -451,15 +451,15 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       examRelevance: 'Exam Scoring Weightage:'
     },
     cta: {
-      badge: 'Admissions & Guidance',
+      badge: 'Get in touch',
       title: 'Ready to Score 95%+ in Chemistry & Crack JEE/NEET?',
       description: 'Learn chemistry with Ajay Sir at Vasundhara, Poddar or Indra Public School in Alwar, or send an enquiry.',
-      joinBtn: 'Send Admission Inquiry',
+      joinBtn: 'Send a message',
       emailBtn: 'Contact via Email'
     },
     contact: {
       title: 'Get in Touch with Ajay Choudhary Sir',
-      subtitle: 'Have a question regarding batch timings, admissions, or test series? Send an inquiry or reach out directly.',
+      subtitle: 'Have a question about a chapter, the notes or your studies? Send a message or reach out directly.',
       nameLabel: 'Your Full Name *',
       emailLabel: 'Email Address *',
       phoneLabel: 'Phone Number (Optional)',
@@ -487,7 +487,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       statStudentsLabel: 'Students Mentored',
       philosophyBadge: 'Teaching Philosophy',
       philosophyQuote: '“Chemistry becomes effortless when concepts are understood, not just memorized.”',
-      philosophySub: 'The 6-step systematic methodology implemented across all batch lectures and doubt clinics.',
+      philosophySub: 'The 6-step method Ajay Sir uses in every class and doubt session.',
       step1Title: '1. Build Strong Fundamentals',
       step1Desc: 'Deconstruct core chemical principles, atomic structure, and electronic configurations before tackling complex problems.',
       step2Title: '2. Deep Conceptual Visualization',
@@ -524,7 +524,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       qual4Title: 'Practical Chemistry Specialist',
       qual4Desc: 'Conducted 100+ hands-on Salt Analysis and Volumetric Titration laboratory workshops.',
       ctaTitle: 'Learn Chemistry with Total Conceptual Clarity',
-      ctaSub: 'Connect with Ajay Sir for batch admissions, study materials, or academic guidance.',
+      ctaSub: 'Connect with Ajay Sir about study materials, doubts or guidance for your studies.',
       ctaContactBtn: 'Send Inquiry Message',
       ctaNotesBtn: 'Explore Study Materials'
     },
@@ -563,9 +563,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       viewAll: 'View all',
       secNotices: 'Notice board',
       readNotice: 'Read notice',
-      secVisit: 'Join a batch',
+      secVisit: 'Where he teaches',
       visitTitle: 'Study with Ajay Sir at a school near you.',
-      visitSub: 'Ask about batch timings, fees or a free demo class. You will get a reply within a day.',
+      visitSub: 'Ajay Sir teaches Class 11 and 12 Chemistry at these schools. Questions? Send a message and he will reply within a day.',
       enquire: 'Send an enquiry',
       whatsapp: 'WhatsApp',
       call: 'Call',
@@ -626,7 +626,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     banner: {
       announcement: 'महत्वपूर्ण सूचना',
-      text: '📢 कक्षा 11 एवं 12 रसायन विज्ञान मास्टर बैच और JEE/NEET रिवीज़न के लिए नए प्रवेश प्रारंभ। नोटिस बोर्ड देखें!',
+      text: 'नए नोट्स, प्रश्न पत्र और सूचनाएँ नोटिस बोर्ड पर दी जाती हैं।',
       viewNotice: 'नोटिस देखें'
     },
     hero: {
@@ -684,7 +684,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       viewAll: 'सभी नोटिस देखें',
       downloadBtn: 'फाइल डाउनलोड करें',
       pinned: 'मुख्य नोटिस',
-      allBatches: 'सभी बैच',
+      allBatches: 'सभी कक्षाएँ',
       clickToRead: 'पूरी सूचना पढ़ने के लिए क्लिक करें'
     },
     materials: {
@@ -745,15 +745,15 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       examRelevance: 'परीक्षा में वेटेज:'
     },
     cta: {
-      badge: 'प्रवेश और मार्गदर्शन',
+      badge: 'संपर्क करें',
       title: 'केमिस्ट्री में 95%+ अंक और JEE / NEET क्रैक करने के लिए तैयार हैं?',
       description: 'अलवर के वसुंधरा, पोद्दार या इंद्रा पब्लिक स्कूल में अजय सर से केमिस्ट्री पढ़ें, या पूछताछ भेजें।',
-      joinBtn: 'पूछताछ फॉर्म भरें',
+      joinBtn: 'संदेश भेजें',
       emailBtn: 'ईमेल से संपर्क करें'
     },
     contact: {
       title: 'अजय चौधरी सर से संपर्क करें',
-      subtitle: 'बैच समय, नए एडमिशन या टेस्ट सीरीज से जुड़ा कोई भी सवाल हो, फॉर्म भरें या ईमेल करें।',
+      subtitle: 'किसी अध्याय, नोट्स या पढ़ाई से जुड़ा कोई सवाल हो, तो संदेश भेजें या सीधे संपर्क करें।',
       nameLabel: 'विद्यार्थी / अभिभावक का नाम *',
       emailLabel: 'ईमेल पता (जवाब पाने के लिए) *',
       phoneLabel: 'मोबाइल नंबर (वैकल्पिक)',
@@ -818,7 +818,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       qual4Title: 'प्रैक्टिकल केमिस्ट्री विशेषज्ञ',
       qual4Desc: '100+ से अधिक साल्ट एनालिसिस और वॉल्यूमेट्रिक टाइट्रेशन लैब वर्कशॉप आयोजित किए।',
       ctaTitle: 'केमिस्ट्री को आसान और स्पष्ट तरीके से समझें',
-      ctaSub: 'बैच में एडमिशन, नोट्स या पढ़ाई से जुड़े किसी भी सवाल के लिए अजय सर से जुड़ें।',
+      ctaSub: 'नोट्स, डाउट या पढ़ाई से जुड़े किसी भी सवाल के लिए अजय सर से जुड़ें।',
       ctaContactBtn: 'पूछताछ संदेश भेजें',
       ctaNotesBtn: 'अध्ययन सामग्री देखें'
     },
@@ -857,9 +857,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       viewAll: 'सभी देखें',
       secNotices: 'नोटिस बोर्ड',
       readNotice: 'नोटिस पढ़ें',
-      secVisit: 'बैच से जुड़ें',
+      secVisit: 'जहाँ पढ़ाते हैं',
       visitTitle: 'अपने नज़दीकी विद्यालय में अजय सर से पढ़ें।',
-      visitSub: 'बैच का समय, फ़ीस या फ्री डेमो क्लास के बारे में पूछें। एक दिन के भीतर जवाब मिलेगा।',
+      visitSub: 'अजय सर इन विद्यालयों में कक्षा 11 और 12 की केमिस्ट्री पढ़ाते हैं। कोई सवाल हो तो संदेश भेजें, एक दिन के भीतर जवाब मिलेगा।',
       enquire: 'पूछताछ भेजें',
       whatsapp: 'व्हाट्सऐप',
       call: 'कॉल करें',
@@ -920,7 +920,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     banner: {
       announcement: 'Important Announcement',
-      text: '📢 Class 11 & 12 Chemistry Master Batch aur JEE/NEET Revision ke admissions open hain. Notice Board check karein!',
+      text: 'Naye notes, papers aur notices Notice Board par milte hain.',
       viewNotice: 'Notice Dekhein'
     },
     hero: {
@@ -978,7 +978,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       viewAll: 'Sabhi Notices Dekhein',
       downloadBtn: 'Attachment Download Karein',
       pinned: 'Pinned Notice',
-      allBatches: 'All Batches',
+      allBatches: 'All classes',
       clickToRead: 'Full announcement padhne ke liye click karein'
     },
     materials: {
@@ -1039,7 +1039,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       examRelevance: 'Exam Scoring Weightage:'
     },
     cta: {
-      badge: 'Admissions & Guidance',
+      badge: 'Get in touch',
       title: 'Chemistry mein 95%+ aur JEE / NEET crack karne ke liye ready hain?',
       description: 'Alwar ke Vasundhara, Poddar ya Indra Public School mein Ajay Sir se chemistry padhein, ya enquiry bhejein.',
       joinBtn: 'Admission Inquiry Bhejein',
