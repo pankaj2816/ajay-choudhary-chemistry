@@ -1,4 +1,7 @@
-:HL["/ajay-choudhary-chemistry/_next/static/chunks/1z_4t823e3lk4.css","style"]
-:HL["/ajay-choudhary-chemistry/_next/static/media/e92fa6abd9c612ef-s.p.2oqonvbxcl6a7.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/ajay-choudhary-chemistry/_next/static/media/f06bf9da926bae75-s.p.2874ccu1_u7jf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"admin","param":null,"prefetchHints":4192,"slots":{"children":{"name":"study-materials","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"1zVgs3fqirZPOXbBy42ZD"}
+:HL["/ajay-choudhary-chemistry/_next/static/chunks/38e7-xwfrobwz.css","style"]
+:HL["/ajay-choudhary-chemistry/_next/static/media/4cf231d25563e07b-s.p.2874ccu1_u7jf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/ajay-choudhary-chemistry/_next/static/media/a582cd8757547b1f-s.p.2oqonvbxcl6a7.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+3:[["children",{"s":"__PAGE__","h":160}]]
+2:[["children",{"s":"study-materials","h":96,"c":"$Q3"}]]
+1:[["children",{"s":"admin","h":96,"c":"$Q2"}]]
+0:{"b":"HdY4J4BhZCJsh45jI8v0T","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
