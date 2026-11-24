@@ -45,9 +45,9 @@ export default function AboutPage() {
   ];
 
   const facts = [
-    { value: a.statExp, label: a.statExpLabel },
+    { value: settings.experienceYears ? `${settings.experienceYears}+` : a.statExp, label: a.statExpLabel },
     { value: String(settings.coachingCenters.length || a.statCenters), label: a.statCentersLabel },
-    { value: a.statStudents, label: a.statStudentsLabel },
+    { value: settings.studentsCount || a.statStudents, label: a.statStudentsLabel },
   ];
 
   return (
@@ -59,7 +59,9 @@ export default function AboutPage() {
             <div className="lg:col-span-7">
               <Eyebrow>{a.heroBadge}</Eyebrow>
               <h1 className="mt-6 text-[2.6rem] sm:text-6xl lg:text-7xl leading-[1.02] text-ink rise-in" style={{ fontVariationSettings: '"opsz" 144' }}>
-                {a.heroTitle}
+                {settings.teacherName
+                  ? L(`About ${settings.teacherName} Sir`, `${pick(settings.teacherName, settings.teacherNameHi)} सर के बारे में`)
+                  : a.heroTitle}
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted">{a.heroDesc}</p>
               <dl className="mt-12 grid grid-cols-3 border-t border-line max-w-xl">
@@ -78,7 +80,7 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="absolute -right-3 -bottom-3 sm:-right-5 sm:-bottom-5 w-full h-full bg-paper-deep" aria-hidden="true" />
                 <div className="relative aspect-[4/5] overflow-hidden bg-paper-deep">
-                  <SafeImage src="/images/ajay-classroom.jpg" alt={L('Ajay Choudhary Sir', 'अजय चौधरी सर')} fill priority sizes="(min-width:1024px) 40vw, 90vw" className="object-cover object-[50%_18%]" />
+                  <SafeImage src="/images/ajay-classroom.jpg" alt={L(`${pick(settings.teacherName, settings.teacherNameHi)} Sir`, `${pick(settings.teacherName, settings.teacherNameHi)} सर`)} fill priority sizes="(min-width:1024px) 40vw, 90vw" className="object-cover object-[50%_18%]" />
                 </div>
               </div>
             </figure>

@@ -152,14 +152,14 @@ export default function AdminSettingsPage() {
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">Educator Profile & Statistics</h3>
-              <p className="text-xs text-slate-400">Public persona and achievement counter numbers.</p>
+              <h3 className="text-base font-bold text-white">Teacher profile & numbers</h3>
+              <p className="text-xs text-slate-400">Shown on the home page and the About page.</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Teacher Full Name</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Teacher name (top of every page and home page photo)</label>
               <input
                 type="text"
                 value={settings.teacherName}
@@ -169,7 +169,7 @@ export default function AdminSettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Professional Tagline</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Line under the home page photo</label>
               <input
                 type="text"
                 value={settings.tagline}
@@ -179,9 +179,9 @@ export default function AdminSettingsPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Experience Years</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Years of teaching (shown as “8+”)</label>
               <input
                 type="number"
                 value={settings.experienceYears}
@@ -191,17 +191,7 @@ export default function AdminSettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Total Coaching Centers</label>
-              <input
-                type="number"
-                value={settings.centersCount}
-                onChange={(e) => setSettings({ ...settings, centersCount: Number(e.target.value) })}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Students Mentored Text</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Students taught (e.g. 5,000+)</label>
               <input
                 type="text"
                 value={settings.studentsCount}
@@ -212,14 +202,25 @@ export default function AdminSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-300 mb-1">Short Biography Snippet</label>
+            <label className="block text-xs font-bold text-slate-300 mb-1">Introduction under the home page headline</label>
             <textarea
-              rows={2}
+              rows={3}
               value={settings.bioShort}
               onChange={(e) => setSettings({ ...settings, bioShort: e.target.value })}
               className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white resize-none"
             ></textarea>
+            <p className="mt-1 text-[11px] text-slate-500">The number of schools is counted automatically from the list below.</p>
           </div>
+
+          <HindiFields
+            fields={[
+              { key: 'teacherNameHi', label: 'Teacher name in Hindi', placeholder: 'अजय चौधरी' },
+              { key: 'taglineHi', label: 'Line under the photo in Hindi' },
+              { key: 'bioShortHi', label: 'Introduction in Hindi', rows: 3 },
+            ]}
+            values={settings as unknown as Record<string, string | undefined>}
+            onChange={(k, v) => setSettings({ ...settings, [k]: v })}
+          />
         </div>
 
         {/* 3. Coaching Centers Information */}

@@ -5,14 +5,18 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import SafeImage from '@/components/ui/SafeImage';
+import { useSiteSettings } from '@/lib/useSiteSettings';
 
 export default function HeroSection() {
-  const { t, L } = useLanguage();
+  const { t, L, pick } = useLanguage();
+  const s = useSiteSettings();
+  const name = pick(s.teacherName, s.teacherNameHi) || 'Ajay Choudhary';
+  const sir = L(`${name} Sir`, `${name} सर`);
 
   const facts = [
-    { value: '8+', label: t.home.factYears },
-    { value: '3', label: t.home.factCenters },
-    { value: '5,000+', label: t.home.factStudents },
+    { value: `${s.experienceYears || 8}+`, label: t.home.factYears },
+    { value: String(s.coachingCenters?.length || 3), label: t.home.factCenters },
+    { value: s.studentsCount || '5,000+', label: t.home.factStudents },
   ];
 
   return (
@@ -35,7 +39,7 @@ export default function HeroSection() {
             </h1>
 
             <p className="mt-7 max-w-xl text-[1.075rem] sm:text-lg leading-relaxed text-muted rise-in rise-in-delay-2">
-              {t.hero.description}
+              {pick(s.bioShort, s.bioShortHi) || t.hero.description}
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5 rise-in rise-in-delay-3">
@@ -73,7 +77,7 @@ export default function HeroSection() {
             <div className="relative aspect-[4/5] overflow-hidden bg-paper-deep">
               <SafeImage
                 src="/images/ajay-classroom.jpg"
-                alt={L('Ajay Choudhary Sir in his chemistry classroom', 'अपनी रसायन विज्ञान कक्षा में अजय चौधरी सर')}
+                alt={L(`${sir} in his chemistry classroom`, `अपनी रसायन विज्ञान कक्षा में ${sir}`)}
                 fill
                 priority
                 sizes="(min-width: 1024px) 40vw, 90vw"
@@ -82,8 +86,8 @@ export default function HeroSection() {
             </div>
             </div>
             <figcaption className="relative mt-8 sm:mt-9 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 border-t border-line pt-4">
-              <span className="font-display text-lg text-ink">{L('Ajay Choudhary Sir', 'अजय चौधरी सर')}</span>
-              <span className="text-[0.8rem] text-muted sm:text-right">{t.hero.teacherCardRole}</span>
+              <span className="font-display text-lg text-ink">{sir}</span>
+              <span className="text-[0.8rem] text-muted sm:text-right">{pick(s.tagline, s.taglineHi) || t.hero.teacherCardRole}</span>
             </figcaption>
           </figure>
         </div>

@@ -8,11 +8,13 @@ import SearchModal from '@/components/ui/SearchModal';
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher';
 import ElementTile from '@/components/ui/ElementTile';
 import { useLanguage } from '@/context/LanguageContext';
+import { useSiteSettings } from '@/lib/useSiteSettings';
 import { CLASS_LIST } from '@/lib/classes';
 
 export default function Navbar() {
   const pathname = usePathname();
   const { t, L, isHi } = useLanguage();
+  const brand = useSiteSettings().teacherName || 'Ajay Choudhary';
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
@@ -108,11 +110,11 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-2 sm:gap-4 xl:gap-6">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0" aria-label={L('Ajay Choudhary Sir — Home', 'अजय चौधरी सर — होम')}>
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0" aria-label={L(`${brand} Sir — Home`, `${brand} सर — होम`)}>
             <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
             <span className="flex flex-col leading-tight">
               <span className="font-display text-[1.15rem] text-ink" style={{ fontVariationSettings: '"opsz" 36' }}>
-                Ajay Choudhary
+                {brand}
               </span>
               <span className={`eyebrow !text-[0.62rem] text-muted ${isHi ? '' : '!tracking-[0.22em]'}`}>{L('Chemistry', 'रसायन विज्ञान')}</span>
             </span>
@@ -232,7 +234,7 @@ export default function Navbar() {
           <div className="h-[72px] px-5 sm:px-8 flex items-center justify-between border-b border-line">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3">
               <ElementTile symbol="Ac" number={89} size="sm" tone="dark" />
-              <span className="font-display text-[1.15rem]">Ajay Choudhary</span>
+              <span className="font-display text-[1.15rem]">{brand}</span>
             </Link>
             <button onClick={() => setMobileMenuOpen(false)} className="p-2.5 -mr-2" aria-label={L('Close menu', 'मेनू बंद करें')}>
               <X className="w-5 h-5" />

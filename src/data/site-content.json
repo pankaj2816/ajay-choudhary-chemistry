@@ -1,8 +1,8 @@
 {
   "settings": {
     "teacherName": "Ajay Choudhary",
-    "tagline": "Experienced Chemistry Educator | 8+ Years of Academic Excellence",
-    "bioShort": "Helping students master Organic, Inorganic, Physical and Practical Chemistry through clear concepts and step-by-step problem solving.",
+    "tagline": "Senior Chemistry Teacher • 8+ Years Experience",
+    "bioShort": "Organic reaction mechanisms, inorganic chemistry, physical chemistry numericals and lab practicals, explained from first principles for Class 11 & 12 Boards, JEE and NEET.",
     "experienceYears": 8,
     "centersCount": 3,
     "studentsCount": "5,000+",
@@ -53,7 +53,10 @@
         "contactNumber": "+91 80786 67488"
       }
     ],
-    "bannerAlertHi": "कक्षा 11 व 12 रसायन मास्टर बैच और JEE/NEET रिवीज़न में प्रवेश शुरू। नोटिस बोर्ड देखें!"
+    "bannerAlertHi": "कक्षा 11 व 12 रसायन मास्टर बैच और JEE/NEET रिवीज़न में प्रवेश शुरू। नोटिस बोर्ड देखें!",
+    "teacherNameHi": "अजय चौधरी",
+    "taglineHi": "वरिष्ठ रसायन विज्ञान शिक्षक • 8+ वर्ष अनुभव",
+    "bioShortHi": "ऑर्गेनिक रिएक्शन मैकेनिज्म, इनऑर्गेनिक केमिस्ट्री, फ़िज़िकल केमिस्ट्री के न्यूमेरिकल और लैब प्रैक्टिकल को आसान लॉजिक के साथ समझें। कक्षा 11वीं, 12वीं बोर्ड, JEE और NEET के लिए सरल मार्गदर्शन।"
   },
   "taxonomies": {
     "subjects": [

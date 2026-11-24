@@ -161,6 +161,9 @@ export interface ContactMessage {
 
 export interface SiteSettings {
   teacherName: string;
+  teacherNameHi?: string;
+  taglineHi?: string;
+  bioShortHi?: string;
   tagline: string;
   bioShort: string;
   experienceYears: number;
