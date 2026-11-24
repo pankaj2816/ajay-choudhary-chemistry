@@ -1,7 +1,7 @@
-:HL["/ajay-choudhary-chemistry/_next/static/chunks/38e7-xwfrobwz.css","style"]
+:HL["/ajay-choudhary-chemistry/_next/static/chunks/3txu9e53kb3y4.css","style"]
 :HL["/ajay-choudhary-chemistry/_next/static/media/4cf231d25563e07b-s.p.2874ccu1_u7jf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/ajay-choudhary-chemistry/_next/static/media/a582cd8757547b1f-s.p.2oqonvbxcl6a7.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"why-ice-floats","s":[]},"h":65632,"c":"$Q3"}]]
 1:[["children",{"s":"articles","h":131168,"c":"$Q2"}]]
-0:{"b":"8Is9NK_vxgAPaMaPRtg_Y","t":{"t":{"s":"","h":131152,"c":"$Q1"}}}
+0:{"b":"ZFiZ6tOEb9I41E0gBDYSm","t":{"t":{"s":"","h":131152,"c":"$Q1"}}}
